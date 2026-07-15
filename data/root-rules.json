@@ -1135,7 +1135,8 @@
           "trigger": "When you aim to subdue an enemy quickly and nonlethally, you can engage in melee with Cunning instead of Might.",
           "outcomes": null,
           "options": [],
-          "notes": "You cannot choose to inflict serious harm if you do."
+          "notes": "You cannot choose to inflict serious harm if you do.",
+          "stat": "Cunning"
         },
         {
           "name": "Talon on the Pulse",
@@ -1152,7 +1153,8 @@
             "What do the denizens hope for?",
             "What opportunities exist for enterprising vagabonds?"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Cunning"
         },
         {
           "name": "Orator",
@@ -1168,7 +1170,8 @@
             "They don't disband at the first sign of real resistance",
             "They don't demand you stand at their head and lead"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Charm"
         },
         {
           "name": "Well-Read",
@@ -1186,7 +1189,8 @@
             "6-": "you read them totally wrong, and their displeasure costs you."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Cunning"
         }
       ],
       "startingRoguishFeats": [
@@ -1270,7 +1274,8 @@
             "miss": "NPCs turn their anger to you, and PCs take +1 ongoing against you for the scene."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Charm"
         },
         {
           "name": "Crash and Smash",
@@ -1286,7 +1291,8 @@
             "You break an important part of your surroundings",
             "You damage or leave behind a piece of gear (GM's choice)"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Might"
         },
         {
           "name": "Hardy",
@@ -1304,7 +1310,8 @@
             "hit": "mark exhaustion to inflict 1 additional injury. Mark exhaustion again to make your shot ignore the enemy's armor—they cannot mark wear to absorb the injury."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Might"
         },
         {
           "name": "Guardian",
@@ -1319,7 +1326,8 @@
             "Put the threat in a vulnerable spot; take +1 forward to counterstrike",
             "Push the threat back; you and your protectee have a chance to maneuver or flee"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Might"
         }
       ],
       "startingRoguishFeats": [],
@@ -1401,7 +1409,8 @@
           "trigger": "Take the Counterfeit roguish feat (it does not count against your limit.) When you pretend to be an innocuous messenger carrying a missive of import to trick someone, roll with Luck instead of Cunning.",
           "outcomes": null,
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Luck"
         },
         {
           "name": "Parkour",
@@ -1412,7 +1421,8 @@
             "miss": "your surroundings trip you up, and you're caught in place while danger closes in."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Finesse"
         },
         {
           "name": "Traveler Extraordinaire",
@@ -1430,7 +1440,8 @@
             "miss": "you find a secret path...and someone else is using it right this second. They probably won't be happy you found their secret."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Luck"
         }
       ],
       "startingRoguishFeats": [
@@ -1517,7 +1528,8 @@
             "You end up in another dangerous situation",
             "You leave something important behind"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Finesse"
         },
         {
           "name": "Poisons and Antidotes",
@@ -1542,7 +1554,8 @@
           "trigger": "When you persuade an NPC with open threats or naked steel, roll with Might instead of Charm.",
           "outcomes": null,
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Might"
         },
         {
           "name": "Dirty Fighter",
@@ -1627,7 +1640,8 @@
           "trigger": "When you figure out a denizen of status, authority, or power, roll with Might instead of Charm.",
           "outcomes": null,
           "options": [],
-          "notes": "When you trick a denizen of status, authority, or power by playing subordinate, roll with Might instead of Cunning."
+          "notes": "When you trick a denizen of status, authority, or power by playing subordinate, roll with Might instead of Cunning.",
+          "stat": "Might"
         },
         {
           "name": "Well-Mannered",
@@ -1643,7 +1657,8 @@
             "Charm someone; take +1 ongoing to speak to them while you have hold",
             "Demonstrate your value; mark prestige with a powerful denizen's faction"
           ],
-          "notes": "Lose all hold when you leave or when social rules fall apart. Spend hold 1-for-1 to:"
+          "notes": "Lose all hold when you leave or when social rules fall apart. Spend hold 1-for-1 to:",
+          "stat": "Cunning"
         },
         {
           "name": "Fealty",
@@ -1667,7 +1682,8 @@
             "Keep the violence away from the unarmed or innocent",
             "Fight to surrender or subdual, without retreat"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Might"
         },
         {
           "name": "Always Watching",
@@ -1747,7 +1763,8 @@
           "trigger": "When you wreck something with flagrantly dangerous means (explosives, uncontrolled flame, etc.), roll with Luck instead of Might.",
           "outcomes": null,
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Luck"
         },
         {
           "name": "Create to Destroy",
@@ -1763,14 +1780,16 @@
             "Larger or more unwieldy than intended",
             "More temperamental and fragile than intended"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Finesse"
         },
         {
           "name": "It's a Distraction!",
           "trigger": "When you attempt a roguish feat to blindside someone while they are distracted by environmental dangers (a raging fire, an oncoming flood, etc.), roll with Luck instead of Cunning.",
           "outcomes": null,
           "options": [],
-          "notes": "You gain the roguish feat Blindside (it does not count against your limit)."
+          "notes": "You gain the roguish feat Blindside (it does not count against your limit).",
+          "stat": "Luck"
         },
         {
           "name": "Daredevil",
@@ -1791,7 +1810,8 @@
           "trigger": "When you use a weapon move (basic or skilled), mark exhaustion to roll with Luck instead of the listed stat.",
           "outcomes": null,
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Luck"
         }
       ],
       "startingRoguishFeats": [
@@ -1881,7 +1901,8 @@
             "miss": "On a miss, they catch you in the middle of a dodge—you're at their mercy."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Finesse"
         },
         {
           "name": "Small Hands",
@@ -1890,7 +1911,8 @@
             "miss": "On a miss, they overpower you—you're at their mercy."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Finesse"
         },
         {
           "name": "Master Thief",
@@ -2020,7 +2042,8 @@
             "It works exceptionally well",
             "You get an additional use out of it"
           ],
-          "notes": null
+          "notes": null,
+          "stat": "Cunning"
         },
         {
           "name": "Nimble Mind",
@@ -2117,14 +2140,16 @@
             "miss": "your attempts at flattery are suspicious—they're going to keep their eye on you."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Charm"
         },
         {
           "name": "Desperate Smile",
           "trigger": "When you trust fate to see you through by begging, pleading, or abasing yourself, roll with Charm instead of Luck.",
           "outcomes": null,
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Charm"
         },
         {
           "name": "Charm Offensive",
@@ -2135,7 +2160,8 @@
             "miss": "you infuriate them—they come at you, hard, and you're not prepared."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Cunning"
         },
         {
           "name": "Let's Play",
@@ -2146,14 +2172,16 @@
             "miss": "they're better than you ever thought; either mark depletion and cut your losses, or mark 3-depletion and they'll start talking."
           },
           "options": [],
-          "notes": null
+          "notes": null,
+          "stat": "Charm"
         },
         {
           "name": "Pocket Sand",
           "trigger": "When you throw something to confuse an opponent's senses at close or intimate range, roll with Cunning instead of Finesse.",
           "outcomes": null,
           "options": [],
-          "notes": "Take the weapon skill Confuse Senses (it does not count against your limit)."
+          "notes": "Take the weapon skill Confuse Senses (it does not count against your limit).",
+          "stat": "Cunning"
         }
       ],
       "startingRoguishFeats": [
