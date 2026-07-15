@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woodland Creator — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .actions { display:flex; gap:8px; }
+
+  .steps { display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 22px; }
+  .step-pip {
+    font-family:'Bitter',serif; font-size:12.5px; font-weight:600; letter-spacing:.3px;
+    padding:6px 12px; border-radius:20px; border:1px solid var(--line);
+    background:var(--card-lo); color:var(--ink-soft); cursor:pointer; white-space:nowrap;
+    display:flex; align-items:center; gap:6px;
+  }
+  .step-pip .n { font-family:'Bree Serif',serif; font-size:12px; opacity:.7; }
+  .step-pip.active { background:linear-gradient(180deg,var(--eyrie),var(--eyrie-dk)); color:var(--cream-hi); border-color:var(--eyrie-dk); }
+  .step-pip.done { color:var(--alliance-dk); border-color:var(--alliance); }
+  .step-pip.done .n::after { content:" ✓"; }
+
+  .step-body h2 { margin:0 0 4px; font-size:26px; }
+  .step-intro { color:var(--ink-soft); margin:0 0 18px; max-width:70ch; }
+  .rule-note { border-left:3px solid var(--line); padding:2px 0 2px 12px; margin:0 0 18px; color:var(--ink-soft); font-size:14px; font-style:italic; }
+  .navbtns { display:flex; justify-content:space-between; margin-top:26px; gap:12px; }
+
+  /* Roll rows */
+  .roll { display:flex; align-items:center; gap:12px; background:var(--cream-hi); border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:10px; flex-wrap:wrap; }
+  .roll .rlabel { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); min-width:120px; }
+  .roll .rvalue { font-family:'Bree Serif',serif; font-size:18px; color:var(--rust); flex:1; min-width:90px; }
+  .roll .dcount { font-family:'Bitter',serif; font-size:12px; color:var(--ink-faint); }
+  .dice { font-family:'Bitter',serif; font-weight:600; font-size:13px; cursor:pointer; border:1px solid var(--line); background:var(--card); border-radius:6px; padding:5px 11px; color:var(--ink); white-space:nowrap; }
+  .dice:hover { border-color:var(--accent); background:#fbf0dd; }
+  .dice.primary { background:linear-gradient(180deg,var(--accent),var(--accent-dk)); color:var(--cream-hi); border-color:var(--accent-dk); }
+
+  .clist { display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .crow { display:flex; align-items:center; gap:10px; background:var(--cream-hi); border:1px solid var(--line-soft); border-radius:var(--radius-sm); padding:8px 12px; flex-wrap:wrap; }
+  .crow .cnum { font-family:'Bree Serif',serif; color:var(--ink-faint); width:22px; }
+  .crow .cname { font-family:'Bree Serif',serif; font-size:15px; min-width:130px; flex:1; }
+  .crow input[type=text].nm { max-width:170px; }
+  .crow .comm { min-width:96px; }
+  .crow .pths { width:56px; text-align:center; }
+  .crow .rm { color:var(--rust); cursor:pointer; border:none; background:none; font-size:16px; }
+
+  .badge { display:inline-block; font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:.5px; padding:3px 9px; border-radius:20px; }
+  .badge.yes { background:rgba(78,124,62,.18); color:var(--alliance-dk); border:1px solid rgba(78,124,62,.4); }
+  .badge.no  { background:rgba(107,99,87,.14); color:var(--vagabond); border:1px solid rgba(107,99,87,.35); }
+  .badge.roost { background:rgba(47,110,160,.16); color:var(--eyrie-dk); border:1px solid rgba(47,110,160,.4); }
+
+  .fx-clearing { border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:12px; background:var(--cream-hi); }
+  .fx-clearing h4 { margin:0 0 8px; font-family:'Bree Serif',serif; font-size:16px; }
+  .fx-row { display:flex; align-items:center; gap:8px; margin:5px 0; flex-wrap:wrap; }
+  .fx-row .fx-lbl { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-soft); min-width:92px; }
+
+  table.review-tbl { width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.review-tbl th, table.review-tbl td { text-align:left; padding:7px 9px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+  table.review-tbl th { font-family:'Bitter',serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent-dk); }
+  .tbl-scroll { overflow-x:auto; }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="actions">
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      <button class="btn ghost small" id="importBtn">Import…</button>
+      <button class="btn small" id="exportBtn" disabled>Export JSON</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(30px,5.5vw,46px);margin-bottom:2px">The Woodland Creator</p>
+    <p class="subtitle">Bellum Arborem · Making the Woodland</p>
+  </header>
+
+  <nav class="steps" id="steps"></nav>
+
+  <div class="panel">
+    <div class="step-body" id="stepBody"></div>
+    <div class="navbtns">
+      <button class="btn ghost" id="backBtn">← Back</button>
+      <button class="btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Fan-made companion for <em>Root: The Roleplaying Game</em> by Magpie Games.
+       You draw the map; the Woodland Creator rolls the tables.</p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/woodland-rules.js"></script>
+<script src="js/woodland.js"></script>
+</body>
+</html>

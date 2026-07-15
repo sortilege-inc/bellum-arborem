@@ -11,6 +11,12 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   roguish feats, equipment, and connections, then set starting faction reputation. Export the
   finished character as a JSON file, or import a saved character to keep playing.
 
+- **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland" as a roll-only tool: you
+  draw the map, it rolls the tables clearing by clearing (dominant community, paths, name), then
+  walks the faction-control history (Marquisate → Eyrie → Woodland Alliance → Denizens), and
+  flesh-out (inhabitants/buildings/problems). A reroll at every step. Export/import the Woodland
+  as JSON.
+
 More sections to come.
 
 ## Data
@@ -18,8 +24,11 @@ More sections to come.
 - `data/root-rules.json` — canonical, machine-readable Root ruleset (stats, playbooks, moves,
   natures, drives, equipment, feats, factions, reputation scale). Extracted from the
   `titterpig-dsl-root` DSL corpus. **This is the source of truth.**
-- `data/root-rules.js` — generated wrapper that exposes the same data as `window.ROOT_RULES`
-  so pages can load it via `<script>` and work from `file://` (no local server needed).
+- `data/woodland-rules.json` — canonical Woodland-creation tables (dominant community, paths, name
+  generator, faction-control tables, flesh-out tables) from the same corpus.
+- `data/root-rules.js` / `data/woodland-rules.js` — generated wrappers exposing the same data as
+  `window.ROOT_RULES` / `window.ROOT_WOODLAND` so pages load them via `<script>` and work from
+  `file://` (no local server needed).
 
 Regenerate the wrapper after editing the JSON:
 
@@ -35,11 +44,15 @@ Import reads the same shape, so a character exported from one session can be loa
 ## Layout
 
 ```
-index.html               Landing page (Woodland hub)
-character-creator.html    Character creator app
-css/app.css               Shared Root-styled design system
-js/creator.js             Character creator logic
-data/root-rules.json      Canonical ruleset
-data/root-rules.js        Generated window.ROOT_RULES wrapper
-data/build-rules.mjs      Regenerates root-rules.js from root-rules.json
+index.html                Landing page (Woodland hub)
+character-creator.html     Character creator app
+woodland-creator.html      Woodland creator app
+css/app.css                Shared Root-styled design system
+js/creator.js              Character creator logic
+js/woodland.js             Woodland creator logic
+data/root-rules.json       Canonical character ruleset
+data/woodland-rules.json   Canonical Woodland-creation tables
+data/root-rules.js         Generated window.ROOT_RULES wrapper
+data/woodland-rules.js     Generated window.ROOT_WOODLAND wrapper
+data/build-rules.mjs       Regenerates the .js wrappers from the .json sources
 ```
