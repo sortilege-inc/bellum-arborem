@@ -19,6 +19,11 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   flesh-out (inhabitants/buildings/problems). The Review step draws the finished map colored by
   faction control. A reroll at every step. Export/import the Woodland (map layout included) as JSON.
 
+- **Play** (`play.html`) — load a character JSON and take the vagabond into the field: mark the three
+  harm tracks (Injury / Exhaustion / Depletion), shift faction reputation (status + prestige /
+  notoriety), advance stats, and **roll any move** (2d6 + the move's stat, with the strong-hit /
+  weak-hit / miss outcome shown) plus a free quick-roll. Save the updated character back to JSON.
+
 More sections to come.
 
 ## Data
@@ -49,9 +54,11 @@ Import reads the same shape, so a character exported from one session can be loa
 index.html                Landing page (Woodland hub)
 character-creator.html     Character creator app
 woodland-creator.html      Woodland creator app
+play.html                  Play mode (load a character and play)
 css/app.css                Shared Root-styled design system
 js/creator.js              Character creator logic
 js/woodland.js             Woodland creator logic
+js/play.js                 Play-mode logic
 data/root-rules.json       Canonical character ruleset
 data/woodland-rules.json   Canonical Woodland-creation tables
 data/root-rules.js         Generated window.ROOT_RULES wrapper

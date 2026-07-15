@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Play — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .loadpane { text-align:center; padding:34px 20px; }
+  .loadpane .big { font-size:44px; margin-bottom:8px; }
+
+  .sheet { display:flex; flex-direction:column; gap:18px; }
+  .ptitle { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .ptitle h1 { margin:0; font-size:30px; }
+  .ptitle .pb { font-family:'Bitter',serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:12px; color:var(--accent-dk); }
+
+  /* Roll banner */
+  .rollbanner { display:flex; align-items:center; gap:16px; background:linear-gradient(180deg,#fbf0dd,#f2e3c1); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; min-height:66px; flex-wrap:wrap; }
+  .rollbanner .dieface { font-family:'Bree Serif',serif; font-size:34px; color:var(--rust); line-height:1; }
+  .rollbanner .rb-main { flex:1; min-width:180px; }
+  .rollbanner .rb-move { font-family:'Bree Serif',serif; font-size:17px; }
+  .rollbanner .rb-calc { font-size:13.5px; color:var(--ink-soft); }
+  .rollbanner .rb-out { font-size:14px; margin-top:3px; }
+  .tierbadge { font-family:'Bitter',serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:20px; }
+  .tier-10 { background:rgba(78,124,62,.2); color:var(--alliance-dk); border:1px solid rgba(78,124,62,.45); }
+  .tier-79 { background:rgba(217,114,46,.18); color:var(--marquise-dk); border:1px solid rgba(217,114,46,.45); }
+  .tier-6  { background:rgba(166,55,31,.16); color:var(--rust); border:1px solid rgba(166,55,31,.4); }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+
+  /* Harm tracks */
+  .harm { margin-bottom:12px; }
+  .harm:last-child { margin-bottom:0; }
+  .harm .hlabel { display:flex; justify-content:space-between; align-items:baseline; }
+  .harm .hname { font-family:'Bree Serif',serif; font-size:16px; }
+  .harm .hcount { font-family:'Bitter',serif; font-weight:700; font-size:13px; color:var(--ink-soft); }
+  .hboxes { display:flex; gap:6px; margin:6px 0 3px; }
+  .hbox { width:30px; height:30px; border:2px solid var(--line); border-radius:6px; cursor:pointer; background:var(--cream-hi); transition:background .1s; }
+  .hbox.on { background:var(--rust); border-color:var(--rust); }
+  .harm .hnote { font-size:12.5px; color:var(--ink-faint); }
+
+  /* Reputation */
+  .rep-row { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line-soft); flex-wrap:wrap; }
+  .rep-row:last-child { border-bottom:none; }
+  .rep-name { flex:1; min-width:120px; }
+  .stepper { display:flex; align-items:center; gap:6px; }
+  .stepper button { width:28px; height:28px; border-radius:6px; border:1px solid var(--line); background:var(--cream-hi); font-size:16px; cursor:pointer; font-family:'Bree Serif',serif; }
+  .stepper .v { min-width:26px; text-align:center; font-family:'Bree Serif',serif; font-size:18px; color:var(--rust); }
+  .stepper .v.pos::before { content:"+"; }
+  .rep-mini { font-family:'Bitter',serif; font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-soft); }
+
+  /* Move list */
+  .movecard { border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:11px 13px; margin-bottom:9px; }
+  .movecard .mc-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .movecard .mc-name { font-family:'Bree Serif',serif; font-size:15px; flex:1; min-width:140px; }
+  .movecard .mc-trigger { font-style:italic; color:var(--ink-soft); font-size:13.5px; margin:5px 0 0; }
+  .movecard .mc-tier { font-size:13px; margin:2px 0; }
+  .movecard .mc-tier b { color:var(--accent-dk); }
+  details.movegroup > summary { cursor:pointer; font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent-dk); margin:6px 0; }
+
+  .free-roll { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .statpick { display:flex; gap:5px; flex-wrap:wrap; }
+  .statpick button { font-family:'Bitter',serif; font-size:12.5px; padding:5px 10px; border:1px solid var(--line); border-radius:20px; background:var(--cream-hi); cursor:pointer; }
+  .statpick button.sel { background:var(--accent); color:var(--cream-hi); border-color:var(--accent-dk); }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="actions">
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      <button class="btn ghost small" id="importBtn">Load character…</button>
+      <button class="btn small" id="saveBtn" disabled>Save JSON</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(30px,5.5vw,46px);margin-bottom:2px">Play</p>
+    <p class="subtitle">Bellum Arborem · Vagabond in the field</p>
+  </header>
+
+  <div id="app"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/root-rules.js"></script>
+<script src="js/play.js"></script>
+</body>
+</html>
