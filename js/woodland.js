@@ -513,7 +513,7 @@
       '<span class="dcount">' + autoTxt + '</span>' +
       '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" data-marqdist="' + i + '" value="' + esc(c.distMarq) + '" title="Override distance">' +
       '<button class="dice" data-marqroll="' + i + '">🎲 Roll 2d6</button>' +
-      (rr ? '<span class="badge ' + (rr.inControl ? 'yes' : 'no') + '">' + rr.roll + ' → ' + (rr.inControl ? 'Marquisate' : 'not') + '</span>' : '') +
+      (rr ? '<span class="badge ' + (rr.inControl ? 'yes' : 'no') + '">' + (rr.inControl ? 'In Marquisate control' : 'Not in control') + '</span>' : '') +
       (c.control && c.control !== 'The Marquisate' ? '<span class="badge no">' + esc(c.control) + '</span>' : '') + '</div>';
   }
 
@@ -568,6 +568,7 @@
       const seized = c.control && c.control !== 'The Eyrie Dynasties' && outcome !== 'not' && outcome !== 'capped';
       if (outcome === 'roost') { c.control = 'The Eyrie Dynasties'; c.roost = true; }
       else if (outcome === 'control') { c.control = 'The Eyrie Dynasties'; c.roost = false; }
+      if (seized) c.contested = true; // changed hands between non-denizen factions
       c._roll.eyrie = { roll, d, outcome, seized };
       render();
     }));
@@ -578,7 +579,7 @@
     if (rr) {
       const map = { not: ['no', 'not in control'], control: ['yes', 'Eyrie, no Roost'], roost: ['roost', 'Eyrie + Roost'], capped: ['no', 'cap reached'] };
       const m = map[rr.outcome];
-      badge = '<span class="badge ' + m[0] + '">' + rr.roll + ' → ' + m[1] + (rr.seized ? ' (seized)' : '') + '</span>';
+      badge = '<span class="badge ' + m[0] + '">' + m[1] + (rr.seized ? ' (seized)' : '') + '</span>';
     }
     const autoTxt = autoD != null ? 'auto ' + autoD + ' path' + (autoD === 1 ? '' : 's') : 'unlinked';
     return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
@@ -594,17 +595,29 @@
     if (c.control && c.control !== DENIZEN && c.control !== UNCONTROLLED) return 'Controlled';
     return 'Uncontrolled';
   }
+  function factionTagClass(f) {
+    const s = (f || '').toLowerCase();
+    if (s.indexOf('marqu') >= 0) return 'marquise';
+    if (s.indexOf('eyrie') >= 0) return 'eyrie';
+    if (s.indexOf('alliance') >= 0) return 'alliance';
+    return '';
+  }
   function renderAlliance() {
     let h = heading('Third: the Woodland Alliance', W.descriptions.alliance, W.descriptions.uprising);
-    h += '<p class="eyebrow" style="margin:4px 0 8px">1 · Sympathy</p><div class="clist">';
+    h += '<p class="eyebrow" style="margin:4px 0 8px">1 · Sympathy</p>';
+    h += '<p class="rule-note">A clearing’s state is set by who holds it — <b>Uncontrolled</b> (denizen-held), ' +
+      '<b>Controlled</b> (a faction holds it, named beside the clearing), or <b>Contested</b> (it changed hands ' +
+      'between factions). That state sets the sympathy target; change it if your table disagrees.</p><div class="clist">';
     state.clearings.forEach((c, i) => {
       const st = c.allianceState || derivedState(c);
       const rr = c._roll.symp;
-      h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
+      const holder = (c.control && c.control !== DENIZEN && c.control !== UNCONTROLLED)
+        ? '<span class="tag ' + factionTagClass(c.control) + '">' + esc(c.control) + '</span>' : '';
+      h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' + holder +
         '<select data-symstate="' + i + '" class="comm">' +
         ['Uncontrolled', 'Controlled', 'Contested'].map(s => '<option' + (s === st ? ' selected' : '') + '>' + s + '</option>').join('') + '</select>' +
         '<button class="dice" data-symroll="' + i + '">🎲 Roll 2d6</button>' +
-        (rr ? '<span class="badge ' + (c.sympathy ? 'yes' : 'no') + '">' + rr.roll + ' → ' + (c.sympathy ? 'sympathy' : 'none') + '</span>' : '') +
+        (rr ? '<span class="badge ' + (c.sympathy ? 'yes' : 'no') + '">' + (c.sympathy ? 'Sympathy' : 'No sympathy') + '</span>' : '') +
         (c.base ? '<span class="badge yes">base</span>' : '') + '</div>';
     });
     h += '</div>';
@@ -620,7 +633,7 @@
         const rr = c._roll.upr;
         h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
           '<button class="dice" data-uprroll="' + i + '"' + (state.uprisingDone && !rr ? ' disabled title="An uprising already occurred"' : '') + '>🎲 Roll 2d6</button>' +
-          (rr ? '<span class="badge ' + (rr.uprising ? 'yes' : 'no') + '">' + rr.roll + ' → ' + esc(rr.short) + '</span>' : '') + '</div>';
+          (rr ? '<span class="badge ' + (rr.uprising ? 'yes' : 'no') + '">' + esc(rr.short) + '</span>' : '') + '</div>';
       });
       h += '</div>';
     }
@@ -671,7 +684,7 @@
         h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
           '<span class="badge no">' + esc(c.control) + '</span>' +
           '<button class="dice" data-denroll="' + i + '">🎲 Roll 2d6</button>' +
-          (rr ? '<span class="badge ' + (rr.unc ? 'yes' : 'no') + '">' + rr.roll + ' → ' + (rr.unc ? 'uncontrolled' : 'holds') + '</span>' : '') + '</div>';
+          (rr ? '<span class="badge ' + (rr.unc ? 'yes' : 'no') + '">' + (rr.unc ? 'Returned to denizens' : 'Holds') + '</span>' : '') + '</div>';
       });
       h += '</div>';
     }
