@@ -11,11 +11,13 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   roguish feats, equipment, and connections, then set starting faction reputation. Export the
   finished character as a JSON file, or import a saved character to keep playing.
 
-- **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland" as a roll-only tool: you
-  draw the map, it rolls the tables clearing by clearing (dominant community, paths, name), then
-  walks the faction-control history (Marquisate → Eyrie → Woodland Alliance → Denizens), and
-  flesh-out (inhabitants/buildings/problems). A reroll at every step. Export/import the Woodland
-  as JSON.
+- **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland": roll the tables clearing
+  by clearing (dominant community, paths, name), then **draw the map on an interactive SVG canvas** —
+  click two clearings to link a path (each node tracks paths-drawn vs. its rolled number), drag to
+  rearrange. The faction-control passes (Marquisate → Eyrie → Woodland Alliance → Denizens) read
+  each clearing's distance straight from the drawn map (shortest path), with a manual override, then
+  flesh-out (inhabitants/buildings/problems). The Review step draws the finished map colored by
+  faction control. A reroll at every step. Export/import the Woodland (map layout included) as JSON.
 
 More sections to come.
 

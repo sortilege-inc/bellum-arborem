@@ -60,6 +60,34 @@
   table.review-tbl th { font-family:'Bitter',serif; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent-dk); }
   .tbl-scroll { overflow-x:auto; }
 
+  /* SVG map */
+  .mapsec { margin-top:8px; }
+  .mapwrap {
+    border:1px solid var(--line); border-radius:var(--radius); padding:6px;
+    background:
+      radial-gradient(120% 120% at 50% 0%, #f0e8ce 0%, #e7d9b6 70%, #ddcaa0 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 8px 18px -14px var(--shadow-deep);
+    overflow:hidden;
+  }
+  .mapwrap.review { margin-top:8px; }
+  svg.woodmap { width:100%; height:auto; display:block; touch-action:none; user-select:none; }
+  svg.woodmap .edge { stroke:#8a6f45; stroke-width:4; stroke-linecap:round; opacity:.8; }
+  svg.woodmap .node { cursor:pointer; }
+  svg.woodmap .node:active { cursor:grabbing; }
+  svg.woodmap .ico { font-size:30px; pointer-events:none; }
+  svg.woodmap .nm {
+    font-family:'Bree Serif',serif; font-size:17px; fill:var(--ink);
+    paint-order:stroke; stroke:#f6efd9; stroke-width:3.5px; stroke-linejoin:round; pointer-events:none;
+  }
+  svg.woodmap .deg { font-family:'Bitter',serif; font-size:15px; font-weight:700; fill:var(--ink-soft); pointer-events:none; }
+  svg.woodmap .deg.ok { fill:var(--alliance-dk); }
+  svg.woodmap .mark { font-size:17px; fill:var(--ink); pointer-events:none; }
+  svg.woodmap .selring { stroke:var(--accent); }
+  .map-toolbar { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; align-items:center; }
+  .map-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--ink-soft); align-items:center; }
+  .map-legend span { display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+  .lgdot { width:14px; height:14px; border-radius:50%; display:inline-block; border:1px solid rgba(60,40,20,.35); }
+
   .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
   .toast.show { opacity:1; }
   .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }

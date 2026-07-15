@@ -54,6 +54,7 @@
       factions: ['The Marquisate', 'The Eyrie Dynasties', 'The Woodland Alliance'],
       corner: {},
       clearings: [],
+      edges: [],                // [idLow, idHigh] pairs — the drawn paths
       draft: null,
       uprisingDone: false,
       notes: ''
@@ -61,19 +62,150 @@
   }
   let state = fresh();
   let stepIdx = 0;
+  let connectSel = null; // clearing id currently selected for drawing a path
 
-  function newClearing(id, community, paths, name) {
+  function newClearing(id, community, paths, name, pos) {
     return {
       id, name, community, paths,
+      x: pos ? pos.x : null, y: pos ? pos.y : null,
       control: null,            // faction name, DENIZEN, UNCONTROLLED, or null (unrolled = denizen-held)
       stronghold: false, roost: false, base: false,
       sympathy: false, contested: false,
-      distMarq: '', distRoost: '',
+      distMarq: '', distRoost: '',   // manual override for faction distance (blank = auto from map)
       allianceState: null,
       war: null, warFactions: '',
       inhabitants: [], buildings: [], problems: [],
       _roll: {}
     };
+  }
+
+  // ---------- Map geometry / graph ----------
+  const VB_W = 1000, VB_H = 640, NODE_R = 34;
+  function seedPos(index) {
+    // loose 4-column grid the user can rearrange
+    const cols = 4, cw = VB_W / cols, rh = 150, top = 90;
+    const col = index % cols, row = Math.floor(index / cols);
+    const jitter = ((index * 37) % 40) - 20;
+    return { x: Math.round(cw * (col + 0.5) + jitter), y: Math.round(top + row * rh + (col % 2 ? 22 : 0)) };
+  }
+  function ensurePositions() {
+    state.clearings.forEach((c, i) => { if (c.x == null || c.y == null) { const p = seedPos(i); c.x = p.x; c.y = p.y; } });
+  }
+  function edgeKey(a, b) { return a < b ? a + '-' + b : b + '-' + a; }
+  function hasEdge(a, b) { return state.edges.some(e => edgeKey(e[0], e[1]) === edgeKey(a, b)); }
+  function toggleEdge(a, b) {
+    if (a === b) return;
+    const k = edgeKey(a, b), i = state.edges.findIndex(e => edgeKey(e[0], e[1]) === k);
+    if (i >= 0) state.edges.splice(i, 1); else state.edges.push(a < b ? [a, b] : [b, a]);
+  }
+  function degree(id) { return state.edges.filter(e => e[0] === id || e[1] === id).length; }
+  function neighborIds(id) { return state.edges.filter(e => e[0] === id || e[1] === id).map(e => e[0] === id ? e[1] : e[0]); }
+  function clearingById(id) { return state.clearings.find(c => c.id === id); }
+  function bfsFrom(anchorIds) {
+    const dist = {}; const q = [];
+    anchorIds.forEach(id => { if (dist[id] == null) { dist[id] = 0; q.push(id); } });
+    while (q.length) { const cur = q.shift(); neighborIds(cur).forEach(nb => { if (dist[nb] == null) { dist[nb] = dist[cur] + 1; q.push(nb); } }); }
+    return dist;
+  }
+  function graphConnected() {
+    if (state.clearings.length < 2) return true;
+    const d = bfsFrom([state.clearings[0].id]);
+    return state.clearings.every(c => d[c.id] != null);
+  }
+
+  // ---------- SVG map ----------
+  const COMMUNITY_COLOR = {
+    Rabbit: { fill: '#d3e2ba', stroke: '#5f7a3f' },
+    Mouse: { fill: '#e4d9bf', stroke: '#8a7657' },
+    Fox: { fill: '#eecaa4', stroke: '#b5623a' }
+  };
+  const COMMUNITY_ICON = { Rabbit: '🐰', Mouse: '🐭', Fox: '🦊' };
+  const CONTROL_COLOR = { 'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054' };
+  function controlColor(c) {
+    if (c.control && CONTROL_COLOR[c.control]) return CONTROL_COLOR[c.control];
+    if (c.control === UNCONTROLLED) return '#cdbf9f';
+    return '#b3a07a'; // denizen-held / unrolled
+  }
+  function controlMarks(c) {
+    const m = [];
+    if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲'); if (c.sympathy) m.push('•');
+    return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
+  }
+
+  function renderMapSvg(opts) {
+    opts = opts || {};
+    ensurePositions();
+    const byId = {}; state.clearings.forEach(c => { byId[c.id] = c; });
+    const edges = state.edges.map(e => {
+      const a = byId[e[0]], b = byId[e[1]]; if (!a || !b) return '';
+      return '<line class="edge" data-a="' + e[0] + '" data-b="' + e[1] + '" x1="' + a.x + '" y1="' + a.y + '" x2="' + b.x + '" y2="' + b.y + '"/>';
+    }).join('');
+    const nodes = state.clearings.map(c => {
+      const cc = COMMUNITY_COLOR[c.community] || { fill: '#e4d9bf', stroke: '#8a7657' };
+      const fill = opts.colorBy === 'control' ? controlColor(c) : cc.fill;
+      const stroke = opts.colorBy === 'control' ? '#3b2c1a' : cc.stroke;
+      const sel = opts.interactive && connectSel === c.id;
+      const ring = sel ? '<circle class="selring" cx="' + c.x + '" cy="' + c.y + '" r="' + (NODE_R + 6) + '" fill="none" stroke-width="3" stroke-dasharray="5 4"/>' : '';
+      const deg = opts.interactive ? '<text class="deg ' + (degree(c.id) >= c.paths ? 'ok' : '') + '" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + degree(c.id) + '/' + c.paths + '</text>' : '';
+      const marks = opts.colorBy === 'control' ? controlMarks(c) : '';
+      return '<g class="node" data-node="' + c.id + '">' + ring +
+        '<circle cx="' + c.x + '" cy="' + c.y + '" r="' + NODE_R + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2.5"/>' +
+        '<text class="ico" x="' + c.x + '" y="' + (c.y + 1) + '" text-anchor="middle" dominant-baseline="central">' + (COMMUNITY_ICON[c.community] || '') + '</text>' +
+        '<text class="nm" x="' + c.x + '" y="' + (c.y + NODE_R + 18) + '" text-anchor="middle">' + esc(c.name) + '</text>' +
+        deg + marks + '</g>';
+    }).join('');
+    return '<svg class="woodmap" viewBox="0 0 ' + VB_W + ' ' + VB_H + '" xmlns="http://www.w3.org/2000/svg">' + edges + nodes + '</svg>';
+  }
+
+  function updateNodeDom(svg, c) {
+    const g = svg.querySelector('[data-node="' + c.id + '"]');
+    if (!g) return;
+    g.querySelectorAll('circle').forEach(ci => { ci.setAttribute('cx', c.x); ci.setAttribute('cy', c.y); });
+    const ico = g.querySelector('.ico'); if (ico) { ico.setAttribute('x', c.x); ico.setAttribute('y', c.y + 1); }
+    const nm = g.querySelector('.nm'); if (nm) { nm.setAttribute('x', c.x); nm.setAttribute('y', c.y + NODE_R + 18); }
+    const deg = g.querySelector('.deg'); if (deg) { deg.setAttribute('x', c.x); deg.setAttribute('y', c.y - NODE_R - 7); }
+    svg.querySelectorAll('line.edge').forEach(ln => {
+      if (+ln.getAttribute('data-a') === c.id) { ln.setAttribute('x1', c.x); ln.setAttribute('y1', c.y); }
+      if (+ln.getAttribute('data-b') === c.id) { ln.setAttribute('x2', c.x); ln.setAttribute('y2', c.y); }
+    });
+  }
+
+  function wireMapSvg() {
+    const svg = bodyEl.querySelector('svg.woodmap');
+    if (!svg) return;
+    let down = null;
+    svg.addEventListener('pointerdown', e => {
+      const g = e.target.closest('[data-node]');
+      if (!g) { if (connectSel != null) { connectSel = null; render(); } return; }
+      e.preventDefault();
+      const id = +g.getAttribute('data-node'), c = clearingById(id);
+      down = { id, sx: e.clientX, sy: e.clientY, ox: c.x, oy: c.y, moved: false };
+      try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - down.sx, dy = e.clientY - down.sy;
+      if (!down.moved && Math.hypot(dx, dy) > 4) down.moved = true;
+      if (down.moved) {
+        const r = svg.getBoundingClientRect();
+        const c = clearingById(down.id);
+        c.x = Math.max(NODE_R, Math.min(VB_W - NODE_R, down.ox + dx * (VB_W / r.width)));
+        c.y = Math.max(NODE_R, Math.min(VB_H - NODE_R, down.oy + dy * (VB_H / r.height)));
+        updateNodeDom(svg, c);
+      }
+    });
+    function end(e) {
+      if (!down) return;
+      const d = down; down = null;
+      try { svg.releasePointerCapture(e.pointerId); } catch (_) {}
+      if (d.moved) { save(); return; }
+      if (connectSel == null) connectSel = d.id;
+      else if (connectSel === d.id) connectSel = null;
+      else { toggleEdge(connectSel, d.id); connectSel = null; }
+      render();
+    }
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', () => { down = null; });
   }
 
   function esc(s) {
@@ -244,8 +376,36 @@
         '<button class="rm" data-del="' + i + '" title="Remove">✕</button></div>';
     });
     h += '</div>';
+
+    // --- Interactive SVG map ---
+    if (n > 0) {
+      const drawn = state.edges.length;
+      const conn = graphConnected();
+      h += '<div class="mapsec">';
+      h += '<p class="eyebrow" style="margin:20px 0 6px">Draw the paths</p>';
+      h += '<p class="rule-note">Click a clearing, then another, to add or remove a path between them. ' +
+        'Drag a clearing to move it. Each node shows its paths drawn vs. its rolled number.</p>';
+      h += '<p class="small muted" style="margin:0 0 8px">Paths drawn: <b>' + drawn + '</b>' +
+        (connectSel != null ? ' · <span style="color:var(--accent-dk)">' + esc((clearingById(connectSel) || {}).name || '') + ' selected — click another clearing to link</span>' :
+          '') + ' · ' + (conn ? '<span class="badge yes">all connected</span>' : '<span class="badge no">not all connected</span>') + '</p>';
+      h += '<div class="mapwrap">' + renderMapSvg({ interactive: true, colorBy: 'community' }) + '</div>';
+      h += '<div class="map-toolbar">' +
+        '<button class="dice" id="mapClearPaths">Clear all paths</button>' +
+        '<button class="dice" id="mapReset">Reset layout</button>' +
+        '<span class="map-legend"><span><span class="lgdot" style="background:#d3e2ba;border-color:#5f7a3f"></span>🐰 Rabbit</span>' +
+        '<span><span class="lgdot" style="background:#e4d9bf;border-color:#8a7657"></span>🐭 Mouse</span>' +
+        '<span><span class="lgdot" style="background:#eecaa4;border-color:#b5623a"></span>🦊 Fox</span></span>' +
+        '</div>';
+      h += '</div>';
+    }
+
     bodyEl.innerHTML = h;
     wireMap();
+    wireMapSvg();
+    const cp = document.getElementById('mapClearPaths');
+    if (cp) cp.addEventListener('click', () => { if (!state.edges.length || confirm('Remove all drawn paths?')) { state.edges = []; connectSel = null; render(); } });
+    const mr = document.getElementById('mapReset');
+    if (mr) mr.addEventListener('click', () => { state.clearings.forEach((c, i) => { const p = seedPos(i); c.x = p.x; c.y = p.y; }); connectSel = null; render(); });
   }
 
   function wireMap() {
@@ -260,7 +420,7 @@
         else if (act === 'swap') { const s = swapName(d.nameDice); d.name = s.name; d.nameDice = s; }
         else if (act === 'add') {
           const id = (state.clearings.reduce((m, c) => Math.max(m, c.id), 0) || 0) + 1;
-          state.clearings.push(newClearing(id, d.community, d.paths, (d.name || '').trim() || 'Unnamed'));
+          state.clearings.push(newClearing(id, d.community, d.paths, (d.name || '').trim() || 'Unnamed', seedPos(state.clearings.length)));
           state.draft = state.clearings.length < W.mapSize ? newDraft() : null;
         }
         render();
@@ -277,7 +437,10 @@
       const nd = rollDraftName(); c.name = nd.name; render();
     }));
     bodyEl.querySelectorAll('[data-del]').forEach(el => el.addEventListener('click', () => {
-      state.clearings.splice(+el.getAttribute('data-del'), 1);
+      const i = +el.getAttribute('data-del'), removed = state.clearings[i];
+      state.clearings.splice(i, 1);
+      if (removed) state.edges = state.edges.filter(e => e[0] !== removed.id && e[1] !== removed.id);
+      if (connectSel === (removed && removed.id)) connectSel = null;
       if (!state.draft) state.draft = newDraft();
       render();
     }));
@@ -312,14 +475,14 @@
     h += cornerRoller('marquisate', '');
     h += anchorPicker('Stronghold clearing', 'stronghold', 'The Marquisate');
     const stronghold = state.clearings.find(c => c.stronghold);
+    let distMap = {};
     if (stronghold) {
-      h += '<p class="rule-note">For each other clearing, enter how many <b>paths away from the stronghold</b> it sits, then roll. ' +
-        'Distances of 5+ are never in Marquisate control.</p>';
+      distMap = bfsFrom([stronghold.id]);
+      h += '<p class="rule-note">Distances are read from your drawn map — the shortest path from the stronghold. ' +
+        'Override any by hand. Distances of 5+ are never in Marquisate control.</p>';
+      if (!graphConnected()) h += '<p class="small" style="color:var(--rust);margin:0 0 8px">Some clearings aren’t linked on the map yet — draw their paths (Map step) for automatic distances, or override by hand.</p>';
       h += '<div class="clist">';
-      state.clearings.forEach((c, i) => {
-        if (c.stronghold) { h += marqRow(c, i, true); return; }
-        h += marqRow(c, i, false);
-      });
+      state.clearings.forEach((c, i) => { h += c.stronghold ? marqRow(c, i, true, 0) : marqRow(c, i, false, distMap[c.id]); });
       h += '</div>';
     }
     bodyEl.innerHTML = h;
@@ -330,24 +493,25 @@
     }));
     bodyEl.querySelectorAll('[data-marqroll]').forEach(el => el.addEventListener('click', () => {
       const c = state.clearings[+el.getAttribute('data-marqroll')];
-      const d = Math.max(1, +c.distMarq || 1);
-      const bucket = W.tables.marquisateControl.byPaths.find(b => b.paths === Math.min(d, 5));
+      const auto = distMap[c.id];
+      const effD = c.distMarq !== '' ? Math.max(1, +c.distMarq || 1) : (auto != null ? auto : 99);
+      const bucket = W.tables.marquisateControl.byPaths.find(b => b.paths === Math.min(effD, 5));
       const roll = r2d6();
       const inControl = bucket.controlMin != null && roll >= bucket.controlMin;
-      c.control = inControl ? 'The Marquisate' : c.control;
-      if (inControl && c.control !== 'The Marquisate') c.control = 'The Marquisate';
-      if (!inControl && c.control === 'The Marquisate') c.control = null;
-      c._roll.marq = { roll, d, inControl };
+      if (inControl) c.control = 'The Marquisate';
+      else if (c.control === 'The Marquisate') c.control = null;
+      c._roll.marq = { roll, d: effD, inControl };
       render();
     }));
   }
-  function marqRow(c, i, isStronghold) {
+  function marqRow(c, i, isStronghold, autoD) {
     if (isStronghold) return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
       '<span class="badge roost">Stronghold — controlled</span></div>';
     const rr = c._roll.marq;
+    const autoTxt = autoD != null ? 'auto ' + autoD + ' path' + (autoD === 1 ? '' : 's') : 'unlinked';
     return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
-      '<span class="dcount">paths away</span>' +
-      '<input type="number" class="pths" min="1" max="9" data-marqdist="' + i + '" value="' + esc(c.distMarq) + '">' +
+      '<span class="dcount">' + autoTxt + '</span>' +
+      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" data-marqdist="' + i + '" value="' + esc(c.distMarq) + '" title="Override distance">' +
       '<button class="dice" data-marqroll="' + i + '">🎲 Roll 2d6</button>' +
       (rr ? '<span class="badge ' + (rr.inControl ? 'yes' : 'no') + '">' + rr.roll + ' → ' + (rr.inControl ? 'Marquisate' : 'not') + '</span>' : '') +
       (c.control && c.control !== 'The Marquisate' ? '<span class="badge no">' + esc(c.control) + '</span>' : '') + '</div>';
@@ -360,11 +524,14 @@
     h += cornerRoller('eyrie', opp);
     h += anchorPicker('Initial Roost clearing', 'roost', 'The Eyrie Dynasties');
     const anchor = state.clearings.find(c => c.roost);
+    let distMap = {};
     if (anchor) {
-      const roosts = state.clearings.filter(c => c.roost).length;
+      const roostIds = state.clearings.filter(c => c.roost).map(c => c.id);
+      distMap = bfsFrom(roostIds);
+      const roosts = roostIds.length;
       const ctrl = controlledBy('The Eyrie Dynasties').length;
-      h += '<p class="rule-note">Enter each clearing’s <b>paths from the nearest Roost</b>, then roll. ' +
-        'Max ' + W.tables.eyrieControl.maxRoosts + ' Roosts and ' + W.tables.eyrieControl.maxControlled + ' controlled clearings. ' +
+      h += '<p class="rule-note">Distances are read from your drawn map — the shortest path from the nearest Roost (recomputed as Roosts spread). ' +
+        'Override any by hand. Max ' + W.tables.eyrieControl.maxRoosts + ' Roosts and ' + W.tables.eyrieControl.maxControlled + ' controlled clearings. ' +
         'The Marquisate stronghold is skipped.</p>';
       h += '<p class="small muted">Roosts placed: ' + roosts + '/' + W.tables.eyrieControl.maxRoosts +
         ' · Eyrie clearings: ' + ctrl + '/' + W.tables.eyrieControl.maxControlled + '</p>';
@@ -372,7 +539,7 @@
       state.clearings.forEach((c, i) => {
         if (c.stronghold) return;
         if (c.roost && c === anchor) { h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span><span class="badge roost">Initial Roost — controlled</span></div>'; return; }
-        h += eyrieRow(c, i);
+        h += eyrieRow(c, i, distMap[c.id]);
       });
       h += '</div>';
     }
@@ -384,7 +551,8 @@
     }));
     bodyEl.querySelectorAll('[data-eyrieroll]').forEach(el => el.addEventListener('click', () => {
       const c = state.clearings[+el.getAttribute('data-eyrieroll')];
-      const d = Math.max(1, +c.distRoost || 1);
+      const auto = distMap[c.id];
+      const d = c.distRoost !== '' ? Math.max(1, +c.distRoost || 1) : (auto != null ? auto : 99);
       const bucket = W.tables.eyrieControl.byPaths.find(b => b.paths === Math.min(d, 4));
       const roll = r2d6();
       const controlledNow = controlledBy('The Eyrie Dynasties').length;
@@ -404,7 +572,7 @@
       render();
     }));
   }
-  function eyrieRow(c, i) {
+  function eyrieRow(c, i, autoD) {
     const rr = c._roll.eyrie;
     let badge = '';
     if (rr) {
@@ -412,10 +580,11 @@
       const m = map[rr.outcome];
       badge = '<span class="badge ' + m[0] + '">' + rr.roll + ' → ' + m[1] + (rr.seized ? ' (seized)' : '') + '</span>';
     }
+    const autoTxt = autoD != null ? 'auto ' + autoD + ' path' + (autoD === 1 ? '' : 's') : 'unlinked';
     return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
       (c.control ? '<span class="badge ' + (c.control === 'The Eyrie Dynasties' ? 'yes' : 'no') + '">' + esc(c.control) + (c.roost ? ' ⌂' : '') + '</span>' : '') +
-      '<span class="dcount">from Roost</span>' +
-      '<input type="number" class="pths" min="1" max="9" data-eyriedist="' + i + '" value="' + esc(c.distRoost) + '">' +
+      '<span class="dcount">' + autoTxt + '</span>' +
+      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" data-eyriedist="' + i + '" value="' + esc(c.distRoost) + '" title="Override distance">' +
       '<button class="dice" data-eyrieroll="' + i + '">🎲 Roll 2d6</button>' + badge + '</div>';
   }
 
@@ -571,6 +740,14 @@
     h += '<p class="small muted">Factions: ' + state.factions.map(esc).join(', ') + ', and the Denizens.' +
       (state.corner.marquisate ? ' · Marquisate corner: ' + esc(state.corner.marquisate) : '') +
       (state.corner.eyrie ? ' · Eyrie corner: ' + esc(state.corner.eyrie) : '') + '</p>';
+    if (state.clearings.length) {
+      h += '<div class="mapwrap review">' + renderMapSvg({ interactive: false, colorBy: 'control' }) + '</div>';
+      const legendCtrl = [['The Marquisate', CONTROL_COLOR['The Marquisate']], ['The Eyrie Dynasties', CONTROL_COLOR['The Eyrie Dynasties']],
+        ['The Woodland Alliance', CONTROL_COLOR['The Woodland Alliance']], ['Denizen-held', '#b3a07a'], ['Uncontrolled', '#cdbf9f']];
+      h += '<div class="map-legend" style="margin:10px 0 18px">' +
+        legendCtrl.map(l => '<span><span class="lgdot" style="background:' + l[1] + '"></span>' + esc(l[0]) + '</span>').join('') +
+        '<span>★ stronghold</span><span>⌂ Roost</span><span>▲ base</span><span>• sympathy</span></div>';
+    }
     h += '<div class="tbl-scroll"><table class="review-tbl"><thead><tr>' +
       '<th>#</th><th>Clearing</th><th>Community</th><th>Paths</th><th>Control</th><th>Marks</th><th>War</th><th>Details</th>' +
       '</tr></thead><tbody>';
@@ -621,7 +798,11 @@
     }
     state = Object.assign(fresh(), data); state.draft = null;
     if (!Array.isArray(state.clearings)) state.clearings = [];
+    if (!Array.isArray(state.edges)) state.edges = [];
+    const ids = new Set(state.clearings.map(c => c.id));
+    state.edges = state.edges.filter(e => Array.isArray(e) && ids.has(e[0]) && ids.has(e[1]));
     state.clearings.forEach(c => { if (!c._roll) c._roll = {}; ['inhabitants', 'buildings', 'problems'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); });
+    ensurePositions();
     stepIdx = STEPS.length; render(); stepIdx = STEPS.length - 1; goto(stepIdx);
     toast('Imported Woodland (' + state.clearings.length + ' clearings)');
   }
