@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Creator — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  /* Creator-specific layout */
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .actions { display:flex; gap:8px; }
+
+  .steps { display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 22px; }
+  .step-pip {
+    font-family:'Bitter',serif; font-size:12.5px; font-weight:600; letter-spacing:.3px;
+    padding:6px 12px; border-radius:20px; border:1px solid var(--line);
+    background:var(--card-lo); color:var(--ink-soft); cursor:pointer; white-space:nowrap;
+    display:flex; align-items:center; gap:6px;
+  }
+  .step-pip .n { font-family:'Bree Serif',serif; font-size:12px; opacity:.7; }
+  .step-pip.active { background:linear-gradient(180deg,var(--accent),var(--accent-dk)); color:var(--cream-hi); border-color:var(--accent-dk); }
+  .step-pip.done { color:var(--alliance-dk); border-color:var(--alliance); }
+  .step-pip.done .n::after { content:" ✓"; }
+
+  .step-body h2 { margin:0 0 4px; font-size:26px; }
+  .step-intro { color:var(--ink-soft); margin:0 0 20px; max-width:66ch; }
+
+  .navbtns { display:flex; justify-content:space-between; margin-top:26px; gap:12px; }
+
+  .picklist { display:flex; flex-direction:column; gap:12px; }
+  .pick {
+    position:relative; border:1px solid var(--line); border-radius:var(--radius-sm);
+    background:var(--cream-hi); padding:14px 16px 14px 46px; cursor:pointer; transition:border-color .12s, background .12s;
+  }
+  .pick:hover { border-color:var(--accent); }
+  .pick.on { border-color:var(--accent); background:#fbf0dd; box-shadow:0 0 0 1px var(--accent) inset; }
+  .pick .mark { position:absolute; left:14px; top:15px; width:20px; height:20px; border:2px solid var(--line); border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--cream-hi); }
+  .pick.radio .mark { border-radius:50%; }
+  .pick.on .mark { background:var(--accent); border-color:var(--accent-dk); }
+  .pick.on .mark::after { content:"✓"; }
+  .pick .p-title { font-family:'Bree Serif',serif; font-size:16px; color:var(--ink); }
+  .pick .p-sub { color:var(--ink-soft); font-size:14px; margin-top:3px; }
+  .pick.disabled { opacity:.5; cursor:not-allowed; }
+
+  .move { border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:12px 14px; }
+  .move .m-name { font-family:'Bree Serif',serif; font-size:15px; }
+  .move .m-trigger { font-style:italic; color:var(--ink-soft); font-size:14px; margin:4px 0; }
+  .move .m-tier { font-size:13.5px; margin:2px 0; }
+  .move .m-tier b { color:var(--accent-dk); }
+  .move .m-opts { margin:6px 0 0 18px; font-size:13.5px; }
+  .move .m-notes { font-size:13px; color:var(--ink-soft); margin-top:6px; }
+
+  .rep-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line-soft); }
+  .rep-row:last-child { border-bottom:none; }
+  .rep-name { flex:1; font-family:'Bree Serif',serif; font-size:15px; }
+  .stepper { display:flex; align-items:center; gap:8px; }
+  .stepper button { width:30px; height:30px; border-radius:6px; border:1px solid var(--line); background:var(--cream-hi); font-size:18px; cursor:pointer; font-family:'Bree Serif',serif; }
+  .stepper .v { min-width:32px; text-align:center; font-family:'Bree Serif',serif; font-size:20px; color:var(--rust); }
+  .stepper .v.pos::before { content:"+"; }
+
+  .counter { font-family:'Bitter',serif; font-weight:700; font-size:13px; color:var(--ink-soft); }
+  .counter.met { color:var(--alliance-dk); }
+  .counter.over { color:var(--bad); }
+
+  .review dl { margin:0; }
+  .review dt { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent-dk); margin-top:14px; }
+  .review dd { margin:3px 0 0; }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="actions">
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      <button class="btn ghost small" id="importBtn">Import…</button>
+      <button class="btn small" id="exportBtn" disabled>Export JSON</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(30px,5.5vw,46px);margin-bottom:2px">The Character Creator</p>
+    <p class="subtitle">Bellum Arborem · Root: The Roleplaying Game</p>
+  </header>
+
+  <nav class="steps" id="steps"></nav>
+
+  <div class="panel">
+    <div class="step-body" id="stepBody">
+      <!-- rendered by creator.js -->
+    </div>
+    <div class="navbtns">
+      <button class="btn ghost" id="backBtn">← Back</button>
+      <button class="btn" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <footer>
+    <p id="foot">Fan-made companion for <em>Root: The Roleplaying Game</em> by Magpie Games.</p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/root-rules.js"></script>
+<script src="js/creator.js"></script>
+</body>
+</html>

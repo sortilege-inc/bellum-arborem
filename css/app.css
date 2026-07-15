@@ -1,0 +1,188 @@
+/* Bellum Arborem — Root-styled design system
+   Warm storybook Woodland: cream parchment, woodcut ink, faction accents. */
+
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+:root {
+  /* Parchment & ink */
+  --cream:        #f3e7c9;
+  --cream-hi:     #f8f0dc;
+  --cream-lo:     #e8d6ab;
+  --card:         #fbf4e2;
+  --card-lo:      #f0e3c0;
+  --ink:          #34281a;
+  --ink-soft:     #5b4a34;
+  --ink-faint:    #8a7657;
+  --line:         #b39a68;
+  --line-soft:    #d8c398;
+
+  /* Root faction colors (from the board game) */
+  --marquise:     #d9722e;  /* Marquisate — orange */
+  --marquise-dk:  #b3561c;
+  --eyrie:        #2f6ea0;  /* Eyrie Dynasties — blue */
+  --eyrie-dk:     #234f74;
+  --alliance:     #4e7c3e;  /* Woodland Alliance — green */
+  --alliance-dk:  #385d2c;
+  --denizen:      #9a7b33;  /* Denizens — gold/tan */
+  --vagabond:     #6b6357;  /* Vagabonds — grey */
+
+  /* Accent roles */
+  --accent:       var(--marquise);
+  --accent-dk:    var(--marquise-dk);
+  --teal:         #2f7d74;
+  --rust:         #a6371f;
+  --good:         #4e7c3e;
+  --bad:          #a6371f;
+
+  --shadow:       rgba(52, 34, 16, .28);
+  --shadow-deep:  rgba(52, 34, 16, .45);
+
+  --radius:       10px;
+  --radius-sm:    6px;
+  --maxw:         960px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  font-family: 'Bitter', Georgia, serif;
+  color: var(--ink);
+  background:
+    radial-gradient(130% 120% at 15% -10%, #f7efd6 0%, #f0e3c0 50%, #e6d3a6 100%) fixed;
+  min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Speckled parchment grain */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 25% 15%, rgba(120,80,30,.05) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 55%, rgba(90,60,20,.045) 0 2px, transparent 3px),
+    radial-gradient(circle at 48% 82%, rgba(120,80,30,.045) 0 2px, transparent 3px);
+  background-size: 150px 150px, 190px 190px, 170px 170px;
+  opacity: .6; mix-blend-mode: multiply;
+}
+
+.wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 40px 20px 90px; }
+
+/* ---------- Typography ---------- */
+h1, h2, h3, .display { font-family: 'Bree Serif', Georgia, serif; font-weight: 400; color: var(--ink); letter-spacing: .2px; }
+
+.crest {
+  font-family: 'Bree Serif', serif;
+  font-size: clamp(38px, 7vw, 60px);
+  color: var(--rust);
+  text-align: center;
+  text-shadow: 0 2px 0 rgba(255,255,255,.4), 0 3px 14px var(--shadow);
+  margin: 0 0 4px;
+}
+.subtitle {
+  font-family: 'Bitter', serif; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; font-size: 12.5px; color: var(--ink-soft);
+  text-align: center; margin: 0 0 20px;
+}
+.blurb { max-width: 620px; margin: 0 auto 8px; text-align: center; font-style: italic; color: var(--ink-soft); font-size: 17px; }
+
+.eyebrow {
+  font-family: 'Bitter', serif; font-weight: 700; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--accent-dk);
+}
+
+/* Woodcut divider */
+.divider { display: flex; align-items: center; gap: 14px; margin: 30px auto; max-width: 460px; }
+.divider::before, .divider::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}
+.divider span { font-size: 18px; color: var(--accent); opacity: .85; }
+
+/* ---------- Panels & cards ---------- */
+.panel {
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-lo) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 12px 26px -16px var(--shadow-deep);
+  padding: 24px 26px;
+}
+
+.card {
+  position: relative; display: block; text-decoration: none; color: inherit;
+  background: linear-gradient(180deg, var(--card) 0%, var(--card-lo) 100%);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 10px 22px -15px var(--shadow-deep);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+.card::before {
+  content: ""; position: absolute; inset: 5px; border: 1px solid rgba(140,110,60,.3);
+  border-radius: calc(var(--radius) - 4px); pointer-events: none;
+}
+.card.selectable { cursor: pointer; }
+.card.selectable:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 1px 0 rgba(255,255,255,.55) inset, 0 16px 28px -14px var(--shadow-deep); }
+.card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset, 0 12px 24px -14px var(--shadow-deep); }
+.card.selected::after {
+  content: "✓"; position: absolute; top: 10px; right: 12px;
+  font-family: 'Bree Serif', serif; color: var(--accent-dk); font-size: 18px;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: 'Bitter', serif; font-weight: 600; font-size: 15px;
+  color: var(--cream-hi); background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dk) 100%);
+  border: 1px solid var(--accent-dk); border-radius: var(--radius-sm);
+  padding: 10px 20px; cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 6px 14px -8px var(--shadow-deep);
+  transition: filter .12s ease, transform .12s ease;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); box-shadow: none; }
+.btn.ghost:hover { background: rgba(0,0,0,.04); }
+.btn.small { padding: 6px 13px; font-size: 13.5px; }
+
+/* ---------- Form controls ---------- */
+label.field { display: block; margin: 0 0 14px; }
+label.field > .lbl { display: block; font-family: 'Bitter', serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 5px; }
+input[type=text], textarea, select {
+  width: 100%; font-family: 'Bitter', serif; font-size: 15px; color: var(--ink);
+  background: var(--cream-hi); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  padding: 9px 12px;
+}
+textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(217,114,46,.25); }
+
+/* Chips / tags */
+.tag {
+  display: inline-block; font-family: 'Bitter', serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+  background: rgba(154,123,51,.16); color: var(--denizen); border: 1px solid rgba(154,123,51,.35);
+}
+.tag.marquise { background: rgba(217,114,46,.15); color: var(--marquise-dk); border-color: rgba(217,114,46,.4); }
+.tag.eyrie    { background: rgba(47,110,160,.15); color: var(--eyrie-dk); border-color: rgba(47,110,160,.4); }
+.tag.alliance { background: rgba(78,124,62,.15); color: var(--alliance-dk); border-color: rgba(78,124,62,.4); }
+.tag.vagabond { background: rgba(107,99,87,.15); color: var(--vagabond); border-color: rgba(107,99,87,.4); }
+
+/* Stat pips */
+.stat-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.stat {
+  flex: 1 1 120px; text-align: center; padding: 12px 8px;
+  background: var(--cream-hi); border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.stat .name { font-family: 'Bitter', serif; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); }
+.stat .val { font-family: 'Bree Serif', serif; font-size: 30px; color: var(--rust); line-height: 1.1; }
+.stat .val.pos::before { content: "+"; }
+
+footer { text-align: center; margin-top: 50px; font-size: 13px; color: var(--ink-soft); opacity: .8; }
+footer a { color: var(--teal); }
+
+.muted { color: var(--ink-soft); }
+.small { font-size: 13.5px; }
+.center { text-align: center; }
+.hidden { display: none !important; }
