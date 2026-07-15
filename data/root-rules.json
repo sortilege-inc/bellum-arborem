@@ -1189,22 +1189,22 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Disarm",
-        "Harry",
-        "Improvise",
-        "Parry"
-      ],
       "startingRoguishFeats": [
         "Counterfeit",
         "Sleight of Hand"
       ],
-      "startingEquipment": [
-        "Starting Value 9"
-      ],
-      "extras": {
-        "startingValue": 9
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Disarm",
+          "Harry",
+          "Improvise",
+          "Parry"
+        ]
+      },
+      "startingValue": 9,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Arbiter",
@@ -1322,19 +1322,19 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Cleave",
-        "Disarm",
-        "Parry",
-        "Storm a Group"
-      ],
       "startingRoguishFeats": [],
-      "startingEquipment": [
-        "Starting Value 10"
-      ],
-      "extras": {
-        "startingValue": 10
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Disarm",
+          "Parry",
+          "Storm a Group"
+        ]
+      },
+      "startingValue": 10,
+      "roguishFeatsChoose": 1
     },
     {
       "name": "The Harrier",
@@ -1433,22 +1433,22 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Disarm",
-        "Harry",
-        "Quick Shot",
-        "Trick Shot"
-      ],
       "startingRoguishFeats": [
         "Acrobatics",
         "Sneak"
       ],
-      "startingEquipment": [
-        "Starting Value 9"
-      ],
-      "extras": {
-        "startingValue": 9
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Disarm",
+          "Harry",
+          "Quick Shot",
+          "Trick Shot"
+        ]
+      },
+      "startingValue": 9,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Ranger",
@@ -1552,21 +1552,22 @@
           "notes": "None of the skills you take with this move count against your limit."
         }
       ],
-      "startingWeaponSkills": [
-        "Cleave",
-        "Disarm",
-        "Harry",
-        "Vicious Strike"
-      ],
       "startingRoguishFeats": [
         "Hide",
         "Sneak"
       ],
       "startingEquipment": [],
-      "extras": {
-        "startingValue": null,
-        "note": "No Starting Value / Starting Equipment entry given in the corpus for The Ranger."
-      }
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Disarm",
+          "Harry",
+          "Vicious Strike"
+        ]
+      },
+      "startingValue": 9,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Ronin",
@@ -1676,22 +1677,24 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Cleave",
-        "Harry",
-        "Storm a Group",
-        "Vicious Strike"
-      ],
       "startingRoguishFeats": [
         "Blindside"
       ],
-      "startingEquipment": [
-        "Starting Value 11"
-      ],
+      "startingEquipment": [],
       "extras": {
-        "startingValue": 11,
         "background": "One of the background questions on the playbook concerns what happened to the Ronin's former master (their demise, which freed the Ronin)."
-      }
+      },
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Harry",
+          "Storm a Group",
+          "Vicious Strike"
+        ]
+      },
+      "startingValue": 11,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Scoundrel",
@@ -1791,23 +1794,23 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Confuse Senses",
-        "Improvise",
-        "Quick Shot",
-        "Vicious Strike"
-      ],
       "startingRoguishFeats": [
         "Acrobatics",
         "Sneak",
         "Hide"
       ],
-      "startingEquipment": [
-        "Starting Value 8"
-      ],
-      "extras": {
-        "startingValue": 8
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Improvise",
+          "Quick Shot",
+          "Vicious Strike"
+        ]
+      },
+      "startingValue": 8,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Thief",
@@ -1906,22 +1909,19 @@
           "notes": "When you read a tense situation, you can always ask (even on a miss):\n· what is the most valuable thing here?"
         }
       ],
-      "startingWeaponSkills": [
-        "Confuse Senses",
-        "Improvise",
-        "Parry",
-        "Trick Shot"
-      ],
-      "startingRoguishFeats": [
-        "Choose any four roguish feats to start (page 69)"
-      ],
-      "startingEquipment": [
-        "Starting Value 6"
-      ],
-      "extras": {
-        "startingValue": 6,
-        "roguishFeatChoice": "The Thief chooses any four roguish feats to start (page 69)."
-      }
+      "startingRoguishFeats": [],
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Improvise",
+          "Parry",
+          "Trick Shot"
+        ]
+      },
+      "startingValue": 6,
+      "roguishFeatsChoose": 4
     },
     {
       "name": "The Tinker",
@@ -1967,7 +1967,7 @@
         "Professional: ____________ and I have been working together well for a while. We read each other’s moves easily.",
         "Family: _____________ and I had each other’s back when we were run out of a clearing because our natures got out of hand."
       ],
-      "playbookMovesChoose": 3,
+      "playbookMovesChoose": 1,
       "playbookMoves": [
         {
           "name": "Toolbox",
@@ -2037,23 +2037,23 @@
           "notes": null
         }
       ],
-      "startingWeaponSkills": [
-        "Cleave",
-        "Harry",
-        "Improvise",
-        "Trick Shot"
-      ],
       "startingRoguishFeats": [
         "Counterfeit",
         "Disable Device",
         "Pick Lock"
       ],
-      "startingEquipment": [
-        "Starting Value 8"
-      ],
-      "extras": {
-        "startingValue": 8
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Harry",
+          "Improvise",
+          "Trick Shot"
+        ]
+      },
+      "startingValue": 8,
+      "roguishFeatsChoose": 0
     },
     {
       "name": "The Vagrant",
@@ -2156,22 +2156,22 @@
           "notes": "Take the weapon skill Confuse Senses (it does not count against your limit)."
         }
       ],
-      "startingWeaponSkills": [
-        "Harry",
-        "Improvise",
-        "Quick Shot",
-        "Vicious Strike"
-      ],
       "startingRoguishFeats": [
         "Pick Lock",
         "Sleight of Hand"
       ],
-      "startingEquipment": [
-        "Starting Value 9"
-      ],
-      "extras": {
-        "startingValue": 9
-      }
+      "startingEquipment": [],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Harry",
+          "Improvise",
+          "Quick Shot",
+          "Vicious Strike"
+        ]
+      },
+      "startingValue": 9,
+      "roguishFeatsChoose": 0
     }
   ],
   "notes": {

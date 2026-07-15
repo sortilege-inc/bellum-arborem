@@ -54,6 +54,12 @@
   function driveCount() { const p = pb(); return p && p.driveChoose != null ? p.driveChoose : 2; }
   function natureCount() { const p = pb(); return p && p.natureChoose != null ? p.natureChoose : 1; }
   function moveCount() { const p = pb(); return p && p.playbookMovesChoose != null ? p.playbookMovesChoose : 2; }
+  function weaponOptions() { const p = pb(); return (p && p.weaponSkills && p.weaponSkills.options) || []; }
+  function weaponChoose() { const p = pb(); return (p && p.weaponSkills && p.weaponSkills.choose) || 0; }
+  function weaponsChosen() { return state.weaponSkills.length; }
+  function grantedFeats() { const p = pb(); return (p && p.startingRoguishFeats) || []; }
+  function featChoose() { const p = pb(); return (p && p.roguishFeatsChoose) || 0; }
+  function featExtras() { const g = grantedFeats(); return state.roguishFeats.filter(f => g.indexOf(f) < 0).length; }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
@@ -77,9 +83,11 @@
     state.nature = null;
     state.drives = [];
     state.moves = [];
-    state.weaponSkills = (p.startingWeaponSkills || []).slice();
-    state.roguishFeats = (p.startingRoguishFeats || []).slice();
-    state.equipment = (p.startingEquipment || []).slice();
+    state.weaponSkills = [];                                    // chosen from playbook options
+    state.roguishFeats = (p.startingRoguishFeats || []).slice(); // granted (locked) + chosen extras
+    state.equipment = [];
+    state.value = p.startingValue || 0;
+    state.load = 0;
     state.connections = (p.connections || []).map(prompt => ({ prompt, answer: '' }));
     // Reputation: start every faction at neutral unless already present
     const rep = {};
@@ -96,7 +104,7 @@
     { id: 'nature', label: 'Nature', render: renderNature, valid: () => !!state.nature },
     { id: 'drives', label: 'Drives', render: renderDrives, valid: () => state.drives.length === driveCount() },
     { id: 'moves', label: 'Moves', render: renderMoves, valid: () => state.moves.length === moveCount() },
-    { id: 'gear', label: 'Skills & Gear', render: renderGear, valid: () => true },
+    { id: 'gear', label: 'Skills & Gear', render: renderGear, valid: () => weaponsChosen() === weaponChoose() && featExtras() === featChoose() },
     { id: 'connections', label: 'Connections', render: renderConnections, valid: () => true },
     { id: 'reputation', label: 'Reputation', render: renderReputation, valid: () => true },
     { id: 'review', label: 'Review', render: renderReview, valid: () => true }
@@ -146,6 +154,13 @@
       case 'nature': return 'Choose ' + natureCount() + ' nature.';
       case 'drives': return 'Choose exactly ' + driveCount() + ' drives.';
       case 'moves': return 'Choose exactly ' + moveCount() + ' playbook moves.';
+      case 'gear': {
+        const w = weaponChoose() - weaponsChosen(), f = featChoose() - featExtras();
+        const parts = [];
+        if (w > 0) parts.push('choose ' + w + ' more weapon skill' + (w > 1 ? 's' : ''));
+        if (f > 0) parts.push('choose ' + f + ' more roguish feat' + (f > 1 ? 's' : ''));
+        return 'Still to do: ' + (parts.join(' and ') || 'adjust your selections') + '.';
+      }
       default: return 'Please complete this step.';
     }
   }
@@ -340,28 +355,93 @@
 
   function renderGear() {
     const p = pb();
+    const wChoose = weaponChoose(), granted = grantedFeats(), fChoose = featChoose();
     let h = heading('Skills & gear',
-      'Your playbook gives you these to start. Weapon skills and roguish feats power your moves; ' +
-      'equipment carries a value, load, and wear.');
-    h += listBlock('Starting weapon skills', state.weaponSkills);
-    h += listBlock('Starting roguish feats', state.roguishFeats);
-    // Equipment with details resolved from the rules
-    h += '<dt class="eyebrow" style="display:block;margin:18px 0 8px">Starting equipment</dt>';
-    if (!state.equipment.length) h += '<p class="muted small">None.</p>';
+      'Choose the weapon skill and roguish feats your vagabond starts with, then spend your ' +
+      'Value on equipment.');
+
+    // --- Weapon skills: choose N of options ---
+    const wCls = weaponsChosen() === wChoose ? 'met' : (weaponsChosen() > wChoose ? 'over' : '');
+    h += '<dt class="eyebrow" style="display:block;margin:6px 0 8px">Weapon skill — choose ' + wChoose +
+      ' <span class="counter ' + wCls + '">' + weaponsChosen() + '/' + wChoose + '</span></dt>';
+    h += '<div class="picklist">';
+    weaponOptions().forEach(name => {
+      const on = state.weaponSkills.indexOf(name) >= 0;
+      const full = wChoose > 1 && !on && weaponsChosen() >= wChoose; // choose-1 acts as radio (replace)
+      h += pickRow(wChoose === 1 ? 'radio' : 'check', on, name, '', 'wsk', name, full);
+    });
+    h += '</div>';
+
+    // --- Roguish feats: granted (locked) + choose extras ---
+    h += '<dt class="eyebrow" style="display:block;margin:18px 0 8px">Roguish feats' +
+      (fChoose ? ' — choose ' + fChoose + ' more <span class="counter ' +
+        (featExtras() === fChoose ? 'met' : featExtras() > fChoose ? 'over' : '') + '">' + featExtras() + '/' + fChoose + '</span>' : '') +
+      '</dt>';
+    const feats = R.roguishFeats || [];
+    if (!feats.length) h += '<p class="muted small">No roguish feats in the ruleset.</p>';
     else {
       h += '<div class="picklist">';
-      state.equipment.forEach(name => {
-        const e = (R.equipment || []).find(x => x.name === name);
-        h += '<div class="move"><div class="m-name">' + esc(name) + '</div>' +
-          (e ? equipMeta(e) : '') + '</div>';
+      feats.forEach(f => {
+        const isGranted = granted.indexOf(f.name) >= 0;
+        const on = state.roguishFeats.indexOf(f.name) >= 0;
+        const full = !on && !isGranted && featExtras() >= fChoose;
+        const disabled = isGranted || full || (fChoose === 0 && !isGranted);
+        const sub = (f.description || '') + (f.risks && f.risks.length ? '  ⚠ ' + f.risks.join('; ') : '');
+        h += '<div class="pick' + (on ? ' on' : '') + (disabled ? ' disabled' : '') + '" data-feat="' + esc(f.name) + '">' +
+          '<span class="mark"></span>' +
+          '<div class="p-title">' + esc(f.name) + (isGranted ? ' <span class="tag" style="font-size:9px">granted</span>' : '') + '</div>' +
+          (sub ? '<div class="p-sub">' + esc(sub) + '</div>' : '') + '</div>';
       });
       h += '</div>';
     }
-    if (p.extras) {
-      h += '<dt class="eyebrow" style="display:block;margin:18px 0 8px">Playbook setup</dt>' +
-        '<p class="small" style="white-space:pre-wrap">' + esc(typeof p.extras === 'string' ? p.extras : JSON.stringify(p.extras, null, 2)) + '</p>';
-    }
+
+    // --- Value & equipment ---
+    const spent = state.equipment.reduce((s, n) => { const e = (R.equipment || []).find(x => x.name === n); return s + ((e && e.value) || 0); }, 0);
+    const load = state.equipment.reduce((s, n) => { const e = (R.equipment || []).find(x => x.name === n); return s + ((e && e.load) || 0); }, 0);
+    const over = spent > (p.startingValue || 0);
+    h += '<dt class="eyebrow" style="display:block;margin:18px 0 8px">Equipment — Starting Value ' + (p.startingValue || 0) + '</dt>';
+    h += '<p class="small muted" style="margin:0 0 10px">Spent <b style="color:' + (over ? 'var(--bad)' : 'var(--ink)') + '">' +
+      spent + '</b> of ' + (p.startingValue || 0) + ' Value · Load ' + load + '. Buying gear is optional — your GM has final say.</p>';
+    h += '<div class="picklist">';
+    (R.equipment || []).forEach(e => {
+      const on = state.equipment.indexOf(e.name) >= 0;
+      h += '<div class="pick' + (on ? ' on' : '') + '" data-eq="' + esc(e.name) + '"><span class="mark"></span>' +
+        '<div class="p-title">' + esc(e.name) + '</div>' +
+        '<div class="p-sub">' + esc(equipMetaText(e)) + '</div></div>';
+    });
+    h += '</div>';
+
     bodyEl.innerHTML = h;
+    bodyEl.querySelectorAll('[data-wsk]').forEach(el => el.addEventListener('click', () => {
+      if (el.classList.contains('disabled')) return;
+      const name = el.getAttribute('data-wsk'), i = state.weaponSkills.indexOf(name);
+      if (i >= 0) state.weaponSkills.splice(i, 1);
+      else if (wChoose === 1) state.weaponSkills = [name];
+      else if (weaponsChosen() < wChoose) state.weaponSkills.push(name);
+      render();
+    }));
+    bodyEl.querySelectorAll('[data-feat]').forEach(el => el.addEventListener('click', () => {
+      if (el.classList.contains('disabled')) return;
+      const name = el.getAttribute('data-feat'), i = state.roguishFeats.indexOf(name);
+      if (i >= 0) { if (granted.indexOf(name) >= 0) return; state.roguishFeats.splice(i, 1); }
+      else if (featExtras() < fChoose) state.roguishFeats.push(name);
+      render();
+    }));
+    bodyEl.querySelectorAll('[data-eq]').forEach(el => el.addEventListener('click', () => {
+      const name = el.getAttribute('data-eq'), i = state.equipment.indexOf(name);
+      if (i >= 0) state.equipment.splice(i, 1); else state.equipment.push(name);
+      state.load = state.equipment.reduce((s, n) => { const e = (R.equipment || []).find(x => x.name === n); return s + ((e && e.load) || 0); }, 0);
+      render();
+    }));
+  }
+
+  function equipMetaText(e) {
+    const bits = [];
+    if (e.value != null) bits.push('Value ' + e.value);
+    if (e.load != null) bits.push('Load ' + e.load);
+    if (e.range) bits.push(e.range);
+    if (e.tags && e.tags.length) bits.push(e.tags.join(', '));
+    return bits.join(' · ') + (e.description ? ' — ' + e.description : '');
   }
 
   function equipMeta(e) {
@@ -450,6 +530,8 @@
     if (!state.nature) missing.push('a nature');
     if (state.drives.length !== driveCount()) missing.push(driveCount() + ' drives');
     if (state.moves.length !== moveCount()) missing.push(moveCount() + ' playbook moves');
+    if (weaponsChosen() !== weaponChoose()) missing.push(weaponChoose() + ' weapon skill');
+    if (featExtras() !== featChoose()) missing.push(featChoose() + ' chosen roguish feats');
 
     let h = heading('Review & export',
       'Give your vagabond a last look, then export them as a JSON file to bring to the table.');
@@ -467,8 +549,10 @@
     h += row('Nature', state.nature || '—');
     h += row('Drives', state.drives.join(', ') || '—');
     h += row('Playbook moves', state.moves.join(', ') || '—');
-    h += row('Weapon skills', state.weaponSkills.join(', ') || '—');
+    h += row('Weapon skill', state.weaponSkills.join(', ') || '—');
     h += row('Roguish feats', state.roguishFeats.join(', ') || '—');
+    const spent = state.equipment.reduce((s, n) => { const e = (R.equipment || []).find(x => x.name === n); return s + ((e && e.value) || 0); }, 0);
+    h += row('Value', (p.startingValue || 0) + ' (spent ' + spent + ', load ' + (state.load || 0) + ')');
     h += row('Equipment', state.equipment.join(', ') || '—');
     const conns = state.connections.filter(c => c.answer.trim());
     if (conns.length) h += row('Connections', conns.map(c => c.answer).join('; '));
