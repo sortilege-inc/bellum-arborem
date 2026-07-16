@@ -31,6 +31,7 @@
       playbook: null,
       name: '', pronouns: '', demeanor: '', look: '', background: '',
       stats: {},
+      statBoost: null,   // the stat given the creation +1 (baked into stats)
       nature: null,
       drives: [],
       moves: [],
@@ -60,6 +61,14 @@
   function grantedFeats() { const p = pb(); return (p && p.startingRoguishFeats) || []; }
   function featChoose() { const p = pb(); return (p && p.roguishFeatsChoose) || 0; }
   function featExtras() { const g = grantedFeats(); return state.roguishFeats.filter(f => g.indexOf(f) < 0).length; }
+  const STAT_BOOST_MAX = 2; // creation +1 may not raise a stat above +2
+  function canBoost(s) { return state.statBoost !== s && state.stats[s] < STAT_BOOST_MAX; }
+  function setBoost(s) {
+    if (state.statBoost === s) { state.stats[s] -= 1; state.statBoost = null; return; } // toggle off
+    if (state.stats[s] >= STAT_BOOST_MAX) return;                                        // would exceed +2
+    if (state.statBoost) state.stats[state.statBoost] -= 1;                              // move the +1
+    state.stats[s] += 1; state.statBoost = s;
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
@@ -80,6 +89,7 @@
     state.playbook = name;
     state.stats = {};
     stats.forEach(s => { state.stats[s] = (p.stats && p.stats[s] != null) ? p.stats[s] : 0; });
+    state.statBoost = null;
     state.nature = null;
     state.drives = [];
     state.moves = [];
@@ -100,7 +110,7 @@
   const STEPS = [
     { id: 'playbook', label: 'Playbook', render: renderPlaybook, valid: () => !!state.playbook },
     { id: 'identity', label: 'Identity', render: renderIdentity, valid: () => state.name.trim().length > 0 },
-    { id: 'stats', label: 'Stats', render: renderStats, valid: () => true },
+    { id: 'stats', label: 'Stats', render: renderStats, valid: () => !!state.statBoost },
     { id: 'nature', label: 'Nature', render: renderNature, valid: () => !!state.nature },
     { id: 'drives', label: 'Drives', render: renderDrives, valid: () => state.drives.length === driveCount() },
     { id: 'moves', label: 'Moves', render: renderMoves, valid: () => state.moves.length === moveCount() },
@@ -151,6 +161,7 @@
     switch (st.id) {
       case 'playbook': return 'Choose a playbook to continue.';
       case 'identity': return 'Give your vagabond a name.';
+      case 'stats': return 'Add your +1 to one stat (tap a stat).';
       case 'nature': return 'Choose ' + natureCount() + ' nature.';
       case 'drives': return 'Choose exactly ' + driveCount() + ' drives.';
       case 'moves': return 'Choose exactly ' + moveCount() + ' playbook moves.';
@@ -233,19 +244,32 @@
   function renderStats() {
     const p = pb();
     let h = heading('Starting stats',
-      'Your playbook sets your starting spread. The five stats run on a soft scale of −1 to +3; ' +
-      'you roll <b>2d6 + stat</b> for moves (10+ strong hit, 7–9 weak hit, 6− miss).');
+      'Your playbook sets your starting spread, then <b>add +1 to one stat</b> (it can’t go above +2). ' +
+      'You roll <b>2d6 + stat</b> for moves (10+ strong hit, 7–9 weak hit, 6− miss).');
     h += '<div class="stat-row">';
     stats.forEach(s => {
       const v = state.stats[s];
-      h += '<div class="stat"><div class="name">' + esc(s) + '</div>' +
-        '<div class="val ' + (v >= 0 ? 'pos' : '') + '">' + (v < 0 ? '−' + Math.abs(v) : v) + '</div></div>';
+      const boosted = state.statBoost === s;
+      const locked = !boosted && v >= STAT_BOOST_MAX; // already +2 (or higher): can't take the +1
+      h += '<div class="stat selectable' + (boosted ? ' selected' : '') + (locked ? ' disabled' : '') +
+        '" data-boost="' + esc(s) + '"' + (locked ? ' title="Already at +2"' : '') + '>' +
+        '<div class="name">' + esc(s) + '</div>' +
+        '<div class="val ' + (v >= 0 ? 'pos' : '') + '">' + (v < 0 ? '−' + Math.abs(v) : v) + '</div>' +
+        (boosted ? '<div class="boost-tag">+1</div>' : '') + '</div>';
     });
     h += '</div>';
-    h += '<p class="small muted" style="margin-top:16px">Spread for <b>' + esc(p.name) +
-      '</b>. (Advancement can raise these later in play.)</p>';
+    const cls = state.statBoost ? 'met' : '';
+    h += '<p class="small" style="margin-top:14px"><span class="counter ' + cls + '">' +
+      (state.statBoost ? '+1 added to ' + esc(state.statBoost) : 'Choose a stat to raise by +1') +
+      '</span> <span class="muted">— tap a stat above. Spread for <b>' + esc(p.name) + '</b>.</span></p>';
     bodyEl.innerHTML = h;
+    bodyEl.querySelectorAll('[data-boost]').forEach(el => el.addEventListener('click', () => {
+      const s = el.getAttribute('data-boost');
+      if (!boostableClick(s)) { toast(s + ' is already at +2.'); return; }
+      setBoost(s); render();
+    }));
   }
+  function boostableClick(s) { return state.statBoost === s || state.stats[s] < STAT_BOOST_MAX; }
 
   function renderNature() {
     const p = pb();
@@ -360,17 +384,22 @@
       'Choose the weapon skill and roguish feats your vagabond starts with, then spend your ' +
       'Value on equipment.');
 
-    // --- Weapon skills: choose N of options ---
-    const wCls = weaponsChosen() === wChoose ? 'met' : (weaponsChosen() > wChoose ? 'over' : '');
-    h += '<dt class="eyebrow" style="display:block;margin:6px 0 8px">Weapon skill — choose ' + wChoose +
-      ' <span class="counter ' + wCls + '">' + weaponsChosen() + '/' + wChoose + '</span></dt>';
-    h += '<div class="picklist">';
-    weaponOptions().forEach(name => {
-      const on = state.weaponSkills.indexOf(name) >= 0;
-      const full = wChoose > 1 && !on && weaponsChosen() >= wChoose; // choose-1 acts as radio (replace)
-      h += pickRow(wChoose === 1 ? 'radio' : 'check', on, name, '', 'wsk', name, full);
-    });
-    h += '</div>';
+    // --- Weapon skills: choose N of options (some playbooks grant no weapon-skill choice) ---
+    if (wChoose > 0 && weaponOptions().length) {
+      const wCls = weaponsChosen() === wChoose ? 'met' : (weaponsChosen() > wChoose ? 'over' : '');
+      h += '<dt class="eyebrow" style="display:block;margin:6px 0 8px">Weapon skill — choose ' + wChoose +
+        ' <span class="counter ' + wCls + '">' + weaponsChosen() + '/' + wChoose + '</span></dt>';
+      h += '<div class="picklist">';
+      weaponOptions().forEach(name => {
+        const on = state.weaponSkills.indexOf(name) >= 0;
+        const full = wChoose > 1 && !on && weaponsChosen() >= wChoose; // choose-1 acts as radio (replace)
+        h += pickRow(wChoose === 1 ? 'radio' : 'check', on, name, '', 'wsk', name, full);
+      });
+      h += '</div>';
+    } else {
+      h += '<dt class="eyebrow" style="display:block;margin:6px 0 8px">Weapon skill</dt>' +
+        '<p class="muted small">This playbook grants no starting weapon-skill choice.</p>';
+    }
 
     // --- Roguish feats: granted (locked) + choose extras ---
     h += '<dt class="eyebrow" style="display:block;margin:18px 0 8px">Roguish feats' +
@@ -470,15 +499,22 @@
     if (!state.connections.length) h += '<p class="muted">This playbook lists no connection prompts.</p>';
     h += '<div class="picklist">';
     state.connections.forEach((c, i) => {
-      h += '<label class="field"><span class="lbl" style="text-transform:none;letter-spacing:0;font-weight:500;font-size:14px">' +
-        esc(c.prompt) + '</span>' +
-        '<input type="text" data-conn="' + i + '" value="' + esc(c.answer) + '" placeholder="Your answer / who fills the blank"></label>';
+      const parts = splitConnection(c.prompt);
+      h += '<div class="conn">' +
+        (parts.name ? '<div class="conn-name">' + esc(parts.name) + '</div>' : '') +
+        '<p class="conn-prompt">' + esc(parts.text) + '</p>' +
+        '<input type="text" data-conn="' + i + '" value="' + esc(c.answer) + '" placeholder="Who fills the blank — and the answer"></div>';
     });
     h += '</div>';
     bodyEl.innerHTML = h;
     bodyEl.querySelectorAll('[data-conn]').forEach(el => el.addEventListener('input', () => {
       state.connections[+el.getAttribute('data-conn')].answer = el.value; save();
     }));
+  }
+  // Connection prompts read "Name: explanation with ___ blanks" — split the label from the text.
+  function splitConnection(prompt) {
+    const m = String(prompt || '').match(/^([^:]{1,40}):\s*([\s\S]+)$/);
+    return m ? { name: m[1].trim(), text: m[2].trim() } : { name: '', text: String(prompt || '') };
   }
 
   function renderReputation() {
@@ -527,6 +563,7 @@
     const p = pb();
     const missing = [];
     if (!state.name.trim()) missing.push('a name');
+    if (!state.statBoost) missing.push('your +1 stat');
     if (!state.nature) missing.push('a nature');
     if (state.drives.length !== driveCount()) missing.push(driveCount() + ' drives');
     if (state.moves.length !== moveCount()) missing.push(moveCount() + ' playbook moves');
@@ -542,7 +579,7 @@
     h += '<div class="review">';
     h += row('Name', state.name + (state.pronouns ? ' (' + state.pronouns + ')' : ''));
     h += row('Playbook', p.name);
-    h += row('Stats', stats.map(s => s + ' ' + fmtStat(state.stats[s])).join('  ·  '));
+    h += row('Stats', stats.map(s => s + ' ' + fmtStat(state.stats[s]) + (state.statBoost === s ? ' (+1)' : '')).join('  ·  '));
     if (state.demeanor) h += row('Demeanor', state.demeanor);
     if (state.look) h += row('Look', state.look);
     if (state.background) h += row('Background', state.background);

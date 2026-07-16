@@ -172,12 +172,26 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 /* Stat pips */
 .stat-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .stat {
-  flex: 1 1 120px; text-align: center; padding: 12px 8px;
+  position: relative; flex: 1 1 120px; text-align: center; padding: 12px 8px;
   background: var(--cream-hi); border: 1px solid var(--line); border-radius: var(--radius-sm);
 }
 .stat .name { font-family: 'Bitter', serif; font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); }
 .stat .val { font-family: 'Bree Serif', serif; font-size: 30px; color: var(--rust); line-height: 1.1; }
 .stat .val.pos::before { content: "+"; }
+.stat.selectable { cursor: pointer; transition: border-color .12s ease, box-shadow .12s ease; }
+.stat.selectable:hover { border-color: var(--accent); }
+.stat.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.stat.disabled { opacity: .5; cursor: not-allowed; }
+
+/* Connection blocks */
+.conn { border: 1px solid var(--line-soft); border-radius: var(--radius-sm); background: var(--cream-hi); padding: 12px 14px; }
+.conn-name { font-family: 'Bree Serif', serif; font-size: 15px; color: var(--accent-dk); }
+.conn-prompt { margin: 3px 0 8px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+.stat .boost-tag {
+  position: absolute; top: 4px; right: 6px; font-family: 'Bitter', serif; font-weight: 700; font-size: 11px;
+  color: var(--alliance-dk); background: rgba(78,124,62,.18); border: 1px solid rgba(78,124,62,.4);
+  border-radius: 10px; padding: 1px 6px;
+}
 
 footer { text-align: center; margin-top: 50px; font-size: 13px; color: var(--ink-soft); opacity: .8; }
 footer a { color: var(--teal); }
