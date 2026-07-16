@@ -7,9 +7,11 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
 ## Sections
 
 - **Character Creator** (`character-creator.html`) — build a vagabond step by step: pick a
-  playbook, take its stat spread, choose your nature, drives, playbook moves, weapon skills,
-  roguish feats, equipment, and connections, then set starting faction reputation. Export the
-  finished character as a JSON file, or import a saved character to keep playing.
+  playbook (all 19 — the 9 core plus the 10 Travelers & Outsiders playbooks), take its stat spread
+  and add your +1 (max +2), choose your nature, drives, playbook moves, weapon skill, roguish feats,
+  equipment, and connections, then set starting faction reputation. Export the finished character as
+  a JSON file, or import a saved character to keep playing. (Species abilities and masteries — the
+  T&O optional layer — are not yet modeled.)
 
 - **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland": roll the tables clearing
   by clearing (dominant community, paths, name), then **draw the map on an interactive SVG canvas** —

@@ -194,6 +194,134 @@
     {
       "name": "Survivor",
       "condition": "Clear your exhaustion track when you try to flee or cover allies' flight from a dangerous or overwhelming situation."
+    },
+    {
+      "name": "Braggart",
+      "condition": "Clear your exhaustion track when you confidently and publicly accept an excessively perilous challenge."
+    },
+    {
+      "name": "Commander",
+      "condition": "Clear your exhaustion track when you assert authority over a group of non-vagabonds in a tense situation."
+    },
+    {
+      "name": "Cowardly",
+      "condition": "Clear your exhaustion track when you willingly surrender to hostile forces."
+    },
+    {
+      "name": "Curious",
+      "condition": "Clear your exhaustion track when you enter danger to investigate an interesting situation or location further."
+    },
+    {
+      "name": "Generous",
+      "condition": "Clear your exhaustion track when you provide meaningful quantities of supplies to those in need."
+    },
+    {
+      "name": "Gossip",
+      "condition": "Clear your exhaustion track when you reveal new and important information to someone who can act on it."
+    },
+    {
+      "name": "Improviser",
+      "condition": "Clear your exhaustion track when you attempt to solve a technical problem without appropriate tools or skills."
+    },
+    {
+      "name": "Inspiring",
+      "condition": "Clear your exhaustion track when you take action that clears the morale track of an NPC or group of NPCs."
+    },
+    {
+      "name": "Martyr",
+      "condition": "Clear your exhaustion track when you engage overwhelming odds to protect others."
+    },
+    {
+      "name": "Muckraker",
+      "condition": "Clear your exhaustion track when you enter somewhere off-limits to discover incriminating secrets."
+    },
+    {
+      "name": "Populist",
+      "condition": "Clear your exhaustion track when you publicly try to rally a group of denizens to take action against injustice."
+    },
+    {
+      "name": "Vain",
+      "condition": "Clear your exhaustion track when you make a big show of intervening in a situation that doesn’t involve you to help or protect someone."
+    },
+    {
+      "name": "Activist",
+      "condition": "Clear your exhaustion track when you publicly confront the leadership of a clearing about changes you think are vital to the community's success."
+    },
+    {
+      "name": "Advocate",
+      "condition": "Clear your exhaustion track when you confront a powerful NPC about their mistreatment of the powerless or weak."
+    },
+    {
+      "name": "Agent",
+      "condition": "Clear your exhaustion track when you convince someone influential to allow you to represent their interests."
+    },
+    {
+      "name": "Avenger",
+      "condition": "Clear your exhaustion track when you openly attack those who have wronged you or your sworn vassals and wards."
+    },
+    {
+      "name": "Bandit",
+      "condition": "Clear your exhaustion track when you try to use the threat of force to secure valuables from formidable opposition."
+    },
+    {
+      "name": "Believer",
+      "condition": "Clear your exhaustion track when you publicly call out a symbol or authority dedicated to beliefs opposed to yours."
+    },
+    {
+      "name": "Companion",
+      "condition": "Clear your exhaustion track when you effusively praise a friend to a powerful person or group."
+    },
+    {
+      "name": "Exemplar",
+      "condition": "Clear your exhaustion track when you publicly take on a challenging task on behalf of the Just and those they represent."
+    },
+    {
+      "name": "Explorer",
+      "condition": "Clear your exhaustion track when you enter a ruin or other dangerous area of the forest."
+    },
+    {
+      "name": "Healer",
+      "condition": "Clear your exhaustion track when you attempt to start a dialogue between two foes from different factions."
+    },
+    {
+      "name": "Hero",
+      "condition": "Clear your exhaustion track when you outright attack a dangerous, oppressive, or villainous NPC."
+    },
+    {
+      "name": "Historian",
+      "condition": "Clear your exhaustion track when you refuse to allow someone to cover up or obscure the truth."
+    },
+    {
+      "name": "Legend",
+      "condition": "Clear your exhaustion track when you put on a performace in front of a large, attentive audience."
+    },
+    {
+      "name": "Merchant",
+      "condition": "Clear your exhaustion track when you carry valuable goods or treasure past danger, difficulty, or blockade."
+    },
+    {
+      "name": "Observer",
+      "condition": "Clear your exhaustion track when you enter a dangerous situation to try to witness a significant or secret event or meet an important individual."
+    },
+    {
+      "name": "Rogue",
+      "condition": "Clear your exhaustion track when you attempt to doublecross, triplecross, or betray a powerful or dangerous NPC."
+    },
+    {
+      "name": "Schemer",
+      "condition": "Clear your exhaustion track when you promise valuable resources to a dangerous Woodland figure to secure their aid."
+    },
+    {
+      "name": "Scion",
+      "condition": "Clear your exhaustion track when you enter danger to attack the enemies or defend the allies of your parents."
+    },
+    {
+      "name": "Sworn",
+      "condition": "Clear your exhaustion track when you openly commit to resolve a dangerous conflict on behalf of someone vulnerable."
+    },
+    {
+      "name": "Trailblazer",
+      "condition": "Clear your exhaustion track when you depart on a wild and risky new course of action with others."
     }
   ],
   "drives": [
@@ -271,6 +399,66 @@
       "name": "Wanderlust",
       "condition": "Advance when you finish a journey to a clearing.",
       "description": "This is one of the most direct, simplest drives in the game—every time you arrive at another clearing, you advance. Not when you begin the journey, of course; only when you arrive."
+    },
+    {
+      "name": "Antimilitarist",
+      "condition": "Advance when you sabotage a non-denizen faction's armies or their ability to wage war.",
+      "description": "\"Sabotage\" can entail burning an army's supplies, wrecking siege weapons, or even falsifying or destroying orders, as long as a faction's military is significantly hampered. A vagabond with this drive is pursuing an end to the War in the Woodland and is enacting that change by ruining every faction's ability to fight, regardless of their politics or beliefs."
+    },
+    {
+      "name": "Atonement",
+      "condition": "Advance when you earn forgiveness from someone you or your allies previously harmed.",
+      "description": "This drive requires you to prove you understand how you've hurt someone and truly make things right. Simply apologizing for your actions or behavior isn't sufficient proof—you have to mean it and sincerely attempt to remedy the situation. \"Earning forgiveness\" will be different for each person but you can **figure someone out** to try and understand both how they're feeling and what they might want from you. \"Previous harm\" can't be something you just did five seconds ago, and it can't be a mild slight or insult. You might make amends for things that happen during a session, things established in character creation, or consequences of your actions discovered upon returning to a clearing you've previously been to."
+    },
+    {
+      "name": "Development",
+      "condition": "Advance when you contribute to a lasting development or improvement to an entire clearing.",
+      "description": "Contributing to \"a lasting development or improvement\" can involve actively helping to create a permanent structure, like working with the denizens to build a new mill for a farm, or helping troops reinforce a clearing's decrepit walls. It can also involve creating a permanent opportunity like clearing out a ruin in order for a new structure to be built over it. These upgrades must be for the benefit of the entire clearing, even if everyone in the clearing doesn't agree with it—not every development will be altruistic or universally loved. You don't need to singlehandedly create such an improvement—providing labor, expertise, or supplies all count towards triggering this drive. Whatever the development is, remember that it needs to be \"lasting,\" meaning it should fundamentally change the clearing and become an important location of some kind."
+    },
+    {
+      "name": "Devotion",
+      "condition": "Advance when you get a non-believer to share in one of your beliefs or practices.",
+      "description": "You follow an organized or folk religion; name it and describe its beliefs. You may choose to follow one of the existing faiths of the Woodland (like the beliefs of the Lizard Cult) or create your own. You don't need to come up with every detail of your religion when you choose this drive—just make note of the most important beliefs and practices your faith asks of you. Think of a few big things that you must (or must not) do, such as \"I must not kill,\" \"I must pray to the Wyrm every morning,\" or \"I must donate to the impoverished.\" When someone outside of your faith willingly joins you in one of those rituals or aspects of your beliefs, you advance. This drive isn't really about proselytizing; it's about sharing your beliefs with others in the hopes that they'll understand and appreciate what you practice."
+    },
+    {
+      "name": "Discord",
+      "condition": "Advance when your actions create or intensify a serious conflict between two factions.",
+      "description": "Although every faction is always at odds with each other, they aren't always in direct confrontation. You probably don't care who's fighting whom so long as the Woodland is in chaos. \"Creating or intensifying a serious conflict\" goes beyond simple misunderstandings or squabbles—troops are dispatched, roads are blocked, relations sour. A conflict must arise where there wasn't one before, or you need to pour fuel on the fire of an existing feud. The outcome of your subterfuge may be noticeable right away, or you might find out when **time passes** or at the end of a session."
+    },
+    {
+      "name": "Esprit de Corps",
+      "condition": "Advance when you win a battle against enemy soldiers alongside friends and allies.",
+      "description": "This drive emphasizes a vagabond's pursuit of military camaraderie—it only triggers after winning a battle, specifically against enemy soldiers, and in the presence of friends and allies. \"Enemy soldiers\" means they are real combatants—bandits, a rabble, or a mob wouldn't count. A battle can be any kind of combat engagement but it needs to be some kind of direct confrontation, whether it's a siege or a skirmish in an open field. You don't need to be leading those friends and allies to trigger the drive—as long as you've won the day with comrades-in-arms, you qualify."
+    },
+    {
+      "name": "Folk Hero",
+      "condition": "Advance when you perform a significant act of service or heroism on behalf of the denizens.",
+      "description": "\"A significant act of service or heroism\" should involve creating some kind of lasting change to a clearing or overcoming a major obstacle. Simply helping one person with their troubles isn't enough to qualify for this drive—your act must make things better for the denizens going forward. Since this must be \"on behalf of the denizens,\" it should be something the denizens actually asked you to do, or your actions should address a real problem of theirs—not just something you *think* is a problem. Just because you *think* Eyrie control of their clearing is a major problem doesn't mean ousting the Eyrie governor qualifies— not when the governor was also providing food for the clearing, and the ouster leaves the clearing in chaos."
+    },
+    {
+      "name": "Glory",
+      "condition": "Advance when you defeat a worthy foe in single combat.",
+      "description": "\"A worthy foe\" must be an enemy who can believably match or exceed your combat capabilities, and whose defeat is significant or meaningful. If you can be entirely confident you'll win against an opponent, then they're not \"worthy\". \"Worthy\" looks different for each vagabond—a nimble duelist might advance after defeating another skilled, dexterous fighter or a massive brute whose heavy swings make up for their lack of speed. \"In single combat\" means no other vagabond can interfere with your fight."
+    },
+    {
+      "name": "Mysteries",
+      "condition": "Advance when you discover the truth behind strange phenomena or goings-on within a clearing.",
+      "description": "Whatever unusual activity appears to be going on in a clearing, \"discovering the truth\" means learning what's beneath that facade. You need to find the answer for yourself, whether by unmasking a false monster, locating the source of a \"cursed\" crop blight, or cornering a huckster with evidence and obtaining a confession. \"Strange phenomena or goings-on\" can be anything suspicious or unusual, from the mundane (like suspicious behavior of denizens) to paranormal phenomena with reasonable explanations."
+    },
+    {
+      "name": "Partisan",
+      "condition": "Advance when you successfully complete a mission given to you by an important member of that faction.",
+      "description": "Name a faction. As a vagabond, you are a deniable asset for each faction but your outsider status means you're never truly seen as one of them. By taking this drive, you indicate you've taken a clear side as a dedicated freelancer for a particular side of the War. \"An important member\" of a faction must hold some position of power or influence, and the most obvious way to pursue this drive is to **meet someone important** and ask for (or be given) an assignment. Missions must be \"given\"—you can't assign yourself a mission, so be sure to talk to important representatives of your chosen faction often! For the MC, \"a mission\" can be just about anything but it should either advance the goals of the vagabond's chosen faction, or the personal goals of whoever gave you the task. A mission is complete when all of its objectives are met, whether or not you immediately report back to your handler."
+    },
+    {
+      "name": "Traveler",
+      "condition": "Advance when you replace a valuable or meaningful item with one that represents the local culture.",
+      "description": "You can't trigger this drive by ditching your equipment and picking up a replacement off the ground. The equipment you leave behind has to be something valuable to you—it can't be something you might have thrown out anyway because it's not worth the weight to carry. The equipment you replace it with needs to reflect the essential nature of the clearing you're in, or otherwise represent a central aspect of its culture. You might acquire a sword from a clearing known for its fine steelwork, cookware and spices suited to a regional specialty dish, or a musical instrument tied to a clearing's heritage. Whatever equipment you leave behind is of no further use to you, and you become a walking tapestry of the Woodland with each new acquisition."
+    },
+    {
+      "name": "Wanted",
+      "condition": "Advance when you defeat or evade capture by a serious threat trying to cash in on your bounty.",
+      "description": "You've got a bounty on your head; name your crime(s). If you take this drive at character creation, your background questions probably point to what crimes you're wanted for. If you choose this drive during play, work with the MC to decide who put the bounty out on you and why. Whatever crimes you're wanted for, they're serious enough that you risk capture anywhere you go. \"Evading capture\" means there's a genuine chance you would have been caught by pursuers. \"A serious threat\" has to be truly dangerous and they must be chasing you specifically for your bounty—the MC might send a squad of hardened commandos, a famous detective looking to pad their career, or even a coin-hungry vagabond after you."
     }
   ],
   "basicMoves": [
@@ -745,6 +933,352 @@
       },
       "options": [],
       "notes": "REQUIRES +3 REPUTATION"
+    },
+    {
+      "name": "Endorse a New Leader",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you openly endorse an individual as the new leader of a faction's forces and/or presence in a clearing, roll with Reputation with that faction.",
+      "outcomes": {
+        "hit": "you throw your support behind that individual and the faction's representatives in that clearing react.",
+        "7-9": "the GM chooses 2.",
+        "10+": "the GM chooses 1.",
+        "6-": "after you publicly announce your support something new and dangerous is revealed about the leadership or the individual you endorsed that reframes the situation."
+      },
+      "options": [
+        "the faction's current leadership in the clearing is directly opposed; you need to handle them before your endorsed candidate can take over",
+        "the denizens of the clearing aren't on board; you need to speak to denizen leadership and convince them, or expect direct opposition",
+        "the faction's enemies in the clearing want to take advantage of the shift in power; keep an eye out for conspiracies and plots"
+      ],
+      "notes": "Requires Reputation +1"
+    },
+    {
+      "name": "Vilify a Leader",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you openly vilify an existing leader of a faction's forces and/or presence in a clearing, roll with Reputation with that faction.",
+      "outcomes": {
+        "hit": "you've stirred up dissent—the leader's departure from power is set in motion. They will be removed from power when next time passes... unless they take other action (alliances, use of force, etc.) to quash the dissent. In the meantime,",
+        "7-9": "the GM chooses 2.",
+        "10+": "the GM chooses 1.",
+        "6-": "your words wind up stoking opposition—more denizens, agents, and faction members come out in support of the leader you tried to vilify."
+      },
+      "options": [
+        "your words are taken up and elaborated upon; resistance to the leader you targeted threatens to get out of control, involving violence or arson",
+        "the leader (or their defenders and supporters) grows more radical in their defensiveness; they will respond to any threats to their position with force",
+        "you are singled out for your blunt outspokenness; expect reprisals"
+      ],
+      "notes": "Requires Reputation +1"
+    },
+    {
+      "name": "Lead Troops in Battle",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you lead troops of a faction in battle, roll with Reputation with that faction.",
+      "outcomes": {
+        "hit": "they accept you as their commander for the fight.",
+        "7-9": "hold 2.",
+        "10+": "hold 3.",
+        "6-": "your troops engage in battle but with a confused command structure—they wind up embroiled in chaotic battle across the entire area, and in their confusion, they're losing."
+      },
+      "options": [
+        "take and hold a location",
+        "rout a substantial enemy presence",
+        "take an enemy leader captive",
+        "destroy a fortification or resource",
+        "defend a group or location"
+      ],
+      "notes": "Requires Reputation +3. Spend your hold 1-for-1 during the fight to commit them to:"
+    },
+    {
+      "name": "Intimidate Enemy Troops",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you draw attention to yourself and threaten enemy troops by wielding your Reputation through an intimidating display, roll with Reputation with the enemy's faction, treating it as positive (+2 or +3) for this roll.",
+      "outcomes": {
+        "hit": "you put fear into the enemy.",
+        "7-9": "pick 1.",
+        "10+": "pick 2.",
+        "6-": "the enemy is invigorated by their anger at you, and they act right now, in full force."
+      },
+      "options": [
+        "the enemy troops won't act until their leader makes a rallying speech or cry to them—the leader is exposed and vulnerable to attack",
+        "the enemy troops will target you, above all else, when they attack",
+        "the enemy troops are rattled; inflict 2-morale harm on the group"
+      ],
+      "notes": "Requires Reputation -2"
+    },
+    {
+      "name": "Plan New Project",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you convince Marquisate officers to begin a new significant project, roll with Reputation with the Marquisate.",
+      "outcomes": {
+        "hit": "they begin the project.",
+        "7-9": "the GM chooses 3.",
+        "10+": "the GM chooses 2.",
+        "6-": "the Marquisate cannot undertake your project right now because the Marquisate's resources—and you—are required elsewhere; the GM will tell you why, and where."
+      },
+      "options": [
+        "it will take time; check back in after time passes",
+        "it requires special resources; the Marquisate agents will tell you what they need",
+        "it requires elimination of a threat first; the Marquisate agents will point you at the threat",
+        "it can't be quite what you asked for—just something close enough; the Marquisate agents will tell you what form it takes"
+      ],
+      "notes": "Requires Marquisate Reputation +2"
+    },
+    {
+      "name": "Wield Bureaucracy",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you wield the bureaucracy of the Eyrie Dynasties to achieve your ends while time passes, roll with Reputation with the Eyrie.",
+      "outcomes": {
+        "7-9": "choose 1.",
+        "10+": "choose 2.",
+        "6-": "the Eyrie's bureaucracy plays back, and you find yourself charged with a duty you hadn't planned on from Eyrie authorities; fulfill it before time passes next, or mark 3-notoriety."
+      },
+      "options": [
+        "you gather information from your contacts; ask the GM any three questions about the Woodland, and they will answer truthfully from the Eyrie's perspective",
+        "you push the Eyrie to allocate resources just a bit differently; they will deliver some available resource to a clearing of your choice, as long as it makes any sense to do so",
+        "you add a stipulation to an upcoming Eyrie attack or action; the soldiers will follow it",
+        "you arrange a meeting or audience with any Eyrie individual at a place of your choosing; the GM will tell you when the meeting takes place",
+        "you get Eyrie courts to add or repeal a legal requirement within any one Eyrie-controlled clearing; the Eyrie theoretically must follow it"
+      ],
+      "notes": "Requires Eyrie Reputation +2"
+    },
+    {
+      "name": "Incite Revolt",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you incite local Woodland Alliance sympathizers and agents to revolt, roll with Reputation with the Woodland Alliance.",
+      "outcomes": {
+        "hit": "the revolt is imminent—you have to prepare! It will take place when next time passes.",
+        "7-9": "the GM chooses 2.",
+        "10+": "the GM chooses 1.",
+        "6-": "the revolt fires off *right now*—well before you are ready, and while the opposing forces might be prepared for you. Good luck."
+      },
+      "options": [
+        "you need to convince at least one local sympathizer to get important resources or support for the revolt; otherwise, it will fail",
+        "you need to weaken, destroy, or incapacitate a specific opposing force; otherwise, the revolt will fail",
+        "you need to steal weapons or equipment for local sympathizers; otherwise, the revolt will fail",
+        "you need to rally a local group by doing them a favor; otherwise, the revolt will fail"
+      ],
+      "notes": "Requires Woodland Alliance Reputation +2"
+    },
+    {
+      "name": "Preach to the Choir",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you preach a sermon with a message to a crowd of Lizard Cultists, roll with Reputation with the Lizard Cult.",
+      "outcomes": {
+        "10+": "hold 3.",
+        "7-9": "hold 1.",
+        "6-": "the mob hears your message incorrectly, and acts on that belief."
+      },
+      "options": [
+        "bring someone forward and deliver them",
+        "bring forward goods and offerings (providing you with at least 6-Value)",
+        "unite and fight for you, destroying or attacking a target of your choice",
+        "repair or defend something of your choice",
+        "go quietly back to their lives"
+      ],
+      "notes": "Requires Lizard Cult Reputation +2. Spend your hold 1-for-1 to make the crowd:"
+    },
+    {
+      "name": "Conduct Sanctioned Trade",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you write up an exchange of goods or services between any parties and sign it in the name of the Riverfolk Company, roll with Reputation with the Riverfolk Company.",
+      "outcomes": {
+        "hit": "you form a proper agreement the Company will uphold, by force if it must—name the parties (including you), their responsibilities and promises, and any extra penalties for breach of contract.",
+        "7-9": "Company support—mercenaries, trade embargos, etc.—still comes, but at a cost; when you want a Company agent to help uphold the contract, you'll have to offer a 1-Value bribe before they will act.",
+        "10+": "the contract is airtight; provided you have a copy in hand, Company agents will enforce the contract in full.",
+        "6-": "your contract has a loophole or error in it; the Riverfolk Company won't enforce it, and it's only a matter of time before a participating party takes advantage."
+      },
+      "options": [],
+      "notes": "Requires Riverfolk Company Reputation +2"
+    },
+    {
+      "name": "Tap Criminal Networks",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you tap the local Corvid Conspiracy networks for a favor, pick your favor from the list below and roll with Reputation with the Corvid Conspiracy.",
+      "outcomes": {
+        "7-9": "the Conspiracy fulfills the favor, but leaves a request for you too—a favor for a favor.",
+        "10+": "the Conspiracy just leaves a reminder that it might call upon you at some later date.",
+        "6-": "your illicit communications with the Conspiracy go awry—someone else gets your request, and they aren't happy."
+      },
+      "options": [
+        "illicit goods, left in a hidden drop location for you",
+        "assassination, accomplished quietly and without fuss",
+        "sabotage, conducted on valuable equipment",
+        "blackmail, collected and delivered to you for use",
+        "secret intelligence, captured and safely sent to you"
+      ],
+      "notes": "Requires Reputation +2 with the Corvid Conspiracy"
+    },
+    {
+      "name": "Requisition Permits",
+      "category": "Reputation",
+      "stat": "Reputation",
+      "trigger": "When you requisition permits from the Grand Duchy, roll with Reputation with the Duchy.",
+      "outcomes": {
+        "hit": "you can requisition a permit with certain access rights granted. These rights remain legal until when next time passes.",
+        "7-9": "choose 2 access rights.",
+        "10+": "choose 3.",
+        "6-": "a Duchy official comes to interrogate you about your requests for permit; expect undesirable scrutiny."
+      },
+      "options": [
+        "you are permitted to travel through Grand Duchy tunnels with the aid of a Duchy guide, allowing you to move between any two clearings connected by tunnels without making a roll",
+        "you are permitted to obtain supplies from Grand Duchy caches and citadels with impunity; any time you reach such a cache, you may take up to 4-Value in supplies, no questions asked",
+        "you are permitted access to members of Duchy Parliament; you can ask any Duchy outpost for news on their locations, and you can always gain access to them, no questions asked",
+        "you are permitted to pass freely and without molestation in Duchy controlled areas, no matter whether you are carrying weapons or obvious contraband or not",
+        "you are permitted to act directly against or harm any individuals not openly protected by the Duchy, and any individuals openly protected against the Duchy if you can prove their culpability in a crime"
+      ],
+      "notes": "Requires Reputation +2 with the Grand Duchy"
+    },
+    {
+      "name": "Battle Fury",
+      "category": "Weapon",
+      "stat": "Luck",
+      "trigger": "When you fling yourself into a fury of weapon, tooth, and claw in an all-out attack at intimate range, mark wear on your weapon and roll with Luck.",
+      "outcomes": {
+        "hit": "On a hit, fill your exhaustion track. For each box you mark, inflict 2-injury on your target.",
+        "7-9": "On a 7-9, your target also inflicts their harm upon you."
+      },
+      "options": [],
+      "notes": "This move does not require the weapon to be tagged with intimate range; weapons with close range may also be used."
+    },
+    {
+      "name": "Charge",
+      "category": "Weapon",
+      "stat": "Might",
+      "trigger": "When you charge at an opponent at far range, mark exhaustion and roll with Might.",
+      "outcomes": {
+        "hit": "On a hit, they must choose to either mark 2-exhaustion or allow you to push them—you say where they are driven, and you say what range you now stand at.",
+        "10+": "On a 10+, inflict morale harm on them as well."
+      },
+      "options": [],
+      "notes": null
+    },
+    {
+      "name": "Hurl",
+      "category": "Weapon",
+      "stat": "Might",
+      "trigger": "When you hurl a weapon or dangerous object not intended for throwing at an enemy at far range, mark exhaustion and roll with Might.",
+      "outcomes": {
+        "hit": "On a hit, your hurled weapon strikes your target; mark wear on the weapon and inflict 1-injury and 1-exhaustion on your target.",
+        "7-9": "On a 7-9, choose 1.",
+        "10+": "On a 10+, choose 2."
+      },
+      "options": [
+        "mark an additional wear on the hurled item to inflict an additional 1-injury",
+        "the hurled item rebounds to somewhere reachable, instead of out of sight or out of reach",
+        "your target is knocked off their feet by the throw"
+      ],
+      "notes": "No weapon tag is required to use this weapon skill."
+    },
+    {
+      "name": "Lunge",
+      "category": "Weapon",
+      "stat": "Finesse",
+      "trigger": "When you make an outright lunge at a foe within close range, choose an amount of injury between 1-injury and 3-injury and roll with Finesse.",
+      "outcomes": {
+        "hit": "On a hit, you inflict that amount of injury—ignoring armor—but if your target survives (or if other foes are present) they can take advantage of your overextension to inflict the same amount on you.",
+        "7-9": "On a 7-9, they can inflict 1-injury more upon you than you had originally chosen to inflict upon them."
+      },
+      "options": [],
+      "notes": null
+    },
+    {
+      "name": "Paired Fighting",
+      "category": "Weapon",
+      "stat": null,
+      "trigger": "When you and another vagabond pair fight back to back against foes at close range, you each mark exhaustion and one of you rolls with the following modifiers (max +3):",
+      "outcomes": {
+        "hit": "On a hit, you together inflict 1-injury on every foe within close range (or 3-injury total against a group), and you each suffer 1-injury.",
+        "7-9": "On a 7-9, choose 1.",
+        "10+": "On a 10+, choose 2."
+      },
+      "options": [
+        "you each suffer little (-1) harm",
+        "you inflict an additional 2-injury to any single target (including a single group) of your choice",
+        "you inflict 2-morale harm",
+        "you create a path for the two of you to retreat or advance"
+      ],
+      "notes": "+1 if you have a connection with each other; +1 if you are outnumbered; +1 for every 2 additional exhaustion you mark between the two of you"
+    },
+    {
+      "name": "Hammerpaws",
+      "category": "Weapon",
+      "stat": "Finesse",
+      "trigger": "When you come to blows with an armed opponent at close or intimate range while you are unarmed, roll with Finesse.",
+      "outcomes": {
+        "hit": "On a hit, they inflict their harm on you.",
+        "7-9": "On a 7-9, choose 2.",
+        "10+": "On a 10+, choose 3."
+      },
+      "options": [
+        "you inflict 2-exhaustion on your opponent",
+        "you shift your range one step",
+        "you deflect some of their incoming blows; suffer little (-1) harm",
+        "you inflict wear on their equipment with precise strikes",
+        "you take an object from them; they must mark exhaustion to stop you"
+      ],
+      "notes": "No weapon tag is required to use this weapon skill."
+    },
+    {
+      "name": "Pinpoint Shot",
+      "category": "Weapon",
+      "stat": "Cunning",
+      "trigger": "When you take the time to fire a shot at far range with pinpoint accuracy, roll with Cunning.",
+      "outcomes": {
+        "hit": "On a hit, you put the shot exactly where you choose:",
+        "7-9": "On a 7-9, your current vantage point isn't quite right; you need to move to a better one before you can make the perfect shot. Mark exhaustion to scramble there, and then choose as normal."
+      },
+      "options": [
+        "if you target an NPC's weak point, inflict 3-injury (unblockable by armor)",
+        "if you target a piece of equipment's weak point, inflict 2-wear",
+        "if you target something in the environment, you strike it, cut it, or break it as appropriate"
+      ],
+      "notes": null
+    },
+    {
+      "name": "Long Shot",
+      "category": "Weapon",
+      "stat": "Might",
+      "trigger": "When you pull hard on your bow's draw to extend its range beyond far, mark wear and exhaustion to roll any far range weapon move (target someone, pinpoint shot, etc.) with Might instead of the move's normal stat, paying the additional cost(s) of the weapon move as well.",
+      "outcomes": null,
+      "options": [],
+      "notes": "This weapon skill requires your weapon to be tagged with far range, this skill, and the tag for whatever weapon move you are using (if needed)."
+    },
+    {
+      "name": "Point-Blank Shot",
+      "category": "Weapon",
+      "stat": "Luck",
+      "trigger": "When you fire a shot at point-blank range (intimate range), mark any combination of up to 2-wear and up to 2-exhaustion, and roll with Luck.",
+      "outcomes": {
+        "hit": "On a hit, you put your shot into your target; inflict injury equivalent to the wear and exhaustion you marked, combined.",
+        "10+": "On a 10+, you can also skip back after your shot, moving to close range before your opponent can grab you or otherwise retaliate."
+      },
+      "options": [],
+      "notes": "Your weapon does not need to be tagged with intimate range to use this weapon skill."
+    },
+    {
+      "name": "Switch Hands",
+      "category": "Weapon",
+      "stat": "Finesse",
+      "trigger": "When you shift your grip to change your dominant hand in the middle of an extended bout with a foe, roll with Finesse.",
+      "outcomes": {
+        "7-9": "On a 7-9, choose 1.",
+        "10+": "On a 10+, choose 2:"
+      },
+      "options": [
+        "your new dominant hand is fresher; clear 2-exhaustion",
+        "your opponent is startled by the shift; they mark morale harm",
+        "your shift gives you an immediate opportunity; mark exhaustion to seize it and inflict 2-injury"
+      ],
+      "notes": null
     }
   ],
   "roguishFeats": [
@@ -827,6 +1361,51 @@
         "Break something",
         "draw unwanted attention",
         "plunge into danger"
+      ]
+    },
+    {
+      "name": "Cover Up",
+      "description": "Rolling unconscious guards into bushes where they won't be found, re-arranging a murder scene to look like an accident (or vice versa), obfuscating signs that the band was ever here—any attempt to remove evidence of roguish activity, or otherwise make a scene appear to be something it isn't, falls under this feat. Any attempt to Cover Up allows a vagabond to control the narrative about the truth of a scene, making an observer believe whatever the vagabond wants, so long as the vagabond has enough time to set up the scene. What separates a Cover Up feat from **tricking an NPC** comes down to the time and precision involved. Tricks are immediate and often improvised, whereas a Cover Up feat requires more moving pieces to craft a believable facade. That doesn't mean a Cover Up feat can't be quick or reactive—if another vagabond leaves some evidence of their actions, a vagabond with this feat can try to make it go away but runs the risk of getting caught in the act.",
+      "risks": [
+        "Detection",
+        "expend resources",
+        "take too long"
+      ]
+    },
+    {
+      "name": "Mastermind",
+      "description": "Organizing the band into position to launch a heist, directing denizens to form a fire brigade, leading an allied squad in a perfectly-timed pincer attack—any attempt to give commands or make tactical decisions falls under the Mastermind feat. Once a vagabond gathers information or **reads a tense situation**, they can use this feat to create tactical plans and direct others through nigh-military command. The main advantage you get through the use of this move is positioning your allies exactly where they need to be to be of greatest use. A hit with the Mastermind feat can act as a kind of prep that means anyone in the plan is exactly where they need to be—at least until the plan is derailed.\n\nThis isn't a substitute for trying to **persuade an NPC**; Mastermind won't work with individuals or groups who aren't already likely to listen to you. Mastermind roguish feats can only be attempted if you already have the attention of—and influence over—the people you're ordering around. Remember, if they wouldn't already listen to you, you can't attempt this feat! Mastermind feats can also cover getting people and things into the right place at the right time, especially if using the flashback rules on page 71 of the Root: The RPG core book.",
+      "risks": [
+        "Draw unwanted attention",
+        "plunge into danger",
+        "take too long"
+      ]
+    },
+    {
+      "name": "Set Trap",
+      "description": "Brushing branches and leaves over a hastily-dug pit trap, wedging timed Corvid explosives under a bridge, keeping your bow ready while providing overwatch from a hidden position—any attempt to create a trap or an opportunity for a surprise attack falls under the Set Trap roguish feat. Whenever a vagabond might **trust fate** to lay a trap for someone, a skilled vagabond can use this feat to do so with far more precision. Set Trap can sometimes bypass an attempt at the Blindside roguish feat, but only if it affects a single target, and if the fiction supports the situation. For example, if you set a snare and **trick** a single foe into crossing over it, then they might be taken out all at once. Anything beyond the scope of a single-individual-oriented trap can be staged with this feat but you have to Blindside to actually capitalize on your preparation. Think of it a bit like Hiding before Blindsiding. For example, a vagabond can prepare a roadside ambush for a group with a Set Trap feat, lining up mostly-sawed trees to fall in the road and block their retreat, and then attempt a Blindside feat to rain arrows down on their quarries. This feat only covers ambushes and traps— setting something to fail or misfire is more likely a Disable Device feat if it's done carefully, or **wrecking something** if it's fast and furious.",
+      "risks": [
+        "Detection",
+        "expend resources",
+        "leave evidence"
+      ]
+    },
+    {
+      "name": "Tracking",
+      "description": "Pursuing a mark through rain-soaked alleys, tracking a bear back to their lair, determining soldiers' movements by boot prints—any attempt to pursue or track down someone falls under the Tracking roguish feat. Tracking is about the actual act of finding and following others, not about staying hidden or staying out of sight—like the Hide or Sneak roguish feats—although a complication or miss will likely lead to those feats in order to keep one's cover.",
+      "risks": [
+        "Detection",
+        "plunge into danger",
+        "take too long"
+      ]
+    },
+    {
+      "name": "Use Device",
+      "description": "Driving a clockwork logging contraption, activating a ruin's flamespitting statues to repel rivals, banking a hang glider into thick foliage to evade Eyrie commandos on your tail—any attempt to control or activate machines or devices falls under this feat. Whereas Disable Device is about breaking a device or stopping its effects, Use Device is about making a contraption work for you. A vagabond with this feat has a knack for mechanics even if they're not a Tinker; they can figure things out on the fly, even if they've never seen how something works before. This feat also covers attempts to maneuver vehicles. Instead of **trusting fate** to steer a raft through rapids or jump a minecart over a gaping chasm, a vagabond can attempt to Use Device.",
+      "risks": [
+        "Break something",
+        "plunge into danger",
+        "weak result"
       ]
     }
   ],
@@ -1039,6 +1618,291 @@
       "range": null,
       "tags": [
         "+Unassuming: Until you harm an enemy, they will never deem you more of a threat than other vagabonds with arms and armor."
+      ],
+      "description": null
+    },
+    {
+      "name": "Lizard Cult Ritual Blade",
+      "value": 3,
+      "load": 0,
+      "wear": null,
+      "range": "Intimate, close",
+      "tags": [
+        "Vicious strike",
+        "+Intimidating",
+        "-Incriminating",
+        "-Scarce"
+      ],
+      "description": null
+    },
+    {
+      "name": "Spring-loaded Wristblade",
+      "value": 6,
+      "load": 0,
+      "wear": null,
+      "range": "Intimate",
+      "tags": [
+        "Vicious strike",
+        "+Hidden",
+        "+Accurate"
+      ],
+      "description": null
+    },
+    {
+      "name": "Spiked Flail/Chain",
+      "value": 5,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Storm a group",
+        "Cleave",
+        "+Impressive",
+        "-Dangerous"
+      ],
+      "description": null
+    },
+    {
+      "name": "Dueling Rapier",
+      "value": 6,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Disarm",
+        "Parry",
+        "+Precise",
+        "+Quick",
+        "-Fragile"
+      ],
+      "description": null
+    },
+    {
+      "name": "Bird Talon Gauntlets",
+      "value": 4,
+      "load": 1,
+      "wear": null,
+      "range": "Intimate, close",
+      "tags": [
+        "Vicious strike",
+        "+Nasty",
+        "-Immoral"
+      ],
+      "description": null
+    },
+    {
+      "name": "Riverboat Paddle",
+      "value": 2,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Storm a group",
+        "+Blunted",
+        "-Hard to Hold",
+        "-Unwieldy"
+      ],
+      "description": null
+    },
+    {
+      "name": "Stiletto Dagger",
+      "value": 5,
+      "load": 0,
+      "wear": null,
+      "range": "Intimate",
+      "tags": [
+        "Vicious strike",
+        "+Precise",
+        "+Hidden"
+      ],
+      "description": null
+    },
+    {
+      "name": "Polearm",
+      "value": 6,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Cleave",
+        "Disarm",
+        "+Common",
+        "+Reach",
+        "-Bulky"
+      ],
+      "description": null
+    },
+    {
+      "name": "Sword Cane",
+      "value": 6,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Parry",
+        "Disarm",
+        "+Disguised",
+        "+Quick",
+        "-Hard to Hold"
+      ],
+      "description": null
+    },
+    {
+      "name": "Blade of the Last Dynasty / Sword of the True King",
+      "value": 12,
+      "load": 1,
+      "wear": null,
+      "range": "Close",
+      "tags": [
+        "Parry",
+        "Vicious strike",
+        "+Legendary",
+        "+Eaglecraft",
+        "+Luxury",
+        "-Identifiable"
+      ],
+      "description": null
+    },
+    {
+      "name": "Bear Skull Helmet",
+      "value": 2,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Impressive",
+        "-Cursed"
+      ],
+      "description": null
+    },
+    {
+      "name": "Spiked Shield",
+      "value": 4,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Nasty",
+        "+Distracting"
+      ],
+      "description": null
+    },
+    {
+      "name": "Heavy Gambeson",
+      "value": 2,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Reinforced"
+      ],
+      "description": null
+    },
+    {
+      "name": "Scavenged Armor",
+      "value": 2,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Disarming",
+        "-Makeshift"
+      ],
+      "description": null
+    },
+    {
+      "name": "Collapsible Paraglider",
+      "value": 4,
+      "load": 2,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Thief Kit",
+        "+Sturdy",
+        "-Weighty"
+      ],
+      "description": null
+    },
+    {
+      "name": "Libelous Documents",
+      "value": 3,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Incendiary",
+        "-Incriminating"
+      ],
+      "description": null
+    },
+    {
+      "name": "Forest Cloak",
+      "value": 3,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Blend"
+      ],
+      "description": null
+    },
+    {
+      "name": "Portable Easel & Paints",
+      "value": 4,
+      "load": 2,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Cathartic",
+        "-Weighty"
+      ],
+      "description": null
+    },
+    {
+      "name": "Corvid Explosives",
+      "value": 2,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Mighty",
+        "-Noisy"
+      ],
+      "description": null
+    },
+    {
+      "name": "Belt of Smoke Bombs",
+      "value": 4,
+      "load": 0,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Thief Kit",
+        "+Light"
+      ],
+      "description": null
+    },
+    {
+      "name": "Masterwork Instrument",
+      "value": 6,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Inspiring",
+        "+Signature"
+      ],
+      "description": null
+    },
+    {
+      "name": "Performer's Garb",
+      "value": 4,
+      "load": 1,
+      "wear": null,
+      "range": null,
+      "tags": [
+        "+Disarming",
+        "+Distracting"
       ],
       "description": null
     }
@@ -2200,6 +3064,1293 @@
       },
       "startingValue": 9,
       "roguishFeatsChoose": 0
+    },
+    {
+      "name": "The Champion",
+      "blurb": "You are a would-be hero and legend, a defender of the innocent and a standard-bearer of lost causes. Yours is the heroic narrative, even if you sometimes oversimplify things.\n\nDriven, noble, righteous, fervent. The Champion is a would-be hero who has chosen a side in the Woodland War, an eager representative of one of the factions…and a scourge and enemy of another.\n\nAs the Champion, you are a capable warrior and dangerous opponent, but you're also a self-proclaimed voice for the ordinary denizens of the Woodland. You're intensely interested in ensuring those who rule the Woodland do right by even the smallest mouse—which means taking a side among the real contenders in the battle for Woodland rule.\n\nThose you consider the Just are your idea of \"the good guys,\" your idea of the faction that can actually deliver a better, united, righteous future for the whole Woodland. The Just can't be the denizens—they aren't a united faction like the Woodland Alliance; they're just the individual dwellers of the myriad clearings, leading independent lives. Remember that you don't want the Woodland to devolve into a bunch of smaller fiefdoms. Someone has to rule the Woodland, right? You know which faction can be trusted to govern justly…and which faction must be opposed with every ounce of strength you have to give to the cause.\n\nThat said, the Enemy doesn't always need to stand as a symbol of all that is terrible. You may oppose them because you find some part of their philosophy to be dangerous, or because a particular leader within the faction can't be trusted. Be aware, though, that the more intense your loathing of the Enemy, the less likely you can change your opposition to them in the future. It's much easier to decide that a disorganized faction has become trustworthy than to accept that the monsters you've fought your whole life are redeemable.\n\nProvided your band can make use of your cause, you'll likely find they are willing to support your demands for justice. But if you don't bother convincing your band that the Just are truly worth supporting—and the Enemy is worth opposing—you may find your vagabond friends are willing to let you fight the good fight alone. You can always change your beliefs—if you find yourself out of sync with your band, maybe it's time to reevaluate whose side you're on! As you learn more about the Woodland, it's pretty likely you'll develop a more nuanced image of justice, after all.\n\nYour two natures, \"Advocate\" and \"Exemplar,\" both point to the work you need to do to build your legacy. The powerful NPC you confront about their mistreatment of the weak can be from any faction, including the one you've labeled as the Just. After all, they above all others should act justly! And if you take on a task for the Just in private, it's totally fine if you're the one that makes it public; the denizens deserve to know of the good work you do.",
+      "stats": {
+        "Charm": 1,
+        "Cunning": -1,
+        "Finesse": -1,
+        "Luck": 1,
+        "Might": 2
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Advocate",
+          "condition": "Clear your exhaustion track when you confront a powerful NPC about their mistreatment of the powerless or weak."
+        },
+        {
+          "name": "Exemplar",
+          "condition": "Clear your exhaustion track when you publicly take on a challenging task on behalf of the Just and those they represent."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Justice",
+          "condition": "Advance when you achieve justice for someone wronged by a powerful, wealthy, or high-status individual."
+        },
+        {
+          "name": "Principles",
+          "condition": "Advance when you express or embody your moral principles at great cost to yourself or your allies."
+        },
+        {
+          "name": "Loyalty",
+          "condition": "You’re loyal to someone; name them. Advance when you obey their order at a great cost to yourself."
+        },
+        {
+          "name": "Ambition",
+          "condition": "Advance when you increase your Reputation with any faction."
+        }
+      ],
+      "playbookMovesChoose": 1,
+      "playbookMoves": [
+        {
+          "name": "Take Up the Call",
+          "stat": null,
+          "trigger": "",
+          "outcomes": null,
+          "options": [
+            "Luminary: When you persuade an NPC to fight for the Just or resist the charms of the Enemy, roll with Might instead of Charm.",
+            "Paladin: When you inflict harm on the Enemy, inflict 1 additional harm; when you suffer harm protecting the Just, suffer 1 fewer harm.",
+            "Emissary: When you mark prestige with the Just, mark an additional prestige. When you mark notoriety with the Enemy, mark an additional notoriety."
+          ],
+          "notes": "Name two non-denizen factions: declare one to be the best hope for the Woodland (The Just) and the other evil tyrants (The Enemy). Take +1 ongoing to protect members of the Just or harm agents of the Enemy. You may switch which factions you consider to be the Just or the Enemy at the end of any session by clearing all prestige from the faction which no longer inspires you; your reputation with both factions remains the same. The Just:____________________ The Enemy:____________________ Choose a role you often fill as a champion:"
+        },
+        {
+          "name": "Of the People",
+          "stat": null,
+          "trigger": "When your band travels along a path at a relaxing pace",
+          "outcomes": {
+            "hit": "you encounter friendly faces on the journey who offer food and assistance; your band marks half as much depletion as normal.",
+            "7-9": "the characters you meet are in a bit of trouble; they expect you to lend a hand.",
+            "miss": "a dangerous foe committed to ending your \"righteousness\" catches you (and your friends) unaware and unprepared."
+          },
+          "options": [],
+          "notes": "roll with +1 instead of -1."
+        },
+        {
+          "name": "Skill Against Skill Alone",
+          "stat": null,
+          "trigger": "When you grapple with an enemy and roll a 12+",
+          "outcomes": {
+            "any": "you may take their blows to incapacitate them; suffer their full harm to fill their exhaustion or injury track."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "A Just Cause",
+          "stat": "Might",
+          "trigger": "When you threaten an authority on behalf of the downtrodden",
+          "outcomes": {
+            "hit": "the force of your defiance unnerves them; they must make a concession right now to your cause or openly attack you.",
+            "10+": "your words are inspirational; you and your allies take a +1 ongoing against them and their allies if they attack you.",
+            "miss": "the authority reveals that the cause you champion is not as just as you were led to believe."
+          },
+          "options": [],
+          "notes": "mark notoriety with the authority's faction"
+        },
+        {
+          "name": "Raw Force",
+          "stat": null,
+          "trigger": "When you use either weapon skill",
+          "outcomes": {
+            "any": "you can mark exhaustion to roll with Might."
+          },
+          "options": [],
+          "notes": "Take one of the following weapon skills: Disarm or Parry (it does not count against your limit)."
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Quick Shot",
+          "Storm a Group",
+          "Trick Shot"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Sleight of Hand"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 11,
+      "connections": [
+        "Protector: ____________ is a true hero, someone whom even I look up to for their moral clarity. What did they do that convinced me of their righteousness?",
+        "Family: ____________ and I are more-or-less siblings after years spent in each other's company. Why have we struggled to get along in the past?"
+      ]
+    },
+    {
+      "name": "The Chronicler",
+      "blurb": "Curious, perceptive, clever, demanding. The Chronicler is a historian of the Woodland, a scribe and scholar dedicated to uncovering and recording the secrets others might prefer to keep hidden.\n\nAs the Chronicler, you have a unique relationship with information. You're good at getting it—searching through documents, reading the room, finding those with the real story—and you know how to put it to use to get things done. Other vagabonds might sharpen their blade before a fight; you know that no strike of the sword is as mighty as a properly placed stroke of the pen.\n\nBut your inquisitive demeanor is likely to get you into trouble—denizens with secrets don't want their business spread around. You may need a fellow vagabond with a sword to keep that pen in good working order. If you're ready to learn the truth (and spread it to the Woodland), make sure to have a few friends on hand to help you keep your head!\n\nYour two natures, \"Observer\" and \"Activist,\" reflect your desire both to get the Woodland's secrets and to use them to make life better for denizens and their communities. \"Observer\" puts you in harm's way, but it doesn't say you have to go alone! \"Activist,\" on the other hand, demands you make a public pronouncement about a \"vital\" change; you have to believe in the value of the change, although fulfilling your nature doesn't require you to present a dissertation on the subject.\n\nYour drives point you towards all sorts of goals you can latch onto as you dig into the Woodland's history. You might take on the causes of the local community, dedicate yourself to exploring the forests, or even champion one of the factions in the Woodland War!",
+      "stats": {
+        "Charm": -1,
+        "Cunning": 2,
+        "Finesse": 1,
+        "Luck": 0,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Observer",
+          "condition": "Clear your exhaustion track when you enter a dangerous situation to try to witness a significant or secret event or meet an important individual."
+        },
+        {
+          "name": "Activist",
+          "condition": "Clear your exhaustion track when you publicly confront the leadership of a clearing about changes you think are vital to the community's success."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Justice",
+          "condition": "Advance when you achieve justice for someone wronged by a powerful, wealthy, or high-status individual."
+        },
+        {
+          "name": "Discovery",
+          "condition": "Advance when you encounter a new wonder or ruin in the forests."
+        },
+        {
+          "name": "Ambition",
+          "condition": "Advance when you increase your Reputation with any faction."
+        },
+        {
+          "name": "Clean Paws",
+          "condition": "Advance when you accomplish an illicit, criminal goal while maintaining a believable veneer of innocence."
+        }
+      ],
+      "playbookMovesChoose": 3,
+      "playbookMoves": [
+        {
+          "name": "The Worth of a Book",
+          "stat": null,
+          "trigger": "When you study your tomes and scrolls to discover old techniques or methods to solve an intractable problem—curing a deadly disease, ending a drought, legally unseating a leader, etc.—decide what you want to accomplish and tell the GM.",
+          "outcomes": {
+            "any": "The GM will give you between 1 to 4 conditions you must fulfill to discover a path forward, including time taken, additional information needed, mentors or translators needed, facilities/tools needed, or the limits of your solution. When you fulfill the conditions, you gain whatever knowledge you were seeking—it's up to you to put it to use."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "An Eye for the Real Story",
+          "stat": null,
+          "trigger": "When you read a tense situation, mark exhaustion—even on a miss—to spot someone who knows more than they're letting on.",
+          "outcomes": {
+            "any": "Take a +1 ongoing to convince them to share their secrets with you when you get them in private."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Search the Records",
+          "stat": "Cunning",
+          "trigger": "When you examine the documents, records, or assorted notes of an important NPC (your call), roll with Cunning.",
+          "outcomes": {
+            "hit": "You discover evidence of their secrets; the GM will tell you who would pay for the information you've uncovered.",
+            "10+": "You also take a 12+ instead of rolling the next time you try to figure them out.",
+            "miss": "Your search yields terrible news—someone is acting against you or your interests in an unexpected arena."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Loremaster",
+          "stat": "Cunning",
+          "trigger": "When you consult your knowledge in order to understand a political conflict, roll with Cunning.",
+          "outcomes": {
+            "hit": "The GM tells you what information you remember that completes your understanding of the messy situation.",
+            "10+": "You can ask a followup question; the GM will answer honestly.",
+            "miss": "Something about the situation doesn't fit the history—the GM will tell you what has radically shifted."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Good Advice",
+          "stat": "Cunning",
+          "trigger": "When you offer an NPC advice about a sticky situation, offer them the best advice you've got and roll with Cunning.",
+          "outcomes": {
+            "hit": "They see the wisdom of your suggestion; they have to mark exhaustion or incorporate your advice into their plans.",
+            "7-9": "You let something about your own plans or allegiances slip as you try to help them out.",
+            "miss": "The advice angers or offends them; the GM will tell you what local custom you've overstepped with your meddling."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Dedicated Scholar",
+          "stat": null,
+          "trigger": "Take an extra box of exhaustion. When you acquire a new tome or scroll documenting the history of the Woodland, clear your exhaustion track.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Improvise",
+          "Parry",
+          "Trick Shot"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Counterfeit",
+        "Disable Device",
+        "Pickpocket"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 8,
+      "connections": [
+        "Partner: _________ and I exposed a dark secret of a faction, leading to a meaningful political change. What was it? And which member of that faction hates us for it?",
+        "Peer: I think _________ sees the truth of the world, and I value their perspective deeply. What kinds of information do they see that I often overlook?"
+      ]
+    },
+    {
+      "name": "The Envoy",
+      "blurb": "Charming, subtle, political, respected. The Envoy is the trusted neutral agent of the Woodland, a political operative and mercenary whose greatest asset is the plausible deniability they offer to the powers that be.\n\nAs the Envoy, you have a light touch for a vagabond—one of the few outcasts who is welcome nearly anywhere you go. Every faction has a use for you! They may wish to employ you to resolve some difficult situation, to deliver a message or threat, or even just to help them understand how best to proceed in a conflict with unfamiliar foes. You are useful to their plans, and they will gladly offer you prestige and coin if you're willing to work on their behalf.\n\nBut you are still a vagabond. The factions of the Woodland find you valuable precisely because you are expendable, and many won't hesitate to turn on you if they feel you've outstayed your welcome. Don't be afraid to use your moves—Turncoat, Trust in Me, Kiss the Ring—to turn on them before they cast you aside, and never forget to use your position and influence to secure the best deal you can from the powers that be. Just be careful not to acquire too much notoriety, lest your status as a diplomat be called into question!\n\nYour natures, \"Agent\" and \"Sworn,\" both involve you working on someone else's behalf. \"Agent\" points you at powerful, influential denizens, those who need a vagabond like you to carry messages and negotiate deals. \"Sworn\" puts the focus on the vulnerable and downtrodden, setting you up as a mediator for those who have no other advocates. The former is perfect if you want to endear yourself to the powers that be; choose the latter if you prefer to instead be a hero to the masses.\n\nYou will often be called upon by the band to negotiate on their behalf too, so lean into those connections and your drives as you act as the negotiator for the other PCs. Remember to plead with other vagabonds to go along with the deals you've struck; sometimes it takes just a little push to get everyone on the same page.",
+      "stats": {
+        "Charm": 0,
+        "Cunning": 0,
+        "Finesse": 0,
+        "Luck": 0,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Agent",
+          "condition": "Clear your exhaustion track when you convince someone influential to allow you to represent their interests."
+        },
+        {
+          "name": "Sworn",
+          "condition": "Clear your exhaustion track when you openly commit to resolve a dangerous conflict on behalf of someone vulnerable."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Loyalty",
+          "condition": "You’re loyal to someone; name them. Advance when you obey their order at a great cost to yourself."
+        },
+        {
+          "name": "Greed",
+          "condition": "Advance when you secure a serious payday or treasure."
+        },
+        {
+          "name": "Ambition",
+          "condition": "Advance when you increase your Reputation with any faction."
+        },
+        {
+          "name": "Clean Paws",
+          "condition": "Advance when you accomplish an illicit, criminal goal while maintaining a believable veneer of innocence."
+        }
+      ],
+      "playbookMovesChoose": 2,
+      "playbookMoves": [
+        {
+          "name": "Diplomat",
+          "stat": null,
+          "trigger": "You are known across the Woodland as an accomplished diplomat; you have a track (Diplomat) to reflect your professional reputation, starting at a +1. When you raise your reputation with any faction, raise Diplomat; when you lower your reputation with any faction, lower Diplomat. You cannot lower Diplomat below +0 or raise it above +3.",
+          "outcomes": null,
+          "options": [
+            "Mark exhaustion to use Diplomat when you ask for a favor or meet someone important for the first time, regardless of the faction of your target.",
+            "When you persuade or figure out an important NPC while acting on behalf of another—not you or your band—roll with Diplomat instead of Charm."
+          ],
+          "notes": null
+        },
+        {
+          "name": "Fancy Meeting You Here",
+          "stat": "Luck",
+          "trigger": "When you carouse in a popular locale, roll with Luck.",
+          "outcomes": {
+            "hit": "You meet a lackey of a powerful faction in the area—the GM will tell you what they do for the faction, and you tell the GM when and how you met them in the past.",
+            "10+": "They get sloppy: they let a secret slip about the faction's plans or offer to introduce you to the faction's leaders on friendly terms.",
+            "miss": "Someone who is looking for you finds you first."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Turncoat",
+          "stat": "Cunning",
+          "trigger": "You gain the roguish feats Blindside and Counterfeit (they do not count against your limit). When you attempt a roguish feat to Blindside someone who trusts you, roll with Cunning instead of Finesse.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Plots and Schemes",
+          "stat": null,
+          "trigger": "Take +1 Cunning (max +3).",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Trust in Me",
+          "stat": "Cunning",
+          "trigger": "When you soothe or placate an angry NPC, roll with Cunning.",
+          "outcomes": {
+            "hit": "You calm their rage.",
+            "7-9": "Choose 1.",
+            "10+": "Choose 2.",
+            "miss": "You can only calm them by redirecting their frustrations."
+          },
+          "options": [
+            "They reveal an unexpected vulnerability",
+            "They hesitate in their fury; you create an opportunity",
+            "They take you further into their confidence"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Kiss the Ring",
+          "stat": "Cunning",
+          "trigger": "When you exit a meeting with someone rich or powerful, say you took a few of their things and roll with Cunning.",
+          "outcomes": {
+            "hit": "The GM tells you what valuable or interesting item you got.",
+            "7-9": "It will be missed, but not until you are gone; mark notoriety with that faction.",
+            "miss": "They're going to notice; mark 2-notoriety with that faction and either run or come up with a good excuse."
+          },
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": null,
+      "startingRoguishFeats": [
+        "Blindside",
+        "Counterfeit"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": null,
+      "connections": [
+        "Watcher: ____________ reminds me of a powerful political figure of the Woodland. Whom do they resemble? Why is the resemblance so striking to me?",
+        "Peer: ____________ and I negotiated a truce between two warring parties within a clearing. Why were they so important to closing the deal?"
+      ]
+    },
+    {
+      "name": "The Exile",
+      "blurb": "Resilient, fallen, persistent, dangerous. The Exile is a former power player of the Woodland, a once important figure who has been consigned to the life of a vagabond upon banishment from their former faction.\n\nAs the Exile, you have a unique relationship with one of the factions in the Woodland War; everyone in that faction likely knows you and probably has an opinion about you and your fall. Other vagabonds may be able to slip into a clearing without drawing much attention—you tend to make a scene wherever you go!",
+      "stats": {
+        "Charm": 1,
+        "Cunning": -1,
+        "Finesse": 0,
+        "Luck": 1,
+        "Might": 1
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Schemer",
+          "condition": "Clear your exhaustion track when you promise valuable resources to a dangerous Woodland figure to secure their aid."
+        },
+        {
+          "name": "Avenger",
+          "condition": "Clear your exhaustion track when you openly attack those who have wronged you or your sworn vassals and wards."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Loyalty",
+          "condition": "You’re loyal to someone; name them. Advance when you obey their order at a great cost to yourself."
+        },
+        {
+          "name": "Revenge",
+          "condition": "Name your foe. Advance when you cause significant harm to them or their interests."
+        },
+        {
+          "name": "Chaos",
+          "condition": "Advance when you topple a tyrannical or dangerously overbearing figure or order."
+        },
+        {
+          "name": "Infamy",
+          "condition": "Advance when you decrease your Reputation with any faction."
+        }
+      ],
+      "playbookMovesChoose": 2,
+      "playbookMoves": [
+        {
+          "name": "Known by All",
+          "stat": null,
+          "trigger": "When you first encounter an important NPC from your former faction, you may declare them to be an old ally—choose and mark one unmarked option from the list below instead of meeting someone important—and roll.",
+          "outcomes": {
+            "hit": "Their loyalty has not diminished; they offer whatever aid they can, even risking their own reputation and safety.",
+            "7-9": "They can only assist you if they can pretend you forced their hand and cover their tracks when you leave; mark as much notoriety with their faction as you added to your roll.",
+            "miss": "Your attempt to reconnect only reveals your desperation; mark as much notoriety as you added to your roll and know that those who hunt you will be here soon."
+          },
+          "options": [
+            "They shared your political networks; roll with +1.",
+            "You worked closely with them for years; roll with +2.",
+            "They were a loyal friend or dutiful servitor; roll with +3."
+          ],
+          "notes": "When you have marked all three options, clear them all; your agents will tell you of an opportunity to redeem yourself in the eyes of your faction now that they know you are still active."
+        },
+        {
+          "name": "Above It All",
+          "stat": "Charm",
+          "trigger": "When you trick an NPC into granting you access or information by pretending to be a high-ranking faction leader, roll with Charm instead of Cunning.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "I Bring You...",
+          "stat": null,
+          "trigger": "When you spend time talking to the denizens of a clearing, mark exhaustion to learn what vital resource or fugitive the powers that be seek.",
+          "outcomes": null,
+          "options": [],
+          "notes": "When you deliver a vital resource or prisoner to a faction, you may ask for a favor from the faction as if you rolled a 12+ in addition to marking prestige. If your Reputation with that faction is already +2 or greater, you may instead sway the NPC whose cause you most directly benefited with your contribution as if you rolled a 12+."
+        },
+        {
+          "name": "Greatest of the Age",
+          "stat": null,
+          "trigger": "When you engage an enemy in melee, you take all four options and one for double effect when you roll a 12+.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Born to Be a King",
+          "stat": "Charm",
+          "trigger": "Take +1 Charm (max+3).",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Fancy Paper",
+          "stat": null,
+          "trigger": "When you attempt a roguish feat to produce counterfeit documents using your intimate knowledge of your home faction's politics and procedures, mark notoriety with that faction to make the move as if you had rolled a 12+.",
+          "outcomes": null,
+          "options": [],
+          "notes": "You gain the roguish feat Counterfeit (it does not count against your limit)."
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Quick Shot",
+          "Storm a Group",
+          "Vicious Strike"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Sneak"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 11,
+      "connections": [
+        "Protector: I see greatness in _________ that I wish to nurture...and perhaps turn to my own purposes. What is it about them that inspires me so?",
+        "Family: _________ sheltered me in the earliest days of my exile when I was at my most vulnerable. Why did they offer me such kindness in my moment of need?"
+      ]
+    },
+    {
+      "name": "The Heretic",
+      "blurb": "Abrasive, outspoken, committed, divergent. The Heretic is a vagabond who has come to adhere to a cause or ideology that has no true home in any clearing or faction, a believer who refuses to compromise on what truly matters.\n\nAs the Heretic, you have a belief system that drives you to action, an internal motivation that pushes you to take risks in order to make the world a better place. You don't have to subscribe to a particularly complex religious or cultural belief system, but you do need to pick at least two fundamental tenets and be clear about how and why they matter to you. Work with the GM to make sure it's understood what other denizens who subscribe to this ideology think as well.\n\nMake sure your band knows what you believe! They will have to live with the consequences of your beliefs nearly as often as you do; you don't want them to be surprised by your ideology. You may be driven by your cause, but as long as you are a PC, you must have a place in the band as well. Find ways through your connections, drives, and other relationships to balance your beliefs against your membership in the band.\n\nYour natures, \"Believer\" and \"Healer,\" are deeply contrasting. \"Believer\" focuses on your enacting the tenets of your cause in the world, calling out authorities who hold opposing beliefs—such confrontations almost always lead to further conflicts. \"Healer,\" in contrast, focuses on resolving conflicts between foes from different factions, relying less on your ideology and more on the general idea that you see the world differently from the rest of the Woodland; you're more open to new ways of resolving old fights, and starting a productive conversation between those foes will activate the nature.\n\nYour drives can help you direct yourself towards your beliefs—several of them line up with the two fundamental tenets of your cause, and picking the ones that match perfectly is a great way to ensure that you are rewarded for adhering to your belief system.",
+      "stats": {
+        "Charm": 2,
+        "Cunning": 0,
+        "Finesse": -1,
+        "Luck": 1,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Believer",
+          "condition": "Clear your exhaustion track when you publicly call out a symbol or authority dedicated to beliefs opposed to yours."
+        },
+        {
+          "name": "Healer",
+          "condition": "Clear your exhaustion track when you attempt to start a dialogue between two foes from different factions."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Principles",
+          "condition": "Advance when you express or embody your moral principles at great cost to yourself or your allies."
+        },
+        {
+          "name": "Protection",
+          "condition": "Name your ward. Advance when you protect them from significant danger, or when time passes and your ward is safe."
+        },
+        {
+          "name": "Freedom",
+          "condition": "Advance when you free a group of denizens from oppression."
+        },
+        {
+          "name": "Chaos",
+          "condition": "Advance when you topple a tyrannical or dangerously overbearing figure or order."
+        }
+      ],
+      "playbookMovesChoose": 1,
+      "playbookMoves": [
+        {
+          "name": "Friends Indeed",
+          "stat": "Charm",
+          "trigger": "When you first seek out those who share your cause after arriving in a clearing, roll with Charm.",
+          "outcomes": {
+            "hit": "You find one or two; they provide what they can in service to your collective work.",
+            "7-9": "They also tell you about a threat to your shared ideology that has arisen in the clearing.",
+            "miss": "You are caught by someone in the clearing who openly despises your kind."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Hear Me!",
+          "stat": "Charm",
+          "trigger": "When you give an inspiring speech to a persuadable crowd in the service of your cause, mark exhaustion and roll with Charm.",
+          "outcomes": {
+            "hit": "You sway them; pick 2.",
+            "7-9": "You must put yourself at the crowd's mercy and lead them directly for them to follow through.",
+            "miss": "The crowd is moved to action but ignores your guidance, leading to terrible consequences."
+          },
+          "options": [
+            "They tear down an opposing symbol",
+            "They overthrow a vulnerable tyrant",
+            "They destroy the trappings of tradition",
+            "They elevate someone overlooked",
+            "They deliver justice to the wicked"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Destroy Something Beautiful",
+          "stat": "Charm",
+          "trigger": "When you wreck a false idol or symbol of oppression alongside your allies, roll with Charm instead of Might; you and all your allies clear an exhaustion, even on a miss.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Devilish Charm",
+          "stat": null,
+          "trigger": "When you trick an NPC you've previously aided or impressed, mark exhaustion to make the move as if you had rolled a 12+ instead of rolling.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Center of the Universe",
+          "stat": "Charm",
+          "trigger": "Take +1 Charm (max +3).",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "You Shall Not Pass",
+          "stat": "Charm",
+          "trigger": "When you plant yourself in the way of your enemies, roll with Charm.",
+          "outcomes": {
+            "hit": "Your foes cannot get past you until they take you down—brace yourself.",
+            "10+": "Choose 1.",
+            "7-9": "Choose 2.",
+            "miss": "Your enemies find or create a new way past you that makes your situation far worse."
+          },
+          "options": [
+            "You suffer +1 harm from all your enemies' attacks",
+            "A single enemy (GM's choice) slips past you",
+            "You cannot retreat from your position"
+          ],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Disarm",
+          "Quick Shot",
+          "Storm a Group"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Counterfeit",
+        "Sleight of Hand"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 9,
+      "connections": [
+        "Protector: ____________ has come to share my beliefs; I must stand with them, no matter the cost. What happened to us that convinced them of the wisdom of my cause?",
+        "Watcher: ____________ was once hurt greatly by someone who shared my cause. Why do I think I might still win them over? What have I already tried to do to earn their trust?"
+      ]
+    },
+    {
+      "name": "The Pirate",
+      "blurb": "You are a rogue boat captain, at home on the waters of the Woodland's rivers, lakes, or bays, free from the sway of land-bound life and more than willing to do whatever it takes to maintain that freedom. Flamboyant, connected, skillful, chaotic. The Pirate is the captain of a ship, capable of moving cargo and people up and down the rivers of the Woodland, all while finding a little extra time for mischief and adventure! As the Pirate, you're a bit of a paradox: you love chaos and adventure and double crosses and rumors...yet you also have the responsibility of managing your boat and its cargo! The truth is that your position as captain is what makes your chaotic adventures possible—you aren't bound to any home because your true place in the Woodland is on your boat. No one can demand your servitude when you rule the rivers!",
+      "stats": {
+        "Charm": 1,
+        "Cunning": 0,
+        "Finesse": 1,
+        "Luck": 0,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Rogue",
+          "condition": "Clear your exhaustion track when you attempt to doublecross, triplecross, or betray a powerful or dangerous NPC."
+        },
+        {
+          "name": "Merchant",
+          "condition": "Clear your exhaustion track when you carry valuable goods or treasure past danger, difficulty, or blockade."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Freedom",
+          "condition": "Advance when you free a group of denizens from oppression."
+        },
+        {
+          "name": "Revenge",
+          "condition": "Name your foe. Advance when you cause significant harm to them or their interests."
+        },
+        {
+          "name": "Crime",
+          "condition": "Advance when you illicitly score a significant prize or pull off an illegal caper against impressive odds."
+        },
+        {
+          "name": "Infamy",
+          "condition": "Advance when you decrease your Reputation with any faction."
+        }
+      ],
+      "playbookMovesChoose": 1,
+      "playbookMoves": [
+        {
+          "name": "Small Ship",
+          "stat": null,
+          "trigger": "By default, your ship has a wear track with four boxes. Mark wear when it suffers serious damage or when a move calls for it. When your ship's wear track is filled, it is dead in the water and must be repaired at port. If you must mark wear on your ship but its whole track is full, your ship is lost. If you ever lose the ship the GM may present you with an opportunity to get a new one.",
+          "outcomes": null,
+          "options": [
+            "Blessing — stocked: your ship gains a 2-box depletion track of cargo and gear",
+            "Blessing — nimble: take +1 ongoing to tricking NPCs when relying on your ship's speed",
+            "Blessing — renowned: take +1 to Reputation with a chosen faction while on your ship",
+            "Blessing — swift: once per session, mark wear to outrun any pursuer on the water",
+            "Flaw — dreaded: take -1 to Reputation with a chosen faction while on your ship",
+            "Flaw — rickety: your ship has one fewer box of wear than usual",
+            "Flaw — clumsy: take -1 ongoing to trusting fate when piloting your ship carefully",
+            "Flaw — stolen: someone dangerous is pursuing you to recover their property"
+          ],
+          "notes": "Your Ship's Name: _____________________ Wear. Choose 2 Blessings and choose 2 Flaws."
+        },
+        {
+          "name": "Sail On",
+          "stat": "Luck",
+          "trigger": "When you travel from clearing to clearing by ship, mark wear on the ship and roll with Luck.",
+          "outcomes": {
+            "hit": "you reach the next port; the GM will tell you one (mostly) friendly denizen you know there.",
+            "7-9": "they are holding a grudge—work it out or offer at least 2-Value to let things go.",
+            "miss": "you are caught in a dangerous situation along your route before you arrive at port."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Swashbuckler",
+          "stat": "Luck",
+          "trigger": "When you first charge into battle by swinging, diving, or leaping to engage an enemy in melee at close range, roll with Luck instead of Might.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Eye for Treasure",
+          "stat": "Luck",
+          "trigger": "When you ask around a port about valuable trade, roll with Luck.",
+          "outcomes": {
+            "hit": "you learn of nearby cargo worth your time.",
+            "10+": "you know exactly where the cargo is held or how to intercept the shipment.",
+            "miss": "you hear only of well-guarded or difficult-to-reach cargo...and your questions start drawing attention."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Plenty of Rum",
+          "stat": null,
+          "trigger": "Once per session, you may plead with a vagabond a second time in a session by sharing your rum (mark depletion) with the target of your pleading.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Sea Legs",
+          "stat": "Luck",
+          "trigger": "When you attempt a roguish feat aboard a ship to Blindside, Sneak, Hide, or perform Acrobatics, roll with Luck instead of Finesse.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Parry",
+          "Storm a Group",
+          "Trick Shot",
+          "Vicious Strike"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Acrobatics",
+        "Blindside",
+        "Pick Lock"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 8,
+      "connections": [
+        "Partner: __________ and I seized valuable cargo from a faction together. Who did we rob? Why?",
+        "Family: __________ had a good relationship with my former captain. How have they supported me in taking on the role as my own?"
+      ]
+    },
+    {
+      "name": "The Prince",
+      "blurb": "Precocious, scrappy, savvy, inheritor. The Prince is a scion of a vagabond family, a second-generation rogue who has come into their own in the shadow of their parent's legacy, acquiring their skills, their tools…and their old allies and enemies.\n\nThe Prince is a younger character—not a child per se, but also not a denizen whose own adventures and accomplishments have eclipsed their parents' legacy. They are a skilled and competent vagabond! After all, they've been raised from birth to be an outlaw!\n\nAs the Prince, your Heirloom Weapon is a huge part of your character—take the time to design something that excites you and give it a cool story! Maybe that's a reliable crossbow with flexible skills your parents stole from an Eyrie weaponsmith or a deadly sword with a feared reputation they forged themselves long before the Marquisate came to the Woodland.\n\nYour natures point to your past or your future. \"Scion\" activates when you engage old conflicts, protecting those who were allied with your parents and attacking old enemies. \"Trailblazer,\" on the other hand, activates when you join, follow, or lead a group in some new, risky, and exciting direction. It doesn't have to be a literal new path—a new plan or new idea is good enough—but you have to be pursuing a new way of doing things, a new approach, a new direction, any of which comes with its own array of unknowns and new surprises.\n\nEither way, get used to the idea that many denizens of the Woodland already think they know you. Your drives give you some goals you may choose to focus on, but you'll find no shortage of NPCs in the Woodland who think they already know what side you should be on based on how your parents handled things.\n\nYou are a second-generation vagabond, heir to your parents' masteries and knowledge, but also born to this life of roguery and independence—you are not a vagabond by your own volition.",
+      "stats": {
+        "Charm": -1,
+        "Cunning": 1,
+        "Finesse": 1,
+        "Luck": 1,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Scion",
+          "condition": "Clear your exhaustion track when you enter danger to attack the enemies or defend the allies of your parents."
+        },
+        {
+          "name": "Trailblazer",
+          "condition": "Clear your exhaustion track when you depart on a wild and risky new course of action with others."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Protection",
+          "condition": "Name your ward. Advance when you protect them from significant danger, or when time passes and your ward is safe."
+        },
+        {
+          "name": "Freedom",
+          "condition": "Advance when you free a group of denizens from oppression."
+        },
+        {
+          "name": "Crime",
+          "condition": "Advance when you illicitly score a significant prize or pull off an illegal caper against impressive odds."
+        },
+        {
+          "name": "Wanderlust",
+          "condition": "Advance when you finish a journey to a clearing."
+        }
+      ],
+      "playbookMovesChoose": 1,
+      "playbookMoves": [
+        {
+          "name": "Heirloom Weapon",
+          "stat": null,
+          "trigger": "Your parents bestowed a family heirloom upon you—it has 4 boxes of wear, and whatever its Value, it is priceless to you. If the weapon is ever destroyed, the GM will tell you what tasks you must undertake to restore it.",
+          "outcomes": null,
+          "options": [
+            "Choose a weapon type: dagger, axe, hammer, sword, spear, crossbow, bow",
+            "Choose an appropriate range: intimate, close, far",
+            "Reliable: +2 boxes of wear and an additional range.",
+            "Feared: When you engage in combat against foes who recognize this weapon, inflict morale harm on them.",
+            "Deadly: When you inflict harm with this weapon, inflict +1 harm.",
+            "Double-Headed: One edge inflicts injury, the other exhaustion. Declare which side you are using at the start of a fight.",
+            "Flexible: Choose 2 weapon skill tags for this weapon.",
+            "Unique: Your weapon is of unusual design; once per session, mark exhaustion to ignore the harm inflicted on you by a single attack.",
+            "Rousing: After you successfully inflict injury on a dangerous enemy, mark wear to clear exhaustion from every ally who saw you land the blow."
+          ],
+          "notes": "Choose two features."
+        },
+        {
+          "name": "Legacy",
+          "stat": null,
+          "trigger": "When you meet someone important for the first time, mark your legacy track to take a 10+ instead of rolling. When your legacy track is full, tell the GM, clear the track, and roll. Take +1 for each \"yes\" to the following questions:",
+          "outcomes": {
+            "hit": "Someone with unfinished business with your parents finds you.",
+            "10+": "They arrive without warning.",
+            "miss": "An ordinary denizen warns you about someone who might seek you out; mark your legacy track."
+          },
+          "options": [
+            "Are you in a clearing?",
+            "Is anyone looking for you?",
+            "Do you have +2 or -2 Reputation with at least one faction?"
+          ],
+          "notes": null
+        },
+        {
+          "name": "One of Us",
+          "stat": "Luck",
+          "trigger": "When you try to figure out or persuade vagabonds, bandits, revolutionaries, or outcasts, roll with Luck instead of Charm.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Tall Tales",
+          "stat": "Luck",
+          "trigger": "When you attempt to impress a crowd with a wild story, roll with Luck.",
+          "outcomes": {
+            "hit": "The crowd is moved; everyone in your band takes +1 ongoing to persuade or trick someone in line with the story.",
+            "10+": "Someone foolish even approaches you with profitable work!",
+            "miss": "Your stories attract someone in desperate need of help you're not equipped to give."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "No Jail Can Hold Me",
+          "stat": null,
+          "trigger": "Take the roguish feat Pick Lock (it does not count against your limit). When you attempt to escape confinement, mark exhaustion to shift a miss to a 7-9.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Favored",
+          "stat": null,
+          "trigger": "Take +1 Luck (max +3).",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Disarm",
+          "Harry",
+          "Parry"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Hide",
+        "Sneak"
+      ],
+      "roguishFeatsChoose": 2,
+      "startingValue": 7,
+      "connections": [
+        "Peer: __________ used to work with one of my parents and invited me to join the band when I came of age. How did I impress them with my talents?",
+        "Family: __________ was mentored by one of my parents. What vagabond skills did they learn from my parents that I've always struggled to master?"
+      ]
+    },
+    {
+      "name": "The Raconteur",
+      "blurb": "Dashing, adroit, distracting, audacious. The Raconteur is a performer and a storyteller, a vagabond who shapes the future of the Woodland with a song or story. The Raconteur is a lover, not a fighter. They would far rather sing a song than swing a sword! That doesn't mean the Raconteur is a pushover; they can fight like any other vagabond and also shape public opinion, their performances impacting how the denizens think about the events of the Woodland. You are a storyteller, making coin and earning trust by moving amid the clearings and weaving tales that ultimately teach the denizens what you want them to believe about the Woodland's goings-on.",
+      "stats": {
+        "Charm": 2,
+        "Cunning": 1,
+        "Finesse": 1,
+        "Luck": -1,
+        "Might": -1
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Legend",
+          "condition": "Clear your exhaustion track when you put on a performace in front of a large, attentive audience."
+        },
+        {
+          "name": "Companion",
+          "condition": "Clear your exhaustion track when you effusively praise a friend to a powerful person or group."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Discovery",
+          "condition": "Advance when you encounter a new wonder or ruin in the forests."
+        },
+        {
+          "name": "Thrills",
+          "condition": "Advance when you escape from certain death or incarceration."
+        },
+        {
+          "name": "Infamy",
+          "condition": "Advance when you decrease your Reputation with any faction."
+        },
+        {
+          "name": "Clean Paws",
+          "condition": "Advance when you accomplish an illicit, criminal goal while maintaining a believable veneer of innocence."
+        }
+      ],
+      "playbookMovesChoose": 2,
+      "playbookMoves": [
+        {
+          "name": "Tools of the Trade",
+          "stat": "Charm",
+          "trigger": "When you first put on an earnest, public performance in a clearing",
+          "outcomes": {
+            "hit": "name a faction you flatter; an important member comes forward to offer you work.",
+            "10+": "mark prestige with their faction as well.",
+            "miss": "you draw the worst kind of attention to you and your friends."
+          },
+          "options": [
+            "Choose a type: musical instrument, poetry book, unique costume, stage prop",
+            "Choose a look: battered, fancy, delicate, stained, pristine",
+            "Sturdy: +2 boxes of wear; when you tend to your symbol after a public performance, clear a box of wear.",
+            "Enchanting: Mark wear instead of exhaustion to add +2 when you help another vagabond by distracting someone with your performance.",
+            "Versatile: Choose two equipment tags for your symbol.",
+            "Revealing: When you perform in public, mark wear to ask any one character who watched \"what truly motivates your character?\"; take +1 when acting on the answer.",
+            "Pleasant: When you perform for your band while traveling along the path, mark wear to clear up to 2 additional exhaustion from each vagabond."
+          ],
+          "notes": "You have a valued (at least to you) symbol of your skill and talent; it starts with 3 boxes of wear and whatever its Value, it is essentially priceless to you. Choose three features."
+        },
+        {
+          "name": "Adoring Fans",
+          "stat": "Charm",
+          "trigger": "When you first enter a clearing",
+          "outcomes": {
+            "hit": "a fan recognizes you; they relate gossip, offer a place to stay, and show your band around.",
+            "10+": "your fan will go even further to help you.",
+            "miss": "you meet a fan with good intentions who immediately makes your situation much, much worse."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "All Eyes on Me",
+          "stat": "Charm",
+          "trigger": "When you create a distraction through outlandish performance, mark exhaustion",
+          "outcomes": {
+            "hit": "the room can't look away; your allies take +1 ongoing to Sneak, Hide, Pickpocket, or trust fate while you perform.",
+            "10+": "hold 1; spend the hold to grant an ally a +3 for one of the aforementioned rolls instead.",
+            "miss": "your audience finds something about your performance insulting or misguided; they fall over themselves to give you their opinion."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Quick Fingers, Quicker Eyes",
+          "stat": null,
+          "trigger": "When you read a tense situation while performing",
+          "outcomes": {
+            "any": "you may always ask one question, even on a miss."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Silver Tongue",
+          "stat": null,
+          "trigger": "When you persuade an NPC with a colorful anecdote",
+          "outcomes": {
+            "hit": "mark exhaustion on a hit to make them reveal something important and relevant about the situation."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Sweet as Honey",
+          "stat": null,
+          "trigger": "Take +1 Charm (max +3).",
+          "outcomes": {
+            "any": "Take +1 Charm (max +3)."
+          },
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Disarm",
+          "Improvise",
+          "Vicious Strike"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Counterfeit",
+        "Pickpocket",
+        "Pick Lock"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 8,
+      "connections": [
+        "Friend: __________ and I still talk about the time we were run out of a clearing, even though we thought our adventures would lead the powers that be to treat us as heroes. What did we do? How did it go wrong?",
+        "Family: ___________ and I have been through battles, ruin-delves, heists, and more together. Which particular incident made us close? How did I make it famous?"
+      ]
+    },
+    {
+      "name": "The Raider",
+      "blurb": "Rough, pragmatic, threatening, dangerous. The Raider is a bandit of the Woodland, a brigand who takes what they want by the sword, forgoing stealth and guile in favor of raw force.\n\nThe Raider is an aggressive fighter. They are as strong as some of the other martial vagabonds—the Arbiter, the Ronin, the Champion—and they have moves like Plan of Attack and Fearsome Visage that allow them to set the conflict on their terms, leaving even the strongest forces vulnerable and exposed. Woe to any opposition that underestimates how much damage the Raider and their allies can do!\n\nAs the Raider, you can strike some heavy blows against even the most dangerous opposition, but you've got to decide whose side you're on. Do you want to forge an alliance with a faction that pays well and stays out of your way? Or do you want to keep things even, seeking a balance with all the factions of the Woodland War in the hopes they worry about bigger problems? Do you fight for someone else or yourself?\n\nYour natures, \"Bandit\" and \"Hero,\" give you the option of affirming what others think of you or attempting to rise above your baser instincts in the service of others. \"Bandit\" rewards you for attempting to seize valuables from real, dangerous opposition—a whole unit of Marquisate soldiers, for example—while \"Hero\" incentivizes you to take the side of the vulnerable. The latter may still turn a profit if the dangerous or villainous NPCs have valuables for you to seize, but it's not guaranteed! Either way, you don't have to win either fight to activate your nature; clear your exhaustion when you make the attempt!\n\nThat said, the Raider tends to come across as a villain themselves, even when they mostly target the powerful and cruel. Look to your connections and drives to find reasons to restrain your violence productively and work with your band to accomplish objectives greater than mere banditry. After all, there will be plenty of loot along the way!",
+      "stats": {
+        "Charm": -1,
+        "Cunning": 1,
+        "Finesse": 0,
+        "Luck": 2,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Bandit",
+          "condition": "Clear your exhaustion track when you try to use the threat of force to secure valuables from formidable opposition."
+        },
+        {
+          "name": "Hero",
+          "condition": "Clear your exhaustion track when you outright attack a dangerous, oppressive, or villainous NPC."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Loyalty",
+          "condition": "You’re loyal to someone; name them. Advance when you obey their order at a great cost to yourself."
+        },
+        {
+          "name": "Chaos",
+          "condition": "Advance when you topple a tyrannical or dangerously overbearing figure or order."
+        },
+        {
+          "name": "Crime",
+          "condition": "Advance when you illicitly score a significant prize or pull off an illegal caper against impressive odds."
+        },
+        {
+          "name": "Greed",
+          "condition": "Advance when you secure a serious payday or treasure."
+        }
+      ],
+      "playbookMovesChoose": 3,
+      "playbookMoves": [
+        {
+          "name": "Eye For Battle",
+          "stat": "Might",
+          "trigger": "When you read a tense situation just as violence breaks out, roll with Might instead of Cunning.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Ironhide",
+          "stat": null,
+          "trigger": "When a group inflicts harm on you, suffer 2 fewer harm from each attack (minimum 1-harm); when you inflict harm on a group, inflict 1 additional harm.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Loot and Plunder",
+          "stat": "Finesse",
+          "trigger": "When you loot a rich area for valuables, roll with Finesse. On a hit, something out of the ordinary catches your eye; claim it and it's yours.",
+          "outcomes": {
+            "10+": "all 3.",
+            "7-9": "choose 1:",
+            "miss": "you can get your hands on it, but it is sought by dangerous denizens who are all too willing to kill to take it from whoever possesses it."
+          },
+          "options": [
+            "It is worth a lot of money (+2-Value)",
+            "It is of special value to a particular faction (+4 prestige if traded to them)",
+            "It is extremely durable (+1-wear)"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Merciful Might",
+          "stat": null,
+          "trigger": "When you try to befriend an NPC you've saved from the wrath of another, spend time helping them further (mark exhaustion) or buy them a drink (mark depletion). Your continued kindness pays dividends; they'll share a valuable secret or grant you a serious favor.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Plan of Attack",
+          "stat": "Might",
+          "trigger": "When you work out a plan of attack with someone, roll with Might.",
+          "outcomes": {
+            "10+": "hold 3.",
+            "7-9": "hold 2. You can spend your hold 1-for-1, regardless of distance, while the plan is being carried out to:",
+            "miss": "hold 1, but your plan encounters some disastrous opposition right from the start."
+          },
+          "options": [
+            "Lend a hand; add +1 to someone's roll (choose after rolling)",
+            "Soften a blow; reduce by one the harm someone suffers from a single attack",
+            "Ensure your gear holds; allow someone to ignore marking depletion or wear"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Fearsome Visage",
+          "stat": null,
+          "trigger": "You can make a pointed threat or publicly draw attention to yourself as an enemy of a faction when you have a Reputation of 0 or lower with that faction, not just the usual -3 or -2 reputation required. Remember, you roll as if your negative reputation was positive, so a -1 Reputation becomes a +1 for the roll and a 0 remains a 0.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Cleave",
+          "Confuse Senses",
+          "Storm a Group",
+          "Vicious Strike"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Acrobatics",
+        "Blindside"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 9,
+      "connections": [
+        "Protector: The first time I saw ____________ they piqued my curiosity; I went out of my way to protect them from the ire of my own band. What about them sparked my loyalty?",
+        "Watcher: ____________ bested me in combat when I got out of hand. How? Why did I thank them for it?"
+      ]
+    },
+    {
+      "name": "The Seeker",
+      "blurb": "You are an explorer by nature, interested in free-ranging discovery, delving into ruins, and uncovering whatever secret wonders and ancient truths lie hidden amid the Woodland.\n\nObsessed, prepared, experienced, perceptive. The Seeker is an expert on the ruins and mysteries of the forest, an excavator of old treasures and forbidden places who seeks riches and answers in equal measure.\n\nAs the Seeker, you've got a bunch of useful skills for getting into difficult places, whether you're gaining entrance to an ancient Eyrie ruin or breaking into a vault in a Marquisate-controlled clearing. You're also pretty good at trusting fate to see you through difficult times! Some may see you as nothing more than a glorified tourist, but you're a vagabond through and through, capable of the same amount of trouble as any other outlaw!\n\nThat said, your focus is always going to be the ruins and mysteries of the forest. One of your natures—\"Explorer\"—points directly at the ruins, and Word on the Street allows you to hear of nearby sites when you get some time to talk to the locals. Most of your other moves also give you unique abilities inside and around ruins, and you can usually create all manner of profitable opportunities for your band. But your other nature—\"Historian\"—points to a deeper truth: you seek knowledge and answers about the Woodland, the truth behind the ruins and mysteries of the forest. You know that there are secrets hidden everywhere, both in the ruins and in the clearings, that must be exposed. You and your band are some of the only denizens that can stand up to those who would cover up or obscure the truth!\n\nYour drives are all designed to help further point at the reasons why you seek answers—is it greed? Is it curiosity? Is it just a general desire to see and do new things? Pick the drives that most satisfy your reasons for delving into ruins and other places you shouldn't go.",
+      "stats": {
+        "Charm": -1,
+        "Cunning": 1,
+        "Finesse": 1,
+        "Luck": 1,
+        "Might": 0
+      },
+      "natureChoose": 1,
+      "natures": [
+        {
+          "name": "Explorer",
+          "condition": "Clear your exhaustion track when you enter a ruin or other dangerous area of the forest."
+        },
+        {
+          "name": "Historian",
+          "condition": "Clear your exhaustion track when you refuse to allow someone to cover up or obscure the truth."
+        }
+      ],
+      "driveChoose": 2,
+      "drives": [
+        {
+          "name": "Justice",
+          "condition": "Advance when you achieve justice for someone wronged by a powerful, wealthy, or high-status individual."
+        },
+        {
+          "name": "Discovery",
+          "condition": "Advance when you encounter a new wonder or ruin in the forests."
+        },
+        {
+          "name": "Greed",
+          "condition": "Advance when you secure a serious payday or treasure."
+        },
+        {
+          "name": "Wanderlust",
+          "condition": "Advance when you finish a journey to a clearing."
+        }
+      ],
+      "playbookMovesChoose": 2,
+      "playbookMoves": [
+        {
+          "name": "Word on the Street",
+          "stat": "Finesse",
+          "trigger": "When you spend time in a clearing talking with locals, roll with Finesse.",
+          "outcomes": {
+            "hit": "you catch wind of a nearby unexplored wonder or ruin; someone promises to take you to it for a fair fee (1-Value).",
+            "7-9": "the dangers make their price steeper—an additional 1-Value of coin or gear.",
+            "miss": "the location is under threat—soon it will be plundered, destroyed, or claimed by another power."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Never Lost",
+          "stat": null,
+          "trigger": "Take two additional boxes of injury and depletion you can mark when you confront dangers within a ruin and a +1 ongoing to trusting fate and performing roguish feats while exploring such ancient locales.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Treasurer Hunter",
+          "stat": "Cunning",
+          "trigger": "When you sell the treasures you found in a ruin at market, roll with Cunning.",
+          "outcomes": {
+            "hit": "you find some buyers.",
+            "7-9": "take 1.",
+            "10+": "both:",
+            "miss": "you still sell the items for a fair price, but someone powerful takes offense at your plunder of such sacred sites."
+          },
+          "options": [
+            "You get a good price; you get double what such findings are usually worth",
+            "You are popular; mark two prestige with the controlling faction"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Adventurer Contract",
+          "stat": "Cunning",
+          "trigger": "When you try to convince a powerful NPC to supply an exploratory adventure, roll with Cunning.",
+          "outcomes": {
+            "hit": "they give you 8-Value in resources and depletion—but you must fulfill a request.",
+            "10+": "they ask for something general—more riches, information, a prize or trophy.",
+            "7-9": "they want something specific—a singular treasure, secret knowledge, a lost ritual.",
+            "miss": "they mount a competing expedition based on what you have told them."
+          },
+          "options": [],
+          "notes": null
+        },
+        {
+          "name": "Watch the Signs",
+          "stat": "Cunning",
+          "trigger": "When you first attune yourself to a ruin or mysterious site by taking in its signs, symbols, particular traits, and layout, roll with Cunning.",
+          "outcomes": {
+            "10+": "hold 3.",
+            "7-9": "hold 2.",
+            "miss": "you may mark exhaustion to hold 1."
+          },
+          "options": [
+            "Identify the quickest path to the closest valuable treasure or knowledge",
+            "Disarm a trap or overcome a natural hazard without cost",
+            "Name a character within reach about to suffer harm; you suffer it instead",
+            "Name a character in the ruin; you cross the distance to them instantly",
+            "Take cover in the ruin; ignore all harm from a single attack or catastrophe"
+          ],
+          "notes": "While within that ruin or mysterious site, you can spend your hold 1-for-1 to:"
+        },
+        {
+          "name": "Unstable Ground",
+          "stat": "Finesse",
+          "trigger": "When you use a rough or chaotic environment—slippery rocks, a crowded market, etc.—to gain an advantage over your opponents in a fight, you can grapple with them using Finesse instead of Might.",
+          "outcomes": null,
+          "options": [],
+          "notes": null
+        }
+      ],
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Disarm",
+          "Parry",
+          "Trick Shot"
+        ]
+      },
+      "startingRoguishFeats": [
+        "Acrobatics",
+        "Disable Device",
+        "Pick Lock"
+      ],
+      "roguishFeatsChoose": 0,
+      "startingValue": 8,
+      "connections": [
+        "Partner: ____________ and I have seen the wonders of the Woodland together. What makes them a stalwart companion on my travels?",
+        "Peer: ____________ is famous for a discovery of their own. I greatly respect them! What did they discover? How?"
+      ]
     }
   ],
   "notes": {
