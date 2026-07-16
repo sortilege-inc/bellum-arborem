@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advance Woodland — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .loadpane { text-align:center; padding:34px 20px; }
+  .loadpane .big { font-size:44px; margin-bottom:8px; }
+
+  .dash { display:flex; flex-direction:column; gap:18px; }
+  .wtitle { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .wtitle h1 { margin:0; font-size:28px; }
+  .roundpill { font-family:'Bitter',serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--eyrie-dk); background:rgba(47,110,160,.14); border:1px solid rgba(47,110,160,.35); border-radius:20px; padding:3px 11px; }
+
+  /* Map (read-only) */
+  .mapwrap { border:1px solid var(--line); border-radius:var(--radius); padding:6px;
+    background:radial-gradient(120% 120% at 50% 0%, #f0e8ce 0%, #e7d9b6 70%, #ddcaa0 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 8px 18px -14px var(--shadow-deep); overflow:hidden; }
+  svg.woodmap { width:100%; height:auto; display:block; }
+  svg.woodmap .edge { stroke:#8a6f45; stroke-width:4; stroke-linecap:round; opacity:.8; }
+  svg.woodmap .nm { font-family:'Bree Serif',serif; font-size:17px; fill:var(--ink); paint-order:stroke; stroke:#f6efd9; stroke-width:3.5px; stroke-linejoin:round; }
+  svg.woodmap .ico { font-size:26px; }
+  svg.woodmap .mark { font-size:17px; fill:var(--ink); }
+  .map-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--ink-soft); align-items:center; margin-top:10px; }
+  .map-legend span { display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+  .lgdot { width:14px; height:14px; border-radius:50%; display:inline-block; border:1px solid rgba(60,40,20,.35); }
+
+  .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; }
+  .fsum { border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--cream-hi); padding:12px 14px; }
+  .fsum h4 { margin:0 0 6px; font-family:'Bree Serif',serif; font-size:15px; }
+  .fsum .fstat { font-size:13px; color:var(--ink-soft); }
+
+  .factioncard { border:1px solid var(--line); border-radius:var(--radius); background:var(--card); padding:16px 18px; margin-bottom:14px; }
+  .factioncard.pending { opacity:.55; }
+  .factioncard.active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+  .factioncard h3 { margin:0 0 4px; font-family:'Bree Serif',serif; font-size:19px; }
+  .modline { display:flex; justify-content:space-between; font-size:13.5px; padding:3px 0; border-bottom:1px dashed var(--line-soft); }
+  .modline:last-of-type { border-bottom:none; }
+  .modline .mv { font-family:'Bree Serif',serif; }
+  .modline .mv.pos { color:var(--alliance-dk); } .modline .mv.neg { color:var(--rust); }
+  .modtoggle { display:flex; align-items:center; gap:7px; font-size:13.5px; padding:4px 0; cursor:pointer; }
+  .modtoggle input { width:16px; height:16px; }
+  .modtotal { font-family:'Bree Serif',serif; font-size:15px; margin-top:6px; }
+
+  .dice { font-family:'Bitter',serif; font-weight:600; font-size:13px; cursor:pointer; border:1px solid var(--line); background:var(--card); border-radius:6px; padding:6px 12px; color:var(--ink); }
+  .dice.primary { background:linear-gradient(180deg,var(--accent),var(--accent-dk)); color:var(--cream-hi); border-color:var(--accent-dk); }
+  .dice:hover { filter:brightness(1.04); }
+
+  .rollout { display:flex; align-items:center; gap:12px; margin:10px 0; flex-wrap:wrap; }
+  .rollout .big { font-family:'Bree Serif',serif; font-size:30px; color:var(--rust); }
+  .tierbadge { font-family:'Bitter',serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:20px; }
+  .tier-10 { background:rgba(78,124,62,.2); color:var(--alliance-dk); border:1px solid rgba(78,124,62,.45); }
+  .tier-79 { background:rgba(217,114,46,.18); color:var(--marquise-dk); border:1px solid rgba(217,114,46,.45); }
+  .tier-6  { background:rgba(166,55,31,.16); color:var(--rust); border:1px solid rgba(166,55,31,.4); }
+
+  .boonslot { border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:10px 12px; margin:8px 0; }
+  .boonslot .bdesc { font-size:13px; color:var(--ink-soft); margin:5px 0 0; }
+  .boonslot select, .boonslot input[type=text] { margin-top:6px; }
+  label.mini { display:block; font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-soft); margin:8px 0 2px; }
+
+  .log { list-style:none; margin:0; padding:0; }
+  .log li { font-size:13.5px; padding:5px 0; border-bottom:1px solid var(--line-soft); }
+  .log li .who { font-family:'Bree Serif',serif; }
+  .log .round-sep { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent-dk); padding-top:10px; }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="actions">
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      <button class="btn ghost small" id="importBtn">Load Woodland…</button>
+      <button class="btn small" id="exportBtn" disabled>Export JSON</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">Advance the Woodland</p>
+    <p class="subtitle">Bellum Arborem · The war continues</p>
+  </header>
+
+  <div id="app"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/woodland-rules.js"></script>
+<script src="js/advance.js"></script>
+</body>
+</html>

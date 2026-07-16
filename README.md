@@ -24,6 +24,13 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   notoriety), advance stats, and **roll any move** (2d6 + the move's stat, with the strong-hit /
   weak-hit / miss outcome shown) plus a free quick-roll. Save the updated character back to JSON.
 
+- **Advance Woodland** (`advance-woodland.html`) — import a Woodland (from the Woodland Creator) and
+  work the "time passes" rules: roll each non-denizen faction in turn (with the situational
+  modifiers), then take minor/major boons on a hit or suffer a defeat on a miss. Boons and defeats
+  apply to the map (take/lose clearings, build Roosts and industry, revolt, fortify, capture, …), a
+  war log records every turn, and you export the advanced Woodland. Runs on the same
+  `bellum-arborem.woodland` JSON.
+
 More sections to come.
 
 ## Data
@@ -55,10 +62,12 @@ index.html                Landing page (Woodland hub)
 character-creator.html     Character creator app
 woodland-creator.html      Woodland creator app
 play.html                  Play mode (load a character and play)
+advance-woodland.html      Advance Woodland (the "time passes" war loop)
 css/app.css                Shared Root-styled design system
 js/creator.js              Character creator logic
 js/woodland.js             Woodland creator logic
 js/play.js                 Play-mode logic
+js/advance.js              Advance-Woodland logic
 data/root-rules.json       Canonical character ruleset
 data/woodland-rules.json   Canonical Woodland-creation tables
 data/root-rules.js         Generated window.ROOT_RULES wrapper
