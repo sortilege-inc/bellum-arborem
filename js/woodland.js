@@ -128,8 +128,14 @@
   }
   function controlMarks(c) {
     const m = [];
-    if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲'); if (c.sympathy) m.push('•');
+    if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲');
     return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
+  }
+  const SYMPATHY_COLOR = '#4e9a3e';
+  function sympathyDot(c) {
+    if (!c.sympathy) return '';
+    const dx = Math.round(NODE_R * 0.866), dy = Math.round(NODE_R * 0.5); // 2 o'clock on the rim
+    return '<circle cx="' + (c.x + dx) + '" cy="' + (c.y - dy) + '" r="9" fill="' + SYMPATHY_COLOR + '" stroke="#2c5320" stroke-width="2"/>';
   }
 
   function renderMapSvg(opts) {
@@ -140,19 +146,26 @@
       const a = byId[e[0]], b = byId[e[1]]; if (!a || !b) return '';
       return '<line class="edge" data-a="' + e[0] + '" data-b="' + e[1] + '" x1="' + a.x + '" y1="' + a.y + '" x2="' + b.x + '" y2="' + b.y + '"/>';
     }).join('');
+    const control = opts.colorBy === 'control';
     const nodes = state.clearings.map(c => {
       const cc = COMMUNITY_COLOR[c.community] || { fill: '#e4d9bf', stroke: '#8a7657' };
-      const fill = opts.colorBy === 'control' ? controlColor(c) : cc.fill;
-      const stroke = opts.colorBy === 'control' ? '#3b2c1a' : cc.stroke;
+      // Fill always shows the dominant community; a thick faction-colored border shows control.
+      const fill = cc.fill;
+      let stroke = cc.stroke, sw = 2.5;
+      if (control) {
+        const cCol = (c.control && CONTROL_COLOR[c.control]) ? CONTROL_COLOR[c.control] : null;
+        stroke = cCol || '#5a4a30'; sw = cCol ? 6 : 2.5;
+      }
       const sel = opts.interactive && connectSel === c.id;
       const ring = sel ? '<circle class="selring" cx="' + c.x + '" cy="' + c.y + '" r="' + (NODE_R + 6) + '" fill="none" stroke-width="3" stroke-dasharray="5 4"/>' : '';
       const deg = opts.interactive ? '<text class="deg ' + (degree(c.id) >= c.paths ? 'ok' : '') + '" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + degree(c.id) + '/' + c.paths + '</text>' : '';
-      const marks = opts.colorBy === 'control' ? controlMarks(c) : '';
+      const marks = control ? controlMarks(c) : '';
+      const symp = control ? sympathyDot(c) : '';
       return '<g class="node" data-node="' + c.id + '">' + ring +
-        '<circle cx="' + c.x + '" cy="' + c.y + '" r="' + NODE_R + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2.5"/>' +
+        '<circle cx="' + c.x + '" cy="' + c.y + '" r="' + NODE_R + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + sw + '"/>' +
         '<text class="ico" x="' + c.x + '" y="' + (c.y + 1) + '" text-anchor="middle" dominant-baseline="central">' + (COMMUNITY_ICON[c.community] || '') + '</text>' +
         '<text class="nm" x="' + c.x + '" y="' + (c.y + NODE_R + 18) + '" text-anchor="middle">' + esc(c.name) + '</text>' +
-        deg + marks + '</g>';
+        deg + marks + symp + '</g>';
     }).join('');
     return '<svg class="woodmap" viewBox="0 0 ' + VB_W + ' ' + VB_H + '" xmlns="http://www.w3.org/2000/svg">' + edges + nodes + '</svg>';
   }
@@ -756,10 +769,12 @@
     if (state.clearings.length) {
       h += '<div class="mapwrap review">' + renderMapSvg({ interactive: false, colorBy: 'control' }) + '</div>';
       const legendCtrl = [['The Marquisate', CONTROL_COLOR['The Marquisate']], ['The Eyrie Dynasties', CONTROL_COLOR['The Eyrie Dynasties']],
-        ['The Woodland Alliance', CONTROL_COLOR['The Woodland Alliance']], ['Denizen-held', '#b3a07a'], ['Uncontrolled', '#cdbf9f']];
-      h += '<div class="map-legend" style="margin:10px 0 18px">' +
-        legendCtrl.map(l => '<span><span class="lgdot" style="background:' + l[1] + '"></span>' + esc(l[0]) + '</span>').join('') +
-        '<span>★ stronghold</span><span>⌂ Roost</span><span>▲ base</span><span>• sympathy</span></div>';
+        ['The Woodland Alliance', CONTROL_COLOR['The Woodland Alliance']]];
+      h += '<div class="map-legend" style="margin:10px 0 18px"><span style="font-weight:700">Border = control:</span>' +
+        legendCtrl.map(l => '<span><span class="lgdot" style="background:transparent;border:3px solid ' + l[1] + '"></span>' + esc(l[0]) + '</span>').join('') +
+        '<span><span class="lgdot" style="background:transparent;border:2px solid #5a4a30"></span>Denizen-held</span>' +
+        '<span><span class="lgdot" style="background:' + SYMPATHY_COLOR + ';border-color:#2c5320"></span>Sympathy</span>' +
+        '<span>★ stronghold</span><span>⌂ Roost</span><span>▲ base</span></div>';
     }
     h += '<div class="tbl-scroll"><table class="review-tbl"><thead><tr>' +
       '<th>#</th><th>Clearing</th><th>Community</th><th>Paths</th><th>Control</th><th>Marks</th><th>War</th><th>Details</th>' +
