@@ -1004,5 +1004,392 @@
   "factionSelect": {
     "min": 2,
     "max": 9
+  },
+  "expedition": {
+    "note": "Ruins & Expeditions — random ruin generation, layout, the delve moves, and threats of the ruins. Extracted from the R&E 'Ruins & Relics' chapter (ruins.lore).",
+    "generation": {
+      "reshaped": {
+        "name": "Has any other faction reshaped the ruins?",
+        "roll": "2d6",
+        "results": [
+          {
+            "range": "2-7",
+            "text": "No — no faction has reshaped these ruins since they were built."
+          },
+          {
+            "range": "8-9",
+            "text": "Yes — one faction has reshaped these ruins since they were built."
+          },
+          {
+            "range": "10+",
+            "text": "Yes — more than one faction has reshaped the ruins since they were built."
+          }
+        ]
+      },
+      "originalPurpose": {
+        "name": "What were the ruins originally for?",
+        "roll": "1d6 (row) × 1d6 (column)",
+        "grid": [
+          [
+            "Sacred site",
+            "Manufacturing center",
+            "Military outpost"
+          ],
+          [
+            "Royal palace",
+            "Mausoleum",
+            "Monastery"
+          ],
+          [
+            "Trade center",
+            "Laboratory",
+            "Settlement"
+          ]
+        ]
+      },
+      "whyRuin": {
+        "name": "Why is this place a ruin?",
+        "roll": "1d6 (row) × 1d6 (column)",
+        "grid": [
+          [
+            "Earthquake or volcanic activity",
+            "Poison or flammable gas",
+            "Vegetal overgrowth"
+          ],
+          [
+            "Flood",
+            "Structural collapse",
+            "Destructive traps"
+          ],
+          [
+            "Fire",
+            "Monster invasion",
+            "Sinkholes"
+          ]
+        ]
+      },
+      "whoLives": {
+        "name": "Who lives here now?",
+        "roll": "1d6 (row) × 1d6 (column)",
+        "grid": [
+          [
+            "Bandits and thieves",
+            "Historians or scientists",
+            "Colony of monsters"
+          ],
+          [
+            "Mercenaries or treasure hunters",
+            "Ecosystem of 3+ species of monsters",
+            "Unique or bizarre species of monsters"
+          ],
+          [
+            "Fugitives or refugees",
+            "Single terrifying monster",
+            "Band of vagabonds"
+          ]
+        ]
+      }
+    },
+    "layout": {
+      "rooms": {
+        "name": "Are there more rooms?",
+        "roll": "2d6 + rooms already explored on this level",
+        "results": [
+          {
+            "range": "3-4",
+            "text": "Yes — three exits lead to three new rooms.",
+            "exits": 3,
+            "deadEnd": false
+          },
+          {
+            "range": "5-6",
+            "text": "Yes — two exits lead to two new rooms.",
+            "exits": 2,
+            "deadEnd": false
+          },
+          {
+            "range": "7-9",
+            "text": "Yes — only one exit, to one new room.",
+            "exits": 1,
+            "deadEnd": false
+          },
+          {
+            "range": "10-12",
+            "text": "Yes — one exit, to a room that is a dead end.",
+            "exits": 1,
+            "deadEnd": true
+          },
+          {
+            "range": "13+",
+            "text": "No — this room is a dead end.",
+            "exits": 0,
+            "deadEnd": true
+          }
+        ]
+      },
+      "moreLevels": {
+        "name": "Are there more levels?",
+        "roll": "1d6 + the new level",
+        "results": [
+          {
+            "range": "7 or less",
+            "text": "Yes — there are more levels below this one.",
+            "more": true
+          },
+          {
+            "range": "8+",
+            "text": "No — this level is the last one in the ruin.",
+            "more": false
+          }
+        ]
+      },
+      "levelLoot": {
+        "name": "What's on this level?",
+        "roll": "1d6 + the new level",
+        "results": [
+          {
+            "range": "3-6",
+            "value": 5,
+            "items": "1-2",
+            "relics": 0,
+            "text": "5 Value worth of coin and standard equipment, split among 1-2 items."
+          },
+          {
+            "range": "7-9",
+            "value": 10,
+            "items": "2-3",
+            "relics": 0,
+            "text": "10 Value worth of coin and standard equipment, split among 2-3 items."
+          },
+          {
+            "range": "10-13",
+            "value": 10,
+            "items": "2-3",
+            "relics": 1,
+            "text": "10 Value of coin/equipment (split among 2-3 items) and one relic of the Ancients."
+          },
+          {
+            "range": "14",
+            "value": 15,
+            "items": "2-3",
+            "relics": 2,
+            "text": "15 Value of coin/equipment (split among 2-3 items) and two relics of the Ancients."
+          }
+        ]
+      }
+    },
+    "scavengeSpend": [
+      {
+        "die": "1-2",
+        "text": "recover 1-depletion"
+      },
+      {
+        "die": "3-4",
+        "text": "recover 1-depletion and 1-wear"
+      },
+      {
+        "die": "5-6",
+        "text": "clear 2-depletion, or discover an item worth 3-value"
+      }
+    ],
+    "moves": [
+      {
+        "key": "searchForRuins",
+        "name": "Search for Ruins",
+        "phase": "forest",
+        "roll": "2d6 + modifiers",
+        "trigger": "When you travel into the forest to search for ruins, one member of the band rolls for the group.",
+        "modifiers": [
+          {
+            "label": "the band has a detailed map of the area",
+            "v": 1
+          },
+          {
+            "label": "any vagabond has +2 Luck or greater",
+            "v": 1
+          },
+          {
+            "label": "any vagabond has more than 1-injury marked",
+            "v": -1
+          },
+          {
+            "label": "the band doesn't have a local guide",
+            "v": -1
+          }
+        ],
+        "outcomes": {
+          "10+": "You find the site you seek, arriving safely at the gates. You also discover a safe, inviting area nearby: everyone can clear an exhaustion if you make camp before delving deeper.",
+          "7-9": "You find the ruins, but spot a threat of the ruins blocking your path forward — you'll have to find a way past or through it to enter.",
+          "miss": "The ruins find you: a threat of the ruins drags you deeper in before you have time to prepare for your delve."
+        }
+      },
+      {
+        "key": "returnForestRuin",
+        "name": "Return from a Forest Ruin",
+        "phase": "forest",
+        "roll": "2d6 + travel choice",
+        "trigger": "When you return from a forest ruin, the band decides how it travels and one member rolls for the group.",
+        "choices": [
+          {
+            "label": "Calmly and quietly — each member marks 1-depletion",
+            "v": 0
+          },
+          {
+            "label": "Quickly and efficiently — everyone marks 1-exhaustion",
+            "v": 1
+          },
+          {
+            "label": "Fleeing toward safety — everyone marks 2-exhaustion or 2-injury (choice) and 2-wear",
+            "v": 2
+          }
+        ],
+        "outcomes": {
+          "10+": "You reach a nearby clearing with everything you obtained, avoiding the dangers of the forest.",
+          "7-9": "You make it out, but your return is marred by a reminder of the War and its consequences.",
+          "miss": "Something catches up with you before you make it out — or someone you don't trust awaits your return."
+        }
+      },
+      {
+        "key": "pressForward",
+        "name": "Press Forward",
+        "phase": "delve",
+        "roll": "No roll — pay a cost",
+        "trigger": "When you press forward into a new area of the deep ruins, a member of the band must mark 1-depletion; if you can't or won't, a threat of the ruins comes to bear on your band.",
+        "noRoll": true,
+        "cost": "A member of the band marks 1-depletion. If no one can or will, draw a threat of the ruins."
+      },
+      {
+        "key": "delveDeeper",
+        "name": "Delve Deeper",
+        "phase": "delve",
+        "roll": "2d6 + modifiers",
+        "advancesLevel": true,
+        "trigger": "When you delve deeper into a ruin toward a new level through an open pathway, one member of the band rolls for the group.",
+        "modifiers": [
+          {
+            "label": "every member of the band is free of injury",
+            "v": 1
+          },
+          {
+            "label": "the band collectively marks 2-depletion and 2-wear",
+            "v": 1
+          },
+          {
+            "label": "the band is dealing with an active threat or crisis",
+            "v": -2
+          }
+        ],
+        "outcomes": {
+          "10+": "Your band moves to the next level. Your descent is auspicious: you find some natural resources or a secure place to camp (your choice).",
+          "7-9": "Your band moves down to the next level of the deep ruins.",
+          "miss": "You descend, but a serious threat of the ruins comes to bear, trapping you on the lower level until you deal with it or find another route."
+        }
+      },
+      {
+        "key": "scavenge",
+        "name": "Scavenge for Resources",
+        "phase": "delve",
+        "roll": "Roll a pool: (current level) + (adjacent safe chambers) dice",
+        "dicePool": true,
+        "oncePerLevel": true,
+        "trigger": "When your band scavenges for resources in the deep ruins, one member rolls a number of dice equal to the level you are on, plus however many safe chambers are adjacent. Spend each die by its value. (Only once per level.)"
+      },
+      {
+        "key": "makeCamp",
+        "name": "Make Camp in the Ruins",
+        "phase": "delve",
+        "roll": "2d6 + depletion marked + bonuses (max +4 total)",
+        "trigger": "When your band makes camp in the deep ruins, each member marks any amount of depletion, and one member rolls with the total (max +4, including the bonuses below).",
+        "modifiers": [
+          {
+            "label": "there's a useful resource nearby (water, food, etc.)",
+            "v": 1
+          },
+          {
+            "label": "there's shelter or security (caves, stone doors, etc.)",
+            "v": 1
+          },
+          {
+            "label": "a member of the band forgoes any benefits to stand watch",
+            "v": 1
+          }
+        ],
+        "picks": [
+          "You get some sleep — clear an additional exhaustion.",
+          "You have time for makeshift repairs — clear 1-wear.",
+          "You map the area — take an extra die when scavenging this level."
+        ],
+        "outcomes": {
+          "10+": "Each member gets some rest and clears an exhaustion, then picks 2 from the camp benefits.",
+          "7-9": "Each member gets some rest and clears an exhaustion, then picks 1 from the camp benefits.",
+          "miss": "The supplies you spent are wasted as a threat of the ruins suddenly comes to bear; give the GM the watch order and they'll say who first spots the danger."
+        }
+      },
+      {
+        "key": "retreat",
+        "name": "Retreat Back to the Surface",
+        "phase": "delve",
+        "roll": "2d6 + modifiers",
+        "trigger": "When you retreat from the ruins back to the surface, one member of the band rolls for the group.",
+        "modifiers": [
+          {
+            "label": "you can chart a course out through safe rooms",
+            "v": 1
+          },
+          {
+            "label": "each member of the band marks 1-exhaustion",
+            "v": 1
+          },
+          {
+            "label": "the band is retreating in the face of an active threat",
+            "v": -1
+          },
+          {
+            "label": "any member of the band is burdened (over max Load)",
+            "v": -2
+          }
+        ],
+        "outcomes": {
+          "10+": "You scramble back to the surface, emerging to relative safety wherever you first entered the ruins.",
+          "7-9": "One threat of the ruins blocks your escape; you must deal with it before you can claw your way out.",
+          "miss": "You're trapped between an obstacle that blocks your path forward and a threat that won't stop advancing."
+        }
+      }
+    ],
+    "threats": {
+      "level1": {
+        "label": "Level 1 Threats",
+        "note": "Dangerous, but less immediate and rarely focused on the vagabonds themselves.",
+        "list": [
+          "A protective or docile monster appears nearby.",
+          "A group of bandits or soldiers spots the vagabonds.",
+          "A minor natural obstacle — a small fire or cave-in — endangers one vagabond.",
+          "A shift in the ruins reshapes the layout, cutting off paths for the vagabonds.",
+          "Signs appear of a bullheaded or predatory monster living on a lower level."
+        ]
+      },
+      "level23": {
+        "label": "Level 2 or 3 Threats",
+        "note": "The danger ramps up considerably, making the band think carefully about resources and plans.",
+        "list": [
+          "A bullheaded or predatory monster appears nearby.",
+          "Another vagabond exploring the ruins attacks (or steals from) the band.",
+          "A major natural event — a flood, a large cave-in — threatens multiple vagabonds.",
+          "A broken relic of the Ancients endangers one of the vagabonds.",
+          "A trap or puzzle appears in the vagabonds' path with no obvious way around."
+        ]
+      },
+      "level4plus": {
+        "label": "Level 4+ Threats",
+        "note": "Dire and urgent — any wrong move could lead to death… or worse.",
+        "list": [
+          "A predatory monster attacks the band without warning.",
+          "A bullheaded or protective monster attacks the band for intruding.",
+          "A catastrophic collapse or flood threatens the entire band.",
+          "A working relic of the Ancients puts multiple vagabonds in danger.",
+          "A portion of the ruin shifts or transforms, splitting the band apart."
+        ]
+      }
+    }
   }
 }

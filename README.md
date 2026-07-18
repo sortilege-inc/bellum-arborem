@@ -59,6 +59,19 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
 - **Relics** (`relics.html`) — a reference for the five Ruins & Expeditions relics: each shows its Wear
   and Load, its activated abilities, and collapsible lore. Searchable.
 
+- **Ruins & Expeditions** (`expeditions.html`) — the delve tool. **Forge a ruin** with the random
+  generation tables (its original purpose, what ruined it, who lives there now, and whether any
+  faction has reshaped it), each attribute re-rollable, with a notes field. Then **run the delve**:
+  a level tracker with a per-level room map (roll the layout table — 2d6 + rooms explored — for
+  exits and dead ends), an adjacent-safe-chambers counter, a band-resource tracker (depletion /
+  exhaustion / wear / injury), and accumulating treasure (Value and relics rolled per level). Every
+  **delve move** is a card you can roll — Search for Ruins, Return from a Forest Ruin, Press Forward,
+  Delve Deeper (which advances the level and rolls its loot), Scavenge for Resources (rolls a pool of
+  level + safe-chamber dice, each spent by value), Make Camp, and Retreat — with the situational
+  modifiers as checkboxes and the strong/weak/miss outcome shown. A **threats of the ruins**
+  generator draws a level-appropriate threat, and the whole delve autosaves and exports/imports as
+  JSON.
+
 More sections to come.
 
 ## Data
@@ -94,6 +107,7 @@ advance-woodland.html      Advance Woodland (the "time passes" war loop)
 advance-character.html     Advance Character (spend advancements)
 bestiary.html              Bestiary (monster reference + combat tracker)
 relics.html                Relics (artifact reference)
+expeditions.html           Ruins & Expeditions (ruin generator + delve tracker)
 css/app.css                Shared Root-styled design system
 js/creator.js              Character creator logic
 js/woodland.js             Woodland creator logic
@@ -102,6 +116,7 @@ js/advance.js              Advance-Woodland logic
 js/advchar.js              Advance-Character logic
 js/bestiary.js             Bestiary logic
 js/relics.js               Relics logic
+js/expeditions.js          Ruins & Expeditions logic (generator + delve)
 data/root-rules.json       Canonical character ruleset
 data/woodland-rules.json   Canonical Woodland-creation tables
 data/root-rules.js         Generated window.ROOT_RULES wrapper

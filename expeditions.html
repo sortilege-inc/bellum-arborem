@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruins &amp; Expeditions — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .acts { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .dash { display:flex; flex-direction:column; gap:16px; }
+
+  /* Ruin concept card */
+  .ruincard { border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card-lo)); padding:16px 18px; }
+  .ruincard h2 { margin:0 0 10px; font-family:'Bree Serif',serif; font-size:22px; color:var(--rust); }
+  .rgrid { display:grid; grid-template-columns:1fr; gap:8px; }
+  .rrow { display:flex; align-items:flex-start; gap:10px; border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:9px 12px; }
+  .rrow .rq { font-family:'Bitter',serif; font-weight:700; font-size:10.5px; letter-spacing:.8px; text-transform:uppercase; color:var(--ink-faint); margin:0 0 2px; }
+  .rrow .rv { font-family:'Bree Serif',serif; font-size:16px; color:var(--ink); }
+  .rrow .rvv { flex:1; }
+  .rrow .reroll { border:none; background:none; cursor:pointer; color:var(--ink-faint); font-size:15px; padding:2px 4px; }
+  .rrow .reroll:hover { color:var(--accent-dk); }
+  .rnotes { width:100%; margin-top:10px; min-height:56px; resize:vertical; }
+
+  /* Level tracker */
+  .levhead { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .levpill { font-family:'Bree Serif',serif; font-size:20px; color:var(--eyrie-dk); background:rgba(47,110,160,.12); border:1px solid rgba(47,110,160,.35); border-radius:20px; padding:3px 16px; }
+  .levmeta { font-family:'Bitter',serif; font-size:13px; color:var(--ink-soft); }
+  .rooms { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+  .room { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--cream-hi); padding:5px 10px; font-family:'Bitter',serif; font-size:13px; }
+  .room.dead { opacity:.6; border-style:dashed; }
+  .room .rx { font-weight:700; color:var(--eyrie-dk); }
+  .counter { display:inline-flex; align-items:center; gap:8px; }
+  .counter button { width:26px; height:26px; border:1px solid var(--line); border-radius:6px; background:var(--cream-hi); cursor:pointer; font-size:15px; line-height:1; color:var(--ink); }
+  .counter .cval { font-family:'Bree Serif',serif; font-size:17px; min-width:20px; text-align:center; }
+
+  /* Loot */
+  .lootlist { list-style:none; margin:6px 0 0; padding:0; }
+  .lootlist li { display:flex; align-items:baseline; gap:8px; font-size:13.5px; padding:4px 0; border-bottom:1px dashed var(--line-soft); }
+  .lootlist li:last-child { border-bottom:none; }
+  .lootlist .lv { font-family:'Bitter',serif; font-weight:700; font-size:11px; color:var(--ink-faint); white-space:nowrap; }
+  .relicdot { color:var(--eyrie-dk); font-weight:700; }
+
+  /* Move cards */
+  .moves { display:grid; grid-template-columns:1fr; gap:12px; }
+  @media (min-width:680px){ .moves { grid-template-columns:1fr 1fr; } }
+  .move { border:1px solid var(--line); border-radius:var(--radius); background:var(--card); padding:13px 15px; display:flex; flex-direction:column; }
+  .move h4 { margin:0 0 3px; font-family:'Bree Serif',serif; font-size:16.5px; color:var(--accent-dk); }
+  .move .mroll { font-family:'Bitter',serif; font-size:11px; letter-spacing:.4px; color:var(--ink-faint); text-transform:uppercase; margin:0 0 6px; }
+  .move .mtrig { font-size:13px; color:var(--ink-soft); line-height:1.45; margin:0 0 8px; }
+  .mods { display:flex; flex-direction:column; gap:4px; margin:0 0 8px; }
+  .mods label { display:flex; align-items:flex-start; gap:7px; font-size:12.5px; color:var(--ink); line-height:1.35; cursor:pointer; }
+  .mods .mv { font-family:'Bitter',serif; font-weight:700; font-size:11.5px; white-space:nowrap; }
+  .mv.pos { color:var(--good); } .mv.neg { color:var(--bad); }
+  .move .foot { margin-top:auto; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .result { margin-top:9px; border-top:1px solid var(--line-soft); padding-top:9px; }
+  .rolln { font-family:'Bree Serif',serif; font-size:15px; }
+  .rolln .dice { color:var(--ink-faint); font-size:13px; }
+  .tierbadge { display:inline-block; font-family:'Bitter',serif; font-weight:700; font-size:10.5px; letter-spacing:.6px; text-transform:uppercase; padding:2px 9px; border-radius:11px; margin-left:6px; }
+  .tier-10 { background:rgba(78,124,62,.18); color:var(--alliance-dk); }
+  .tier-79 { background:rgba(217,114,46,.18); color:var(--marquise-dk); }
+  .tier-6  { background:rgba(166,55,31,.16); color:var(--rust); }
+  .outcome { font-size:13.5px; line-height:1.5; margin:6px 0 0; }
+  .picks { margin:6px 0 0 16px; font-size:13px; color:var(--ink-soft); }
+  .diepool { display:flex; flex-wrap:wrap; gap:7px; margin:8px 0 0; }
+  .die { display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .die .dn { width:30px; height:30px; border:2px solid var(--line); border-radius:7px; background:var(--cream-hi); display:flex; align-items:center; justify-content:center; font-family:'Bree Serif',serif; font-size:16px; }
+  .die .ds { font-size:10px; color:var(--ink-faint); max-width:64px; text-align:center; line-height:1.2; }
+  .camp-inp { display:flex; align-items:center; gap:8px; margin:0 0 8px; font-size:12.5px; }
+  .camp-inp input { width:52px; }
+
+  /* Threats */
+  .threatbox { border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:12px 14px; margin-top:8px; }
+  .threatbox .tt { font-family:'Bree Serif',serif; font-size:16px; color:var(--rust); }
+  .threatbox .td { font-size:13.5px; line-height:1.5; margin:5px 0 0; }
+  details.ref > summary { cursor:pointer; font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); margin:10px 0 6px; }
+  .tlist { margin:2px 0 0 16px; font-size:13px; color:var(--ink-soft); }
+  .tlist li { margin:2px 0; }
+
+  /* Log */
+  .log { list-style:none; margin:0; padding:0; max-height:280px; overflow-y:auto; }
+  .log li { font-size:13.5px; padding:4px 0; border-bottom:1px dashed var(--line-soft); }
+  .log li.sep { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent-dk); border-bottom:none; padding-top:8px; }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+  .empty { text-align:center; padding:34px 16px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="acts">
+      <button class="btn ghost small" id="importBtn">Import delve</button>
+      <button class="btn ghost small" id="exportBtn">Export delve</button>
+      <button class="btn ghost small" id="resetBtn">New delve</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">Ruins &amp; Expeditions</p>
+    <p class="subtitle">Bellum Arborem · forge a ruin and delve its depths</p>
+  </header>
+
+  <div id="app"></div>
+
+  <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/woodland-rules.js"></script>
+<script src="data/root-rules.js"></script>
+<script src="js/expeditions.js"></script>
+</body>
+</html>
