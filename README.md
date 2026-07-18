@@ -72,6 +72,10 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   generator draws a level-appropriate threat, and the whole delve autosaves and exports/imports as
   JSON.
 
+Every working page has a **Start over** control in its top bar (the Bestiary's is *Clear tracker*,
+the delve's is *New delve*) that discards the page's draft or loaded JSON and returns it to a clean
+state, so you can bail out of a work-in-progress or a loaded character at any point.
+
 More sections to come.
 
 ## Data

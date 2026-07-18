@@ -14,6 +14,7 @@
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
   const STORE_KEY = 'bellum-arborem.woodland.wip';
+  BA.setupReset({ keys: [STORE_KEY], confirm: 'Discard this Woodland and start over?' });
 
   if (!W || !W.tables || !W.tables.dominantCommunity) {
     bodyEl.innerHTML = '<div class="loaderr"><b>Woodland ruleset failed to load.</b> Make sure ' +
@@ -1045,15 +1046,11 @@
     h += '<label class="field" style="margin-top:16px"><span class="lbl">Notes</span><textarea data-notes placeholder="History, contested clearings, anything else.">' + esc(state.notes) + '</textarea></label>';
     h += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">' +
       '<button class="btn" id="dl">⬇ Export Woodland JSON</button>' +
-      '<button class="btn ghost" id="copy">Copy to clipboard</button>' +
-      '<button class="btn ghost" id="reset">Start over</button></div>';
+      '<button class="btn ghost" id="copy">Copy to clipboard</button></div>';
     bodyEl.innerHTML = h;
     const ta = bodyEl.querySelector('[data-notes]'); ta.addEventListener('input', () => { state.notes = ta.value; save(); });
     document.getElementById('dl').addEventListener('click', exportWoodland);
     document.getElementById('copy').addEventListener('click', copyWoodland);
-    document.getElementById('reset').addEventListener('click', () => {
-      if (confirm('Discard this Woodland and start over?')) { state = fresh(); stepIdx = 0; save(); render(); }
-    });
   }
 
   // ---------- Export / Import ----------

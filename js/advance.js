@@ -11,6 +11,7 @@
   const importFile = document.getElementById('importFile');
   const exportBtn = document.getElementById('exportBtn');
   const STORE_KEY = 'bellum-arborem.advance.wip';
+  BA.setupReset({ keys: [STORE_KEY], confirm: 'Discard the loaded Woodland and start over?' });
   const CREATOR_KEY = 'bellum-arborem.woodland.wip';
   const DENIZEN = 'Denizens', UNCONTROLLED = 'Uncontrolled';
   const VB_W = 1000, VB_H = 640, NODE_R = 34;

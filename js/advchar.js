@@ -10,6 +10,7 @@
   const importFile = document.getElementById('importFile');
   const saveBtn = document.getElementById('saveBtn');
   const STORE_KEY = 'bellum-arborem.advchar.wip';
+  BA.setupReset({ keys: [STORE_KEY], confirm: 'Discard the loaded character and start over?' });
   const CREATOR_KEY = 'bellum-arborem.character.wip';
   const PLAY_KEY = 'bellum-arborem.play.wip';
   const STATS = (R && R.stats) || ['Charm', 'Cunning', 'Finesse', 'Luck', 'Might'];

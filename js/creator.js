@@ -12,6 +12,7 @@
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
   const STORE_KEY = 'bellum-arborem.character.wip';
+  BA.setupReset({ keys: [STORE_KEY], confirm: 'Discard this character and start over?' });
 
   // ---- Guard: rules must load ----
   if (!R || !Array.isArray(R.playbooks) || !R.playbooks.length) {
@@ -669,17 +670,11 @@
       '<textarea data-k="notes" placeholder="Anything else to remember.">' + esc(state.notes) + '</textarea></label>';
     h += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">' +
       '<button class="btn" id="dl">⬇ Export character JSON</button>' +
-      '<button class="btn ghost" id="copy">Copy to clipboard</button>' +
-      '<button class="btn ghost" id="reset">Start over</button></div>';
+      '<button class="btn ghost" id="copy">Copy to clipboard</button></div>';
     bodyEl.innerHTML = h;
     bindFields();
     document.getElementById('dl').addEventListener('click', exportChar);
     document.getElementById('copy').addEventListener('click', copyChar);
-    document.getElementById('reset').addEventListener('click', () => {
-      if (confirm('Discard this character and start over?')) {
-        state = newCharacter(); exportBtn.disabled = true; stepIdx = 0; save(); render();
-      }
-    });
   }
 
   function row(dt, dd) { return '<dt>' + esc(dt) + '</dt><dd>' + esc(dd) + '</dd>'; }

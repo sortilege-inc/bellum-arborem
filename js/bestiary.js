@@ -8,6 +8,7 @@
   const app = document.getElementById('app');
   const searchEl = document.getElementById('search');
   const STORE_KEY = 'bellum-arborem.bestiary.wip';
+  BA.setupReset({ keys: [STORE_KEY], label: 'Clear tracker', confirm: 'Clear the combat tracker?' });
   const MONSTERS = (R && R.monsters) || [];
   const TRACK_ORDER = ['injury', 'exhaustion', 'wear', 'morale'];
 

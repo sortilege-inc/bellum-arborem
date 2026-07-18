@@ -38,6 +38,30 @@
     rd.readAsText(file);
   }
 
+  // ---------- universal "start over" ----------
+  // Inject a reset button into the page's topbar that clears this page's saved data and reloads,
+  // so any page with a draft or a loaded JSON can be reset from one consistent place.
+  function setupReset(opts) {
+    opts = opts || {};
+    if (document.getElementById('ba-reset')) return;
+    const box = document.querySelector('.topbar .actions') ||
+                document.querySelector('.topbar .acts') ||
+                document.querySelector('.topbar');
+    if (!box) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'ba-reset';
+    btn.className = 'btn ghost small';
+    btn.textContent = opts.label || 'Start over';
+    btn.addEventListener('click', () => {
+      if (!confirm(opts.confirm || 'Start over? This clears the data currently on this page.')) return;
+      (opts.keys || []).forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+      if (typeof opts.onReset === 'function') opts.onReset();
+      else location.reload();
+    });
+    box.appendChild(btn);
+  }
+
   // ---------- keyboard accessibility ----------
   // The app renders many selectable controls as <div>/<span> with click handlers.
   // Make them focusable and Enter/Space-activatable, and reflect toggle state via aria-pressed.
@@ -94,7 +118,7 @@
   else initA11y();
 
   // ---------- exports ----------
-  window.BA = { esc, d6, r2d6, fmt, toast, announce, downloadJSON, readJSONFile };
+  window.BA = { esc, d6, r2d6, fmt, toast, announce, downloadJSON, readJSONFile, setupReset };
   // Convenience globals (per-page scripts may still define their own locals, which shadow these).
   window.esc = esc; window.d6 = d6; window.r2d6 = r2d6; window.fmt = fmt; window.toast = toast;
 })();
