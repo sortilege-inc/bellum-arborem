@@ -52,6 +52,20 @@
       "blurb": "Crows for hire whose scattered agents hatch plots in clearings across the Woodland.",
       "marker": "plot",
       "expansion": true
+    },
+    {
+      "key": "hundreds",
+      "name": "The Hundreds",
+      "blurb": "A mass uprising of angry denizens under the Lord of the Hundreds — spreading mobs, seizing hoards, and toppling the powers that be.",
+      "marker": "stronghold",
+      "expansion": true
+    },
+    {
+      "key": "keepers",
+      "name": "The Keepers in Iron",
+      "blurb": "Insular delvers who raise waystations beside the ruins, sending cadres below to recover the relics of the Ancients.",
+      "marker": "waystation",
+      "expansion": true
     }
   ],
   "descriptions": {
@@ -72,7 +86,11 @@
     "lizard": "Roll the Outcast Table for the most downtrodden denizen community — the one most open to the Cult. Give the Lizard Cult presence in two clearings (chosen at random) where that community dominates. Then place a garden and give the Lizard Cult control in a corner of the Woodland — the corner opposite the Marquisate stronghold or an Eyrie Roost if possible; if both are in play, either of the other two corners; if neither, a random corner.",
     "riverfolk": "The Riverfolk enter by water. Mark which clearings sit on a river or lake, then rank every clearing by how many of these are true: on a river/lake; 3+ paths; 4+ paths; a valuable resource in or near it. The Riverfolk gain presence in the four clearings with the most \"yeses.\" In the single clearing with the most, they gain control and a trading post (break ties randomly; skip a clearing that can't be theirs, e.g. the Marquisate stronghold or an Eyrie Roost).",
     "duchy": "The Grand Duchy surfaces with a tunnel and an invading force (granting control) in a corner — see the Duchy Invasion Table for which corner, based on the factions in play. Then, for each clearing directly connected to that starting clearing, roll 2d6; on a 10+ the Duchy takes control. Finally, add a tunnel to one random clearing the Duchy does not control.",
-    "corvid": "The Corvid Conspiracy begins with agents scattered wide. Give four random clearings Corvid Conspiracy presence — none of them starts with Corvid control."
+    "corvid": "The Corvid Conspiracy begins with agents scattered wide. Give four random clearings Corvid Conspiracy presence — none of them starts with Corvid control.",
+    "revisedOrder": "With the Ruins & Expeditions factions, the full setup order is: Marquisate, Eyrie Dynasties, Woodland Alliance, Lizard Cult, Riverfolk Company, Grand Duchy, Corvid Conspiracy, the Hundreds, the Keepers in Iron, then Denizens. Skip any faction not in play.",
+    "ruins": "Every Woodland has at least two known ruins, plus more found randomly. After the map is drawn but before assigning faction control, roll 1d6 and halve it (round up) for how many ADDITIONAL ruins dot the Woodland (so 3–5 in total). Each ruin sits at or near a random clearing. Ruins matter for the Keepers in Iron (who build waystations beside them) and for delving expeditions.",
+    "hundreds": "The Hundreds begin in a corner clearing (opposite other corner-focused factions where possible): their stronghold, control, presence, a mob, warriors, and a hoard of Value 30. Then, for each other clearing, roll on the Mob Table (2d6 minus the paths between it and the stronghold) to see if a mob of angry dissenters takes hold. For each mob clearing, roll on the Hoard Table to see what the mob has seized. The Hundreds' stronghold and its control survive the Denizen step.",
+    "keepers": "The Keepers in Iron begin with a waystation beside a ruin (add ruins first if the map has none). Place a waystation in a clearing at or adjacent to a ruin and roll the Keepers' Control table for it; then roll the Second Waystation table for a second waystation beside the next-nearest ruin. The Keepers usually hold presence, not control — they want relics, not clearings. Their waystations survive the Denizen step (control may not)."
   },
   "tables": {
     "dominantCommunity": {
@@ -547,6 +565,109 @@
           "corner": "A random corner"
         }
       ]
+    },
+    "ruins": {
+      "base": 2,
+      "extraDie": "1d6",
+      "extraHalfRoundUp": true
+    },
+    "mob": {
+      "die": "2d6-dist",
+      "note": "Roll 2d6 minus the paths between the clearing and the Hundreds stronghold.",
+      "ranges": [
+        {
+          "min": -99,
+          "max": 6,
+          "result": "No mob",
+          "mob": false
+        },
+        {
+          "min": 7,
+          "max": 9,
+          "result": "A mob forms only if another faction controls the clearing",
+          "mob": "ifEnemy"
+        },
+        {
+          "min": 10,
+          "max": 99,
+          "result": "A mob forms",
+          "mob": true
+        }
+      ]
+    },
+    "hoard": {
+      "die": "2d6",
+      "ranges": [
+        {
+          "min": 0,
+          "max": 6,
+          "result": "No hoard",
+          "destroy": 0,
+          "value": 0
+        },
+        {
+          "min": 7,
+          "max": 9,
+          "result": "Destroy up to two enemy structures; hoard Value 5 per structure destroyed (none if no structures)",
+          "destroy": 2,
+          "perStructure": 5,
+          "base": 0
+        },
+        {
+          "min": 10,
+          "max": 12,
+          "result": "Destroy all enemy structures; hoard Value 10 + 5 per structure destroyed",
+          "destroy": 99,
+          "perStructure": 5,
+          "base": 10
+        }
+      ]
+    },
+    "keepersControl": {
+      "die": "2d6",
+      "ranges": [
+        {
+          "min": 2,
+          "max": 6,
+          "result": "Not in control",
+          "control": "no"
+        },
+        {
+          "min": 7,
+          "max": 9,
+          "result": "In control only if the clearing is uncontrolled",
+          "control": "ifUncontrolled"
+        },
+        {
+          "min": 10,
+          "max": 12,
+          "result": "In control",
+          "control": "yes"
+        }
+      ]
+    },
+    "secondWaystation": {
+      "die": "2d6",
+      "ranges": [
+        {
+          "min": 2,
+          "max": 6,
+          "result": "No second waystation",
+          "place": "no"
+        },
+        {
+          "min": 7,
+          "max": 9,
+          "result": "A second waystation only if they control the first waystation's clearing",
+          "place": "ifControlFirst"
+        },
+        {
+          "min": 10,
+          "max": 12,
+          "result": "A second waystation is placed",
+          "place": "yes"
+        }
+      ]
     }
   },
   "factionRoll": {
@@ -597,7 +718,9 @@
       "The Lizard Cult": "2+ gardens",
       "The Riverfolk Company": "3+ trading posts",
       "The Grand Duchy": "2+ clearings and at least one market and one citadel",
-      "The Corvid Conspiracy": "plots in 3+ clearings"
+      "The Corvid Conspiracy": "plots in 3+ clearings",
+      "The Hundreds": "3+ mobs, or any hoard",
+      "The Keepers in Iron": "2+ waystations"
     },
     "results": {
       "hit": "Victory — choose one minor boon.",
@@ -745,6 +868,42 @@
         ],
         "needs": null,
         "description": "Remove all plots from all clearings the faction controls."
+      },
+      {
+        "key": "inciteMob",
+        "name": "Incite mob",
+        "factions": [
+          "The Hundreds"
+        ],
+        "needs": "adjacentToMob",
+        "description": "Add a Hundreds mob to any clearing adjacent to a clearing with a mob or the Hundreds stronghold."
+      },
+      {
+        "key": "buildHoard",
+        "name": "Build hoard",
+        "factions": [
+          "The Hundreds"
+        ],
+        "needs": "mobTarget",
+        "description": "Roll 1d6, halve (round up); destroy that many enemy structures (non-fortifications first) and build a hoard worth 5x that (or a Value-5 hoard if there are none). That clearing can't build a hoard again until it recovers."
+      },
+      {
+        "key": "sendCadre",
+        "name": "Send cadre",
+        "factions": [
+          "The Keepers in Iron"
+        ],
+        "needs": "anyTarget",
+        "description": "Add Keepers in Iron presence to any clearing."
+      },
+      {
+        "key": "moveWaystation",
+        "name": "Move waystation",
+        "factions": [
+          "The Keepers in Iron"
+        ],
+        "needs": "keepersPresenceNoWaystation",
+        "description": "Move a Keepers waystation to another clearing with Keepers presence."
       }
     ],
     "majorBoons": [
@@ -801,6 +960,33 @@
         ],
         "needs": "plotTarget",
         "description": "Bring a plot to fruition, giving the Conspiracy control of the clearing (the plot remains active)."
+      },
+      {
+        "key": "wildUprising",
+        "name": "Wild uprising",
+        "factions": [
+          "The Hundreds"
+        ],
+        "needs": "mobHoardTarget",
+        "description": "A full uprising in a clearing with a mob and a hoard: the Hundreds take control, add warriors, and remove all other faction structures. The hoard is sent back to the stronghold."
+      },
+      {
+        "key": "establishWaystation",
+        "name": "Establish waystation",
+        "factions": [
+          "The Keepers in Iron"
+        ],
+        "needs": "keepersPresenceNoWaystation",
+        "description": "Add a Keepers waystation to a clearing with Keepers presence that has no waystation yet."
+      },
+      {
+        "key": "discoverRuins",
+        "name": "Discover ruins",
+        "factions": [
+          "The Keepers in Iron"
+        ],
+        "needs": "waystationTarget",
+        "description": "In a Keepers waystation clearing with the fewest proximate ruins, discover a new ruin — add a ruin near that clearing."
       }
     ],
     "industryTypes": [
@@ -817,6 +1003,6 @@
   },
   "factionSelect": {
     "min": 2,
-    "max": 7
+    "max": 9
   }
 }

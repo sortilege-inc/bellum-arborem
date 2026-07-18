@@ -17,11 +17,13 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
 - **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland": roll the tables clearing
   by clearing (dominant community, paths, name), then **draw the map on an interactive SVG canvas** —
   click two clearings to link a path (each node tracks paths-drawn vs. its rolled number), drag to
-  rearrange. Choose 2–7 factions (the 3 core plus the 4 Travelers & Outsiders factions) and run each
-  one's placement pass in setup order: Marquisate → Eyrie → Woodland Alliance → Lizard Cult →
-  Riverfolk → Grand Duchy → Corvid → Denizens. The core passes read each clearing's distance straight
-  from the drawn map; the T&O factions add **presence** (a foothold short of control) and their own
-  structures (gardens, trading posts, tunnels). Rivers/lakes are simplified to an "on water" toggle.
+  rearrange. Choose 2–9 factions (the 3 core, 4 Travelers & Outsiders, and 2 Ruins & Expeditions) and
+  run each one's placement pass in setup order: Marquisate → Eyrie → Woodland Alliance → Lizard Cult →
+  Riverfolk → Grand Duchy → Corvid → Hundreds → Keepers → Denizens. The core passes read each clearing's
+  distance from the drawn map; the T&O factions add **presence** and structures (gardens, trading posts,
+  tunnels); the R&E factions add **ruins** (a first-class map element placed in a Ruins step), the
+  Hundreds' mobs/hoards/warriors, and the Keepers' waystations beside the ruins. Rivers/lakes are
+  simplified to an "on water" toggle.
   Then flesh-out (inhabitants/buildings/problems). The Review step draws the finished map colored by
   faction control with structure glyphs. Export/import the Woodland (map layout included) as JSON.
 

@@ -74,9 +74,11 @@
       sympathy: false, contested: false,
       distMarq: '', distRoost: '',   // manual override for faction distance (blank = auto from map)
       allianceState: null,
-      presence: [],             // faction names with presence (Lizard / Riverfolk / Corvid)
-      structures: [],           // garden, trading post, tunnel, market, citadel, plot, …
+      presence: [],             // faction names with presence (Lizard / Riverfolk / Corvid / Keepers / Hundreds)
+      structures: [],           // garden, trading post, tunnel, market, citadel, plot, Mob, Waystation, Warriors, …
       onWater: false,           // sits on a river or lake (Riverfolk criterion)
+      ruin: false,              // a ruin sits at or near this clearing (R&E)
+      hoard: 0,                 // Hundreds hoard Value here (0 = none)
       war: null, warFactions: '',
       inhabitants: [], buildings: [], problems: [],
       _roll: {}
@@ -124,17 +126,23 @@
     Fox: { fill: '#eecaa4', stroke: '#b5623a' }
   };
   const COMMUNITY_ICON = { Rabbit: '🐰', Mouse: '🐭', Fox: '🦊' };
-  const CONTROL_COLOR = { 'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054' };
+  const CONTROL_COLOR = {
+    'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054',
+    'The Lizard Cult': '#c46a8f', 'The Riverfolk Company': '#3fb0a4', 'The Grand Duchy': '#9a7bd0',
+    'The Corvid Conspiracy': '#555b63', 'The Hundreds': '#b5462f', 'The Keepers in Iron': '#7d7a6a'
+  };
   function controlColor(c) {
     if (c.control && CONTROL_COLOR[c.control]) return CONTROL_COLOR[c.control];
     if (c.control === UNCONTROLLED) return '#cdbf9f';
     return '#b3a07a'; // denizen-held / unrolled
   }
-  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
+  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Mob': '‡', 'Waystation': '⌘', 'Warriors': '⚔', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
   function controlMarks(c) {
     const m = [];
+    if (c.ruin) m.push('▨');
     if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲');
     (c.structures || []).forEach(s => m.push(STRUCT_GLYPH[s] || '⚒'));
+    if (c.hoard) m.push('◈');
     return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
   }
   const SYMPATHY_COLOR = '#4e9a3e';
@@ -245,7 +253,9 @@
       { id: 'factions', label: 'Factions', render: renderFactions, valid: () => state.factions.length >= FSEL.min && state.factions.length <= FSEL.max },
       { id: 'map', label: 'Map', render: renderMap, valid: () => state.clearings.length === W.mapSize }
     ];
-    // Setup order (T&O): Marquisate, Eyrie, Alliance, Lizard, Riverfolk, Grand Duchy, Corvid, Denizens
+    // Ruins are placed after the map, before faction control (needed for the Keepers + expeditions)
+    if (selected('keepers') || anyRuin()) s.push({ id: 'ruins', label: 'Ruins', render: renderRuins, valid: () => true });
+    // Setup order: Marquisate, Eyrie, Alliance, Lizard, Riverfolk, Grand Duchy, Corvid, Hundreds, Keepers, Denizens
     if (selected('marquisate')) s.push({ id: 'marquisate', label: 'Marquisate', render: renderMarquisate, valid: () => controlledBy('The Marquisate').length > 0 });
     if (selected('eyrie')) s.push({ id: 'eyrie', label: 'Eyrie', render: renderEyrie, valid: () => controlledBy('The Eyrie Dynasties').length > 0 });
     if (selected('alliance')) s.push({ id: 'alliance', label: 'Alliance', render: renderAlliance, valid: () => true });
@@ -253,6 +263,8 @@
     if (selected('riverfolk')) s.push({ id: 'riverfolk', label: 'Riverfolk', render: renderRiverfolk, valid: () => controlledBy('The Riverfolk Company').length > 0 });
     if (selected('duchy')) s.push({ id: 'duchy', label: 'Grand Duchy', render: renderDuchy, valid: () => controlledBy('The Grand Duchy').length > 0 });
     if (selected('corvid')) s.push({ id: 'corvid', label: 'Corvid', render: renderCorvid, valid: () => true });
+    if (selected('hundreds')) s.push({ id: 'hundreds', label: 'Hundreds', render: renderHundreds, valid: () => controlledBy('The Hundreds').length > 0 });
+    if (selected('keepers')) s.push({ id: 'keepers', label: 'Keepers', render: renderKeepers, valid: () => true });
     s.push({ id: 'denizens', label: 'Denizens', render: renderDenizens, valid: () => true });
     s.push({ id: 'flesh', label: 'Flesh out', render: renderFlesh, valid: () => true });
     s.push({ id: 'review', label: 'Review', render: renderReview, valid: () => true });
@@ -817,6 +829,118 @@
       '</select></label>';
   }
 
+  // ---------- Ruins (R&E) ----------
+  function anyRuin() { return state.clearings.some(c => c.ruin); }
+  function ruinIds() { return state.clearings.filter(c => c.ruin).map(c => c.id); }
+  function adjacentToRuin(c) { return c.ruin || neighborIds(c.id).some(id => { const n = clearingById(id); return n && n.ruin; }); }
+  function renderRuins() {
+    const rt = W.tables.ruins || { base: 2 };
+    let h = heading('Ruins of the Ancients', W.descriptions.ruins,
+      'Ruins matter for the Keepers in Iron and for expeditions. Roll to scatter them, then tap any clearing to add or remove a ruin.');
+    h += '<div style="margin-bottom:12px"><button class="dice primary" data-ruin-roll>🎲 Roll & scatter ruins (2 + ½·1d6)</button>' +
+      '<span class="small muted" style="margin-left:10px">' + ruinIds().length + ' ruin' + (ruinIds().length === 1 ? '' : 's') + ' placed</span></div>';
+    h += '<div class="clist">';
+    state.clearings.forEach((c, i) => {
+      h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span><span class="dcount">' + esc(c.community) + '</span>' +
+        '<label class="modtoggle" style="margin-left:auto;cursor:pointer"><input type="checkbox" data-ruin="' + i + '"' + (c.ruin ? ' checked' : '') + '> ruin here</label></div>';
+    });
+    h += '</div>';
+    bodyEl.innerHTML = h;
+    document.querySelector('[data-ruin-roll]').addEventListener('click', () => {
+      const extra = Math.ceil((d6()) / 2), total = (rt.base || 2) + extra;
+      state.clearings.forEach(c => c.ruin = false);
+      randomPick(state.clearings, Math.min(total, state.clearings.length)).forEach(c => c.ruin = true);
+      toast('Placed ' + total + ' ruins'); render();
+    });
+    bodyEl.querySelectorAll('[data-ruin]').forEach(el => el.addEventListener('change', () => { state.clearings[+el.getAttribute('data-ruin')].ruin = el.checked; save(); render(); }));
+  }
+
+  // ---------- Eighth: The Hundreds ----------
+  function renderHundreds() {
+    let h = heading('Eighth: the Hundreds', W.descriptions.hundreds, W.descriptions.woodlandCorner);
+    h += cornerRoller('hundreds', '');
+    h += anchorSelect('hundredsStrong', 'Stronghold clearing (control + mob + warriors + hoard 30, in a corner)', c => c.stronghold && c.control === 'The Hundreds');
+    const strong = state.clearings.find(c => c.stronghold && c.control === 'The Hundreds');
+    if (strong) {
+      const distMap = bfsFrom([strong.id]);
+      h += '<p class="rule-note">For each other clearing, roll the Mob Table (2d6 − paths from the stronghold). A mob on 10+, or on 7–9 if another faction holds it. Then roll a Hoard for each mob.</p><div class="clist">';
+      state.clearings.forEach((c, i) => {
+        if (c === strong) return;
+        const auto = distMap[c.id], mob = c._roll.mob, hoard = c._roll.hoard;
+        h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
+          '<span class="dcount">' + (auto != null ? auto + ' away' : 'unlinked') + '</span>' +
+          '<button class="dice" data-hmob="' + i + '">🎲 Mob</button>' +
+          (mob ? '<span class="badge ' + (mob.placed ? 'yes' : 'no') + '">' + mob.roll + ' → ' + (mob.placed ? 'mob' : 'none') + '</span>' : '') +
+          (hasStruct(c, 'Mob') ? '<button class="dice" data-hhoard="' + i + '">🎲 Hoard</button>' : '') +
+          (hoard ? '<span class="badge ' + (hoard.value ? 'yes' : 'no') + '">' + hoard.roll + ' → ' + (hoard.value ? 'hoard ' + hoard.value : 'none') + '</span>' : '') + '</div>';
+      });
+      h += '</div>';
+    }
+    bodyEl.innerHTML = h;
+    wireCorner();
+    document.getElementById('hundredsStrong').addEventListener('change', function () {
+      state.clearings.forEach(c => { if (c.stronghold && c.control === 'The Hundreds') { c.stronghold = false; c.control = null; c.hoard = 0; removeStruct(c, 'Mob'); removeStruct(c, 'Warriors'); removePresence(c, 'The Hundreds'); } });
+      if (this.value !== '') { const c = state.clearings[+this.value]; c.stronghold = true; c.control = 'The Hundreds'; c.hoard = 30; addStruct(c, 'Mob'); addStruct(c, 'Warriors'); addPresence(c, 'The Hundreds'); }
+      render();
+    });
+    bodyEl.querySelectorAll('[data-hmob]').forEach(el => el.addEventListener('click', () => {
+      const c = state.clearings[+el.getAttribute('data-hmob')];
+      const dist = bfsFrom([strong.id])[c.id]; const roll = r2d6() - (dist != null ? dist : 0);
+      const row = fromRanges(W.tables.mob.ranges, roll);
+      const placed = row.mob === true || (row.mob === 'ifEnemy' && isFactionControl(c.control) && c.control !== 'The Hundreds');
+      if (placed) addStruct(c, 'Mob'); else { removeStruct(c, 'Mob'); c.hoard = 0; c._roll.hoard = null; }
+      c._roll.mob = { roll, placed }; render();
+    }));
+    bodyEl.querySelectorAll('[data-hhoard]').forEach(el => el.addEventListener('click', () => {
+      const c = state.clearings[+el.getAttribute('data-hhoard')], roll = r2d6(), row = fromRanges(W.tables.hoard.ranges, roll);
+      const enemyStructs = (c.structures || []).filter(s => ['Sawmill', 'Workshop', 'Recruiting post', 'Market', 'Citadel', 'Garden', 'Trading post', 'Tunnel'].indexOf(s) >= 0);
+      const destroyed = Math.min(row.destroy || 0, enemyStructs.length);
+      let value = 0;
+      if (row.perStructure != null) { value = (row.base || 0) + destroyed * row.perStructure; if (!enemyStructs.length && !row.base) value = 0; }
+      for (let k = 0; k < destroyed; k++) removeStruct(c, enemyStructs[k]);
+      c.hoard = value; c._roll.hoard = { roll, value }; render();
+    }));
+  }
+
+  // ---------- Ninth: The Keepers in Iron ----------
+  function keepersControlRoll(c) {
+    const roll = r2d6(), row = fromRanges(W.tables.keepersControl.ranges, roll);
+    let took = false;
+    if (row.control === 'yes') took = true;
+    else if (row.control === 'ifUncontrolled') took = !isFactionControl(c.control);
+    if (took) c.control = 'The Keepers in Iron';
+    return { roll, took };
+  }
+  function renderKeepers() {
+    let h = heading('Ninth: the Keepers in Iron', W.descriptions.keepers, W.descriptions.controlVsPresence);
+    if (!anyRuin()) { h += '<p class="rule-note" style="color:var(--rust)">The Keepers need ruins. Add some in the Ruins step first.</p>'; bodyEl.innerHTML = h; return; }
+    h += anchorSelect('keepersWay1', 'First waystation (a clearing at or adjacent to a ruin)', c => c.control === 'The Keepers in Iron' || hasStruct(c, 'Waystation'));
+    const eligible = state.clearings.filter(adjacentToRuin);
+    h += '<p class="small muted">Eligible (by a ruin): ' + (eligible.map(c => esc(c.name)).join(', ') || '—') + '</p>';
+    const ways = state.clearings.filter(c => hasStruct(c, 'Waystation'));
+    if (ways.length) {
+      h += '<p class="eyebrow" style="margin:14px 0 6px">Second waystation</p>' +
+        '<button class="dice" data-keepers-second>🎲 Roll Second Waystation table</button>';
+      if (state._keepersSecond) h += '<span class="badge ' + (state._keepersSecond.place ? 'yes' : 'no') + '" style="margin-left:8px">' + state._keepersSecond.roll + ' → ' + (state._keepersSecond.place ? 'place a 2nd' : 'no 2nd') + '</span>';
+      if (state._keepersSecond && state._keepersSecond.place) h += anchorSelect('keepersWay2', 'Second waystation clearing (by another ruin)', c => false);
+    }
+    h += '<p class="small muted" style="margin-top:10px">Waystations: ' + (ways.map(c => esc(c.name) + (c.control === 'The Keepers in Iron' ? ' (control)' : '')).join(', ') || '—') + '</p>';
+    bodyEl.innerHTML = h;
+    document.getElementById('keepersWay1').addEventListener('change', function () {
+      state.clearings.forEach(c => { if (hasStruct(c, 'Waystation') && !c._keepersSecondWay) { removeStruct(c, 'Waystation'); removePresence(c, 'The Keepers in Iron'); if (c.control === 'The Keepers in Iron') c.control = null; } });
+      if (this.value !== '') { const c = state.clearings[+this.value]; addStruct(c, 'Waystation'); addPresence(c, 'The Keepers in Iron'); c._roll.keepers = keepersControlRoll(c); }
+      render();
+    });
+    const sb = document.querySelector('[data-keepers-second]');
+    if (sb) sb.addEventListener('click', () => { const roll = r2d6(), row = fromRanges(W.tables.secondWaystation.ranges, roll); const first = state.clearings.find(c => hasStruct(c, 'Waystation')); const place = row.place === 'yes' || (row.place === 'ifControlFirst' && first && first.control === 'The Keepers in Iron'); state._keepersSecond = { roll, place }; render(); });
+    const w2 = document.getElementById('keepersWay2');
+    if (w2) w2.addEventListener('change', function () {
+      state.clearings.forEach(c => { if (c._keepersSecondWay) { c._keepersSecondWay = false; removeStruct(c, 'Waystation'); removePresence(c, 'The Keepers in Iron'); if (c.control === 'The Keepers in Iron') c.control = null; } });
+      if (this.value !== '') { const c = state.clearings[+this.value]; c._keepersSecondWay = true; addStruct(c, 'Waystation'); addPresence(c, 'The Keepers in Iron'); c._roll.keepers = keepersControlRoll(c); }
+      render();
+    });
+  }
+
   // ---------- Step: Denizens ----------
   function denizenEligible(c) {
     if (c.stronghold || c.roost || c.base) return false;
@@ -906,20 +1030,19 @@
       (state.corner.eyrie ? ' · Eyrie corner: ' + esc(state.corner.eyrie) : '') + '</p>';
     if (state.clearings.length) {
       h += '<div class="mapwrap review">' + renderMapSvg({ interactive: false, colorBy: 'control' }) + '</div>';
-      const legendCtrl = [['The Marquisate', CONTROL_COLOR['The Marquisate']], ['The Eyrie Dynasties', CONTROL_COLOR['The Eyrie Dynasties']],
-        ['The Woodland Alliance', CONTROL_COLOR['The Woodland Alliance']]];
+      const inPlay = (state.factions || []).filter(f => CONTROL_COLOR[f]);
       h += '<div class="map-legend" style="margin:10px 0 18px"><span style="font-weight:700">Border = control:</span>' +
-        legendCtrl.map(l => '<span><span class="lgdot" style="background:transparent;border:3px solid ' + l[1] + '"></span>' + esc(l[0]) + '</span>').join('') +
+        inPlay.map(f => '<span><span class="lgdot" style="background:transparent;border:3px solid ' + CONTROL_COLOR[f] + '"></span>' + esc(f) + '</span>').join('') +
         '<span><span class="lgdot" style="background:transparent;border:2px solid #5a4a30"></span>Denizen-held</span>' +
         '<span><span class="lgdot" style="background:' + SYMPATHY_COLOR + ';border-color:#2c5320"></span>Sympathy</span>' +
-        '<span>★ stronghold</span><span>⌂ Roost</span><span>▲ base</span></div>';
+        '<span>▨ ruin · ★ stronghold · ⌂ Roost · ▲ base · ‡ mob · ◈ hoard · ⌘ waystation · ⚔ warriors · ❀ garden · ⚑ post · ◎ tunnel · $ market · ▣ citadel · ✦ plot</span></div>';
     }
     h += '<div class="tbl-scroll"><table class="review-tbl"><thead><tr>' +
       '<th>#</th><th>Clearing</th><th>Community</th><th>Paths</th><th>Control</th><th>Marks</th><th>War</th><th>Details</th>' +
       '</tr></thead><tbody>';
     state.clearings.forEach((c, i) => {
-      const marks = [c.stronghold ? 'stronghold' : '', c.roost ? 'Roost' : '', c.base ? 'base' : '', (c.structures || []).join(', '),
-        c.sympathy ? 'sympathy' : '', c.contested ? 'contested' : '', (c.presence || []).length ? 'presence: ' + c.presence.map(f => f.replace('The ', '')).join('/') : ''].filter(Boolean).join(', ');
+      const marks = [c.ruin ? 'ruin' : '', c.stronghold ? 'stronghold' : '', c.roost ? 'Roost' : '', c.base ? 'base' : '', (c.structures || []).join(', '),
+        c.hoard ? 'hoard ' + c.hoard : '', c.sympathy ? 'sympathy' : '', c.contested ? 'contested' : '', (c.presence || []).length ? 'presence: ' + c.presence.map(f => f.replace('The ', '')).join('/') : ''].filter(Boolean).join(', ');
       const details = [c.inhabitants.join(', '), c.buildings.join(', '), c.problems.join(', ')].filter(Boolean).join(' · ');
       h += '<tr><td>' + (i + 1) + '</td><td><b>' + esc(c.name) + '</b></td><td>' + esc(c.community) + '</td><td>' + c.paths + '</td>' +
         '<td>' + esc(c.control || DENIZEN) + '</td><td>' + esc(marks || '—') + '</td><td>' + esc(c.war || '—') + '</td><td>' + esc(details || '—') + '</td></tr>';
@@ -968,7 +1091,7 @@
     if (!Array.isArray(state.edges)) state.edges = [];
     const ids = new Set(state.clearings.map(c => c.id));
     state.edges = state.edges.filter(e => Array.isArray(e) && ids.has(e[0]) && ids.has(e[1]));
-    state.clearings.forEach(c => { if (!c._roll) c._roll = {}; ['inhabitants', 'buildings', 'problems', 'presence', 'structures'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); if (typeof c.onWater !== 'boolean') c.onWater = false; });
+    state.clearings.forEach(c => { if (!c._roll) c._roll = {}; ['inhabitants', 'buildings', 'problems', 'presence', 'structures'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); if (typeof c.onWater !== 'boolean') c.onWater = false; if (typeof c.ruin !== 'boolean') c.ruin = false; if (typeof c.hoard !== 'number') c.hoard = 0; });
     ensurePositions();
     stepIdx = STEPS.length; render(); stepIdx = STEPS.length - 1; goto(stepIdx);
     toast('Imported Woodland (' + state.clearings.length + ' clearings)');
