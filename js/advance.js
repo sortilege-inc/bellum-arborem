@@ -48,6 +48,8 @@
       if (!Array.isArray(c.structures)) c.structures = [];
       if (!Array.isArray(c.presence)) c.presence = [];
       if (typeof c.onWater !== 'boolean') c.onWater = false;
+      if (typeof c.ruin !== 'boolean') c.ruin = false;
+      if (typeof c.hoard !== 'number') c.hoard = 0;
       if (c.x == null || c.y == null) { c.x = 120 + (i % 4) * 240; c.y = 90 + Math.floor(i / 4) * 150; }
     });
     w.factionState = w.factionState || {};
@@ -70,6 +72,7 @@
   function addPresence(c, f) { if (!c.presence) c.presence = []; if (!hasPresence(c, f)) c.presence.push(f); }
   function hasStruct(c, s) { return (c.structures || []).indexOf(s) >= 0; }
   function addStruct(c, s) { if (!c.structures) c.structures = []; if (!hasStruct(c, s)) c.structures.push(s); }
+  function removeStruct(c, s) { if (c.structures) { const i = c.structures.indexOf(s); if (i >= 0) c.structures.splice(i, 1); } }
   function presenceOf(f) { return wd.clearings.filter(c => hasPresence(c, f)); }
   function withStruct(s) { return wd.clearings.filter(c => hasStruct(c, s)); }
 
@@ -81,6 +84,8 @@
     if (f === 'The Riverfolk Company') return withStruct('Trading post').length >= 3;
     if (f === 'The Grand Duchy') return controlledBy(f).length >= 2 && withStruct('Market').length >= 1 && withStruct('Citadel').length >= 1;
     if (f === 'The Corvid Conspiracy') return withStruct('Plot').length >= 3;
+    if (f === 'The Hundreds') return withStruct('Mob').length >= 3 || wd.clearings.some(c => c.hoard > 0);
+    if (f === 'The Keepers in Iron') return withStruct('Waystation').length >= 2;
     return false;
   }
 
@@ -120,6 +125,14 @@
         const pres = new Set(presenceOf(f).map(c => c.id));
         return wd.clearings.filter(c => !hasPresence(c, f) && [...pres].some(id => neighborIds(id).indexOf(c.id) >= 0));
       }
+      case 'adjacentToMob': {
+        const mobIds = new Set(wd.clearings.filter(c => hasStruct(c, 'Mob') || (c.stronghold && c.control === 'The Hundreds')).map(c => c.id));
+        return wd.clearings.filter(c => !hasStruct(c, 'Mob') && [...mobIds].some(id => neighborIds(id).indexOf(c.id) >= 0));
+      }
+      case 'mobTarget': return withStruct('Mob');
+      case 'mobHoardTarget': return wd.clearings.filter(c => hasStruct(c, 'Mob') && c.hoard > 0);
+      case 'keepersPresenceNoWaystation': return wd.clearings.filter(c => hasPresence(c, f) && !hasStruct(c, 'Waystation'));
+      case 'waystationTarget': return withStruct('Waystation');
       default: return [];
     }
   }
@@ -158,6 +171,31 @@
       case 'rapidGarden': if (!c) return 'Choose a clearing with presence.'; addStruct(c, 'Garden'); { const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; } logEvent(f, 'rapidly built a garden and took control of ' + c.name); break;
       case 'tradeWar': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c) return 'Choose a clearing with a trading post.'; const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; if (c2 && c2 !== c) addStruct(c2, 'Trading post'); logEvent(f, 'launched a trade war — took ' + c.name + (c2 && c2 !== c ? ' and built a trading post in ' + c2.name : '')); break; }
       case 'culminatePlot': { if (!c) return 'Choose a clearing with a plot.'; const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; logEvent(f, 'culminated a plot — took control of ' + c.name); break; }
+      case 'inciteMob': if (!c) return 'Choose a clearing adjacent to a mob.'; addStruct(c, 'Mob'); logEvent(f, 'incited a mob in ' + c.name); break;
+      case 'buildHoard': {
+        if (!c) return 'Choose a clearing with a mob.';
+        const RAZ = ['Sawmill', 'Workshop', 'Recruiting post', 'Market', 'Citadel', 'Garden', 'Trading post', 'Tunnel', 'Fortifications'];
+        const enemy = (c.structures || []).filter(s => RAZ.indexOf(s) >= 0);
+        const n = Math.ceil(d6() / 2), destroyed = Math.min(n, enemy.length);
+        for (let k = 0; k < destroyed; k++) removeStruct(c, enemy[k]);
+        const val = destroyed > 0 ? destroyed * 5 : 5;
+        c.hoard = (c.hoard || 0) + val;
+        logEvent(f, 'built a hoard in ' + c.name + ' (Value ' + c.hoard + (destroyed ? ', razed ' + destroyed + ' structure' + (destroyed === 1 ? '' : 's') : '') + ')'); break;
+      }
+      case 'sendCadre': if (!c) return 'Choose a clearing.'; addPresence(c, f); logEvent(f, 'sent a cadre — presence to ' + c.name); break;
+      case 'moveWaystation': { if (!c) return 'Choose a Keepers-presence clearing.'; const from = wd.clearings.find(x => hasStruct(x, 'Waystation')); if (from) removeStruct(from, 'Waystation'); addStruct(c, 'Waystation'); logEvent(f, 'moved a waystation' + (from ? ' from ' + from.name : '') + ' to ' + c.name); break; }
+      case 'wildUprising': {
+        if (!c) return 'Choose a clearing with a mob and a hoard.';
+        c.control = 'The Hundreds'; addStruct(c, 'Warriors');
+        c.structures = (c.structures || []).filter(s => s === 'Mob' || s === 'Warriors');
+        c.roost = false; c.base = false; c.fortified = false; c.contested = true;
+        const strong = wd.clearings.find(x => x.stronghold && x.control === 'The Hundreds');
+        if (strong) strong.hoard = (strong.hoard || 0) + (c.hoard || 0);
+        const sent = c.hoard || 0; c.hoard = 0;
+        logEvent(f, 'a wild uprising seizes ' + c.name + (sent ? '; a hoard of ' + sent + ' heads for the stronghold' : '')); break;
+      }
+      case 'establishWaystation': if (!c) return 'Choose a Keepers-presence clearing.'; addStruct(c, 'Waystation'); logEvent(f, 'established a waystation in ' + c.name); break;
+      case 'discoverRuins': if (!c) return 'Choose a waystation clearing.'; c.ruin = true; logEvent(f, 'discovered a ruin near ' + c.name); break;
       default: return 'Unknown boon.';
     }
     return null;
@@ -174,19 +212,22 @@
   // ---------- read-only map ----------
   const CONTROL_COLOR = {
     'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054',
-    'The Lizard Cult': '#c46a8f', 'The Riverfolk Company': '#3fb0a4', 'The Grand Duchy': '#9a7bd0', 'The Corvid Conspiracy': '#555b63'
+    'The Lizard Cult': '#c46a8f', 'The Riverfolk Company': '#3fb0a4', 'The Grand Duchy': '#9a7bd0', 'The Corvid Conspiracy': '#555b63',
+    'The Hundreds': '#b5462f', 'The Keepers in Iron': '#7d7a6a'
   };
   const COMMUNITY_COLOR = { Rabbit: '#d3e2ba', Mouse: '#e4d9bf', Fox: '#eecaa4' };
   const COMMUNITY_ICON = { Rabbit: '🐰', Mouse: '🐭', Fox: '🦊' };
   const SYMPATHY_COLOR = '#4e9a3e';
-  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
+  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Mob': '‡', 'Waystation': '⌘', 'Warriors': '⚔', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
   function controlColor(c) { return isFactionControl(c.control) ? (CONTROL_COLOR[c.control] || '#b3a07a') : null; }
   // Thick faction-colored border = control; thin neutral border = denizen-held / uncontrolled.
   function controlBorder(c) { const col = controlColor(c); return col ? { col, w: 6 } : { col: '#5a4a30', w: 2.5 }; }
   function marks(c) {
     const m = [];
+    if (c.ruin) m.push('▨');
     if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲'); if (c.fortified) m.push('▮');
     (c.structures || []).forEach(s => m.push(STRUCT_GLYPH[s] || '⚒'));
+    if (c.hoard) m.push('◈');
     return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
   }
   // Presence shown as small faction-colored dots along the bottom of the node.
@@ -244,7 +285,10 @@
       if (roostCount(f)) bits.push(roostCount(f) + ' Roosts');
       if (wd.clearings.filter(c => c.control === f && c.base).length) bits.push('a base');
       if (presenceOf(f).length) bits.push(presenceOf(f).length + ' presence');
-      const myStructs = {}; wd.clearings.forEach(c => (c.structures || []).forEach(s => { if (c.control === f || (f === 'The Lizard Cult' && s === 'Garden') || (f === 'The Riverfolk Company' && s === 'Trading post') || (f === 'The Corvid Conspiracy' && s === 'Plot')) myStructs[s] = (myStructs[s] || 0) + 1; }));
+      if (f === 'The Hundreds') { const hv = wd.clearings.reduce((a, c) => a + (c.hoard || 0), 0); if (hv) bits.push('hoards worth ' + hv); }
+      if (f === 'The Keepers in Iron') { const rn = wd.clearings.filter(c => c.ruin).length; if (rn) bits.push(rn + ' ruins'); }
+      const OWNED = { 'Garden': 'The Lizard Cult', 'Trading post': 'The Riverfolk Company', 'Plot': 'The Corvid Conspiracy', 'Mob': 'The Hundreds', 'Warriors': 'The Hundreds', 'Waystation': 'The Keepers in Iron' };
+      const myStructs = {}; wd.clearings.forEach(c => (c.structures || []).forEach(s => { const owner = OWNED[s]; if (owner ? owner === f : c.control === f) myStructs[s] = (myStructs[s] || 0) + 1; }));
       const structTxt = Object.keys(myStructs).map(s => myStructs[s] + '× ' + s).join(', ');
       h += '<div class="fsum"><h4>' + esc(f) + '</h4>' +
         '<div class="fstat">' + bits.join(' · ') + '</div>' +
@@ -380,7 +424,7 @@
       return targetSelect('bt' + n + '_1', targetsFor('tradingPostTarget', f), 'Clearing with a trading post') +
         targetSelect('bt' + n + '_2', wd.clearings.slice(), 'Adjacent clearing for a new trading post');
     }
-    const labels = { presenceTarget: 'Clearing with presence', anyTarget: 'Any clearing', controlledTarget: 'Controlled clearing', sympatheticTarget: 'Sympathetic clearing', eyrieNoRoostTarget: 'Eyrie clearing without a Roost', adjacentTarget: 'Adjacent clearing to attack', tradingPostTarget: 'Clearing with a trading post', plotTarget: 'Clearing with a plot' };
+    const labels = { presenceTarget: 'Clearing with presence', anyTarget: 'Any clearing', controlledTarget: 'Controlled clearing', sympatheticTarget: 'Sympathetic clearing', eyrieNoRoostTarget: 'Eyrie clearing without a Roost', adjacentTarget: 'Adjacent clearing to attack', tradingPostTarget: 'Clearing with a trading post', plotTarget: 'Clearing with a plot', adjacentToMob: 'Clearing adjacent to a mob', mobTarget: 'Clearing with a mob', mobHoardTarget: 'Clearing with a mob and a hoard', keepersPresenceNoWaystation: 'Keepers-presence clearing (no waystation)', waystationTarget: 'Waystation clearing' };
     return targetSelect('bt' + n + '_1', targetsFor(need, f), labels[need] || 'Target clearing');
   }
 

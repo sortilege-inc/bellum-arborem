@@ -34,12 +34,15 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
 
 - **Advance Woodland** (`advance-woodland.html`) — import a Woodland (from the Woodland Creator) and
   work the "time passes" rules: roll each non-denizen faction in turn (with the situational
-  modifiers), then take minor/major boons on a hit or suffer a defeat on a miss. Supports all seven
+  modifiers), then take minor/major boons on a hit or suffer a defeat on a miss. Supports all nine
   factions with their own faction-phase boons — the core ones (attack, fortify, revolt, build Roost,
-  capture, …) plus the Travelers & Outsiders boons (proselytize, conduct commerce, build a garden /
+  capture, …), the Travelers & Outsiders boons (proselytize, conduct commerce, build a garden /
   trading post / tunnel / market / citadel, enact and culminate plots, expand a network, trade war,
-  …) — including the "presence" mechanic. Boons and defeats apply to the map, a war log records every
-  turn, and you export the advanced Woodland. Runs on the same `bellum-arborem.woodland` JSON.
+  …) with the "presence" mechanic, and the Ruins & Expeditions boons — the Hundreds' incite mob,
+  build hoard, and wild uprising, and the Keepers in Iron's send cadre, move / establish waystation,
+  and discover ruins (hoards, mobs, warriors, waystations, and ruins are tracked on the map). Boons
+  and defeats apply to the map, a war log records every turn, and you export the advanced Woodland.
+  Runs on the same `bellum-arborem.woodland` JSON.
 
 - **Advance Character** (`advance-character.html`) — load a character JSON, set how many advancements
   the vagabond has earned, and spend them on legal options: +1 to a stat (max +2), a new move from
