@@ -200,6 +200,8 @@
     }
     return null;
   }
+  // A faction can only resolve a Defeat if it has a clearing to lose or a resource to give up.
+  function canSufferDefeat(f) { return controlledBy(f).length > 0 || !!(wd.factionState[f] && wd.factionState[f].resource); }
   function applyDefeat(f, type, sel) {
     const c = sel.t1 != null ? byId(sel.t1) : null;
     if (type === 'clearing') { if (!c) return 'Choose a clearing to lose.'; c.control = null; c.roost = false; c.base = false; c.fortified = false; c.structures = []; logEvent(f, 'lost control of ' + c.name + ' — it returns to its denizens'); }
@@ -358,6 +360,9 @@
   function resolution(f) {
     const cur = round.cur;
     if (cur.tier === '6-') {
+      if (!canSufferDefeat(f)) {
+        return '<p class="mini" style="color:var(--rust)">Defeat — but this faction holds no clearing and no resource, so there is nothing left to lose. The defeat passes with no effect.</p>';
+      }
       let h = '<label class="mini">Defeat — the faction loses one:</label>';
       h += '<div class="boonslot"><select id="defeatType">' +
         '<option value="">— choose —</option>' +
@@ -480,7 +485,9 @@
     const parts = modBreakdown(f, round.cur.toggles);
     const mod = modTotal(parts);
     const a = d6(), b = d6(), base = a + b, total = base + mod;
-    Object.assign(round.cur, { rolled: true, a, b, base, mod, total, tier: total >= 10 ? '10+' : (total >= 7 ? '7-9' : '6-') });
+    // Record whether a held resource gave this roll its +2, so it can be spent afterward.
+    const usedResource = !!(wd.factionState[f] && wd.factionState[f].resource);
+    Object.assign(round.cur, { rolled: true, a, b, base, mod, total, usedResource, tier: total >= 10 ? '10+' : (total >= 7 ? '7-9' : '6-') });
     render();
   }
 
@@ -500,14 +507,20 @@
     const f = round.queue[round.idx], cur = round.cur;
     let err = null, summaries = [];
     if (cur.tier === '6-') {
-      const type = cur.defeatType;
-      if (!type) { toast('Choose the defeat.'); return; }
-      err = applyDefeat(f, type, { t1: readTarget('dt1') });
-      if (err) { toast(err); return; }
-      summaries.push('Defeat resolved');
+      if (!canSufferDefeat(f)) {
+        logEvent(f, 'suffered a defeat, but had nothing left to lose');
+        summaries.push('Defeat — nothing to lose');
+      } else {
+        const type = cur.defeatType;
+        if (!type) { toast('Choose the defeat.'); return; }
+        err = applyDefeat(f, type, { t1: readTarget('dt1') });
+        if (err) { toast(err); return; }
+        summaries.push('Defeat resolved');
+      }
     } else {
       const slots = cur.tier === '10+' ? [1, 2] : [1];
-      // resource consumed on a roll that used it
+      // Spend the resource that boosted this roll before boons apply (Obtain may re-grant it).
+      if (cur.usedResource && wd.factionState[f] && wd.factionState[f].resource) { wd.factionState[f].resource = false; logEvent(f, 'spent its valuable resource'); }
       for (const n of slots) {
         const sel = cur['slot' + n]; if (!sel) { toast('Choose boon ' + n + '.'); return; }
         const [tierK, key] = sel.split(':');

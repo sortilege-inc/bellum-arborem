@@ -31,7 +31,21 @@
     if (spec.indexOf('-') > 0) { const [a, b] = spec.split('-').map(x => parseInt(x, 10)); return v >= a && v <= b; }
     return v === parseInt(spec, 10);
   }
-  function lookup(results, v) { return results.find(r => inRange(r.range, v)) || results[results.length - 1]; }
+  // lowest value a range spec can match (for out-of-range fallback direction)
+  function rangeMin(spec) {
+    spec = String(spec).trim();
+    if (/or less$/.test(spec) || spec.indexOf('≤') === 0) return -Infinity;
+    if (/\+$/.test(spec)) return parseInt(spec, 10);
+    if (spec.indexOf('-') > 0) return parseInt(spec.split('-')[0], 10);
+    return parseInt(spec, 10);
+  }
+  function lookup(results, v) {
+    const hit = results.find(r => inRange(r.range, v));
+    if (hit) return hit;
+    // Below the table's lowest bound → clamp to the first row; above → the last row.
+    const minLow = Math.min.apply(null, results.map(r => rangeMin(r.range)));
+    return v < minLow ? results[0] : results[results.length - 1];
+  }
 
   // ---------- state ----------
   let state = load() || fresh();
@@ -104,9 +118,14 @@
   function moveState(key) { if (!ui.moves[key]) ui.moves[key] = { mods: {}, result: null }; return ui.moves[key]; }
   function rollMove(mv) {
     const ms = moveState(mv.key);
-    const opts = (mv.modifiers || mv.choices || []);
     let mod = 0;
-    opts.forEach((o, i) => { if (ms.mods[i]) mod += o.v; });
+    if (mv.choices) {
+      // Mutually exclusive: exactly one travel style contributes its modifier.
+      const pick = mv.choices[ms.choice];
+      mod = pick ? pick.v : 0;
+    } else {
+      (mv.modifiers || []).forEach((o, i) => { if (ms.mods[i]) mod += o.v; });
+    }
     const a = d6(), b = d6(), total = a + b + mod, tier = tierOf(total);
     ms.result = { a, b, mod, total, tier, text: outcomeText(mv, tier) };
     log(mv.name + ': rolled ' + total + ' (' + a + '+' + b + (mod ? (mod > 0 ? '+' + mod : mod) : '') + ') — ' + tierName(tier) + '.');
@@ -240,8 +259,11 @@
     const ms = moveState(mv.key);
     const cls = o.v > 0 ? 'pos' : (o.v < 0 ? 'neg' : '');
     const vtxt = o.v > 0 ? '+' + o.v : (o.v < 0 ? String(o.v) : '±0');
-    return '<label><input type="checkbox" data-mod="' + mv.key + ':' + i + '"' + (ms.mods[i] ? ' checked' : '') + '>' +
-      '<span>' + esc(o.label) + '</span><span class="mv ' + cls + '">' + vtxt + '</span></label>';
+    // `choices` are mutually exclusive (radios); `modifiers` stack (checkboxes).
+    const input = mv.choices
+      ? '<input type="radio" name="ch_' + mv.key + '" data-choice="' + mv.key + ':' + i + '"' + (ms.choice === i ? ' checked' : '') + '>'
+      : '<input type="checkbox" data-mod="' + mv.key + ':' + i + '"' + (ms.mods[i] ? ' checked' : '') + '>';
+    return '<label>' + input + '<span>' + esc(o.label) + '</span><span class="mv ' + cls + '">' + vtxt + '</span></label>';
   }
 
   function movesPanel() {
@@ -337,6 +359,9 @@
     // move checkboxes — update ui state without re-render
     app.querySelectorAll('[data-mod]').forEach(cb => cb.addEventListener('change', () => {
       const [key, i] = cb.getAttribute('data-mod').split(':'); moveState(key).mods[+i] = cb.checked;
+    }));
+    app.querySelectorAll('[data-choice]').forEach(rb => rb.addEventListener('change', () => {
+      const [key, i] = rb.getAttribute('data-choice').split(':'); moveState(key).choice = +i;
     }));
     app.querySelectorAll('[data-camp]').forEach(inp => inp.addEventListener('input', () => { moveState('makeCamp').depletion = inp.value; }));
     app.querySelectorAll('[data-roll]').forEach(b => b.addEventListener('click', () => {

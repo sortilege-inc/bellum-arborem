@@ -101,8 +101,8 @@
       legal: () => HARM.some(h => char.harmBoxes[h] < HARM_ADD_MAX),
       desc: 'Give one harm track another box (Injury / Exhaustion / Depletion). Each starts at ' + HARM_BASE + ' boxes and can grow to ' + HARM_MAX + '.' },
     { key: 'connection', name: 'Up to two connections', limit: 'max 6 total',
-      status: () => (char.connections.length + char.connectionsExtra.length) + ' connections',
-      legal: () => true,
+      status: () => (char.connections.length + char.connectionsExtra.length) + '/6 connections',
+      legal: () => (char.connections.length + char.connectionsExtra.length) < 6,
       desc: 'Add one or two new connection types (e.g. Protector, Watcher).' },
     { key: 'mastery', name: 'Take a mastery', limit: 'Travelers & Outsiders · 12+ enhancement',
       status: () => char.masteries.length + ' taken',
@@ -152,14 +152,20 @@
     else if (k === 'weapon') { const list = (sel.weapon || []).slice(); if (!list.length) return toast('Pick one or two weapon skills.'); if (char.weaponSkills.length + list.length > 7) return toast('That would exceed 7 weapon skills.'); char.weaponSkills.push(...list); logAdv('Weapon skill' + (list.length > 1 ? 's' : '') + ': ' + list.join(', '), () => { list.forEach(w => char.weaponSkills.splice(char.weaponSkills.indexOf(w), 1)); }); ok = true; }
     else if (k === 'feat') { const list = (sel.feat || []).slice(); if (!list.length) return toast('Pick one or two roguish feats.'); if (char.roguishFeats.length + list.length > 6) return toast('That would exceed 6 roguish feats.'); char.roguishFeats.push(...list); logAdv('Roguish feat' + (list.length > 1 ? 's' : '') + ': ' + list.join(', '), () => { list.forEach(f => char.roguishFeats.splice(char.roguishFeats.indexOf(f), 1)); }); ok = true; }
     else if (k === 'harm') { const h = sel.harm; if (!h) return toast('Choose a harm track.'); if (char.harmBoxes[h] >= HARM_ADD_MAX) return toast(h + ' is already at ' + HARM_MAX + ' boxes.'); char.harmBoxes[h] += 1; logAdv('+1 box to ' + h + ' (now ' + (HARM_BASE + char.harmBoxes[h]) + ')', () => { char.harmBoxes[h] -= 1; }); ok = true; }
-    else if (k === 'connection') { const t = (sel.connectionText || '').trim(); if (!t) return toast('Name the connection type.'); char.connectionsExtra.push(t); logAdv('Connection: ' + t, () => { char.connectionsExtra.splice(char.connectionsExtra.indexOf(t), 1); }); ok = true; }
+    else if (k === 'connection') { const t = (sel.connectionText || '').trim(); if (!t) return toast('Name the connection type.'); if (char.connections.length + char.connectionsExtra.length >= 6) return toast('That would exceed 6 connections.'); char.connectionsExtra.push(t); logAdv('Connection: ' + t, () => { char.connectionsExtra.splice(char.connectionsExtra.indexOf(t), 1); }); ok = true; }
     else if (k === 'mastery') { const m = sel.mastery; if (!m) return toast('Choose a mastery.'); char.masteries.push(m); logAdv('Mastery: ' + m, () => { char.masteries.splice(char.masteries.indexOf(m), 1); }); ok = true; }
     else if (k === 'speciesmove') { const m = sel.speciesmove; if (!m) return toast('Choose a species move.'); char.speciesMoves.push(m); logAdv('Species move: ' + m, () => { char.speciesMoves.splice(char.speciesMoves.indexOf(m), 1); }); ok = true; }
     if (ok) { sel = {}; render(); }
   }
   function undoLast() {
-    const last = char.advancements.pop(); if (!last) return;
-    if (typeof last.undo === 'function') last.undo();
+    const last = char.advancements[char.advancements.length - 1]; if (!last) return;
+    if (typeof last.undo !== 'function') {
+      // undo closures don't survive save/export/import — only same-session spends can be reverted
+      toast('This advancement was taken in an earlier session and can’t be undone.');
+      return;
+    }
+    char.advancements.pop();
+    last.undo();
     char.advancementsRemaining += 1; render();
   }
 
@@ -190,7 +196,7 @@
     // log
     if (char.advancements.length) {
       h += '<div class="panel"><p class="eyebrow" style="margin:0 0 8px">Advancements taken</p><ul class="log">';
-      char.advancements.forEach((a, i) => { h += '<li><span>' + esc(a.text) + '</span>' + (i === char.advancements.length - 1 ? '<button class="undo" data-adv-undo>undo</button>' : '') + '</li>'; });
+      char.advancements.forEach((a, i) => { const canUndo = i === char.advancements.length - 1 && typeof a.undo === 'function'; h += '<li><span>' + esc(a.text) + '</span>' + (canUndo ? '<button class="undo" data-adv-undo>undo</button>' : '') + '</li>'; });
       h += '</ul></div>';
     }
     // current sheet summary

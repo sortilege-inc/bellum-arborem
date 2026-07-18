@@ -531,10 +531,10 @@
     bodyEl.querySelectorAll('[data-marqroll]').forEach(el => el.addEventListener('click', () => {
       const c = state.clearings[+el.getAttribute('data-marqroll')];
       const auto = distMap[c.id];
-      const effD = c.distMarq !== '' ? Math.max(1, +c.distMarq || 1) : (auto != null ? auto : 99);
+      const effD = c.distMarq !== '' ? Math.max(1, Math.round(+c.distMarq) || 1) : (auto != null ? auto : 99);
       const bucket = W.tables.marquisateControl.byPaths.find(b => b.paths === Math.min(effD, 5));
       const roll = r2d6();
-      const inControl = bucket.controlMin != null && roll >= bucket.controlMin;
+      const inControl = !!bucket && bucket.controlMin != null && roll >= bucket.controlMin;
       if (inControl) c.control = 'The Marquisate';
       else if (c.control === 'The Marquisate') c.control = null;
       c._roll.marq = { roll, d: effD, inControl };
@@ -548,7 +548,7 @@
     const autoTxt = autoD != null ? 'auto ' + autoD + ' path' + (autoD === 1 ? '' : 's') : 'unlinked';
     return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
       '<span class="dcount">' + autoTxt + '</span>' +
-      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" data-marqdist="' + i + '" value="' + esc(c.distMarq) + '" title="Override distance">' +
+      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" step="1" data-marqdist="' + i + '" value="' + esc(c.distMarq) + '" title="Override distance">' +
       '<button class="dice" data-marqroll="' + i + '">🎲 Roll 2d6</button>' +
       (rr ? '<span class="badge ' + (rr.inControl ? 'yes' : 'no') + '">' + (rr.inControl ? 'In Marquisate control' : 'Not in control') + '</span>' : '') +
       (c.control && c.control !== 'The Marquisate' ? '<span class="badge no">' + esc(c.control) + '</span>' : '') + '</div>';
@@ -589,14 +589,14 @@
     bodyEl.querySelectorAll('[data-eyrieroll]').forEach(el => el.addEventListener('click', () => {
       const c = state.clearings[+el.getAttribute('data-eyrieroll')];
       const auto = distMap[c.id];
-      const d = c.distRoost !== '' ? Math.max(1, +c.distRoost || 1) : (auto != null ? auto : 99);
+      const d = c.distRoost !== '' ? Math.max(1, Math.round(+c.distRoost) || 1) : (auto != null ? auto : 99);
       const bucket = W.tables.eyrieControl.byPaths.find(b => b.paths === Math.min(d, 4));
       const roll = r2d6();
       const controlledNow = controlledBy('The Eyrie Dynasties').length;
       const roostsNow = state.clearings.filter(x => x.roost).length;
       let outcome = 'not';
-      if (bucket.roostMin != null && roll >= bucket.roostMin) outcome = 'roost';
-      else if (bucket.controlMin != null && roll >= bucket.controlMin) outcome = 'control';
+      if (bucket && bucket.roostMin != null && roll >= bucket.roostMin) outcome = 'roost';
+      else if (bucket && bucket.controlMin != null && roll >= bucket.controlMin) outcome = 'control';
       // caps
       if (outcome !== 'not' && c.control !== 'The Eyrie Dynasties' && controlledNow >= W.tables.eyrieControl.maxControlled) {
         outcome = 'capped';
@@ -622,7 +622,7 @@
     return '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
       (c.control ? '<span class="badge ' + (c.control === 'The Eyrie Dynasties' ? 'yes' : 'no') + '">' + esc(c.control) + (c.roost ? ' ⌂' : '') + '</span>' : '') +
       '<span class="dcount">' + autoTxt + '</span>' +
-      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" data-eyriedist="' + i + '" value="' + esc(c.distRoost) + '" title="Override distance">' +
+      '<input type="number" class="pths" min="1" max="9" placeholder="' + (autoD != null ? autoD : '?') + '" step="1" data-eyriedist="' + i + '" value="' + esc(c.distRoost) + '" title="Override distance">' +
       '<button class="dice" data-eyrieroll="' + i + '">🎲 Roll 2d6</button>' + badge + '</div>';
   }
 
@@ -696,7 +696,11 @@
       c._roll.upr = { roll, uprising: row.uprising, short: row.uprising ? (row.spread ? 'Uprising + spread' : 'Uprising') : 'no uprising' };
       if (row.uprising) {
         c.base = true; c.control = 'The Woodland Alliance'; c.roost = false; c.stronghold = false;
-        if (row.spread) c._roll.upr.short = 'Uprising + sympathy spreads';
+        if (row.spread) {
+          // Natural 12: sympathy spreads to every clearing connected to the base.
+          neighborIds(c.id).forEach(id => { const n = clearingById(id); if (n) n.sympathy = true; });
+          c._roll.upr.short = 'Uprising + sympathy spreads';
+        }
         state.uprisingDone = true;
       } else { c.base = false; }
       render();

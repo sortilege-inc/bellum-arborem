@@ -146,6 +146,9 @@
   }
 
   function render() {
+    // If the character's playbook isn't in the loaded ruleset, every downstream step
+    // dereferences a null playbook — keep the user on the Playbook step to re-pick one.
+    if (state.playbook && !pb()) stepIdx = 0;
     const st = STEPS[stepIdx];
     bodyEl.innerHTML = '';
     st.render();
@@ -747,11 +750,19 @@
     if (!state.backgroundAnswers || typeof state.backgroundAnswers !== 'object') state.backgroundAnswers = {};
     if (!state.reputation) state.reputation = {};
     factions.forEach(f => { if (!state.reputation[f]) state.reputation[f] = { status: 0, prestige: 0, notoriety: 0 }; });
-    if (state.playbook && !pb()) toast('Note: playbook "' + state.playbook + '" is not in the loaded ruleset.');
+    const p = pb();
+    if (!state.stats || typeof state.stats !== 'object') state.stats = {};
+    // Guarantee every stat is defined so the Stats step is usable (seed from the playbook, else 0).
+    stats.forEach(s => { if (state.stats[s] == null) state.stats[s] = (p && p.stats && p.stats[s] != null) ? p.stats[s] : 0; });
     exportBtn.disabled = !state.playbook;
-    stepIdx = STEPS.length - 1; // jump to review
+    if (state.playbook && !p) {
+      toast('Playbook “' + state.playbook + '” isn’t in the loaded ruleset — pick one to continue.');
+      stepIdx = 0; // Playbook step; render() also enforces this
+    } else {
+      stepIdx = STEPS.length - 1; // jump to review
+      toast('Imported ' + (state.name || 'character'));
+    }
     save(); render();
-    toast('Imported ' + (state.name || 'character'));
   }
 
   // ---------- Boot ----------
