@@ -24,6 +24,34 @@
       "name": "The Woodland Alliance",
       "blurb": "The scrappy coalition of denizens fomenting sympathy and open revolt against the powers that be.",
       "marker": "base"
+    },
+    {
+      "key": "lizard",
+      "name": "The Lizard Cult",
+      "blurb": "Outcast denizens who gather in gardens, spreading their faith among the downtrodden.",
+      "marker": "garden",
+      "expansion": true
+    },
+    {
+      "key": "riverfolk",
+      "name": "The Riverfolk Company",
+      "blurb": "Otter merchants who ply the Woodland's rivers and lakes, trading in coin, mercenaries, and services.",
+      "marker": "trading post",
+      "expansion": true
+    },
+    {
+      "key": "duchy",
+      "name": "The Grand Duchy",
+      "blurb": "Moles surfacing from below, tunneling up to claim the Woodland with citadels and markets.",
+      "marker": "tunnel",
+      "expansion": true
+    },
+    {
+      "key": "corvid",
+      "name": "The Corvid Conspiracy",
+      "blurb": "Crows for hire whose scattered agents hatch plots in clearings across the Woodland.",
+      "marker": "plot",
+      "expansion": true
     }
   ],
   "descriptions": {
@@ -38,7 +66,13 @@
     "uprising": "An uprising means the Alliance successfully contested and seized full control of the clearing, overthrowing whoever held it (or partnering with the local denizens where none did). A base means the Alliance now has an open, active headquarters there.",
     "denizens": "As the last step, roll to see if control of any clearing has returned to the denizens. Do not roll for the Marquisate stronghold, any Eyrie Roost clearing, the Woodland Alliance base clearing, or any uncontrolled clearing. Returning to denizen control usually reflects a faction's withdrawal, retreat, or its local forces going independent—not an Alliance revolt.",
     "fleshingOut": "For each clearing, generate two of each—inhabitants, buildings, and problems—to determine the fiction of the clearing when you need it.",
-    "warStatus": "To determine how the war has marked a clearing, roll 2d6 + the number of factions controlling or neighboring it (one faction in control of area and neighbors = +1; a different faction on the neighbors = +2; two or more different faction neighbors plus a third in control = +3)."
+    "warStatus": "To determine how the war has marked a clearing, roll 2d6 + the number of factions controlling or neighboring it (one faction in control of area and neighbors = +1; a different faction on the neighbors = +2; two or more different faction neighbors plus a third in control = +3).",
+    "expansionOrder": "With expansion factions, set up in this order: Marquisate, Eyrie Dynasties, Woodland Alliance, Lizard Cult, Riverfolk Company, Grand Duchy, Corvid Conspiracy, then Denizens. Skip any faction not in play.",
+    "controlVsPresence": "The Lizard Cult, Riverfolk Company, and Corvid Conspiracy build \"presence\" — a foothold of agents or supporters in a clearing (a bit like sympathy) — before they can act. Presence is binary and does not, by itself, grant control; each of these factions has its own way to convert presence into control. The more militant factions don't track presence.",
+    "lizard": "Roll the Outcast Table for the most downtrodden denizen community — the one most open to the Cult. Give the Lizard Cult presence in two clearings (chosen at random) where that community dominates. Then place a garden and give the Lizard Cult control in a corner of the Woodland — the corner opposite the Marquisate stronghold or an Eyrie Roost if possible; if both are in play, either of the other two corners; if neither, a random corner.",
+    "riverfolk": "The Riverfolk enter by water. Mark which clearings sit on a river or lake, then rank every clearing by how many of these are true: on a river/lake; 3+ paths; 4+ paths; a valuable resource in or near it. The Riverfolk gain presence in the four clearings with the most \"yeses.\" In the single clearing with the most, they gain control and a trading post (break ties randomly; skip a clearing that can't be theirs, e.g. the Marquisate stronghold or an Eyrie Roost).",
+    "duchy": "The Grand Duchy surfaces with a tunnel and an invading force (granting control) in a corner — see the Duchy Invasion Table for which corner, based on the factions in play. Then, for each clearing directly connected to that starting clearing, roll 2d6; on a 10+ the Duchy takes control. Finally, add a tunnel to one random clearing the Duchy does not control.",
+    "corvid": "The Corvid Conspiracy begins with agents scattered wide. Give four random clearings Corvid Conspiracy presence — none of them starts with Corvid control."
   },
   "tables": {
     "dominantCommunity": {
@@ -472,6 +506,47 @@
           "Strange mystery"
         ]
       ]
+    },
+    "outcast": {
+      "die": "1d6",
+      "ranges": [
+        {
+          "min": 1,
+          "max": 2,
+          "result": "Fox"
+        },
+        {
+          "min": 3,
+          "max": 4,
+          "result": "Rabbit"
+        },
+        {
+          "min": 5,
+          "max": 6,
+          "result": "Mouse"
+        }
+      ]
+    },
+    "duchyInvasion": {
+      "note": "Which corner the Duchy invades, by the factions in play.",
+      "rows": [
+        {
+          "when": "Marquisate, Eyrie, and Lizard Cult all in play",
+          "corner": "The only corner no other faction used as its starting point"
+        },
+        {
+          "when": "Any two of those factions in play",
+          "corner": "Either of the two remaining corners, at random"
+        },
+        {
+          "when": "Any one of those factions in play",
+          "corner": "The corner opposite that faction"
+        },
+        {
+          "when": "None of those factions in play",
+          "corner": "A random corner"
+        }
+      ]
     }
   },
   "factionRoll": {
@@ -616,5 +691,9 @@
       "Workshop",
       "Recruiting post"
     ]
+  },
+  "factionSelect": {
+    "min": 2,
+    "max": 7
   }
 }

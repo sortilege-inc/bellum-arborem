@@ -16,10 +16,13 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
 - **Woodland Creator** (`woodland-creator.html`) — "Making the Woodland": roll the tables clearing
   by clearing (dominant community, paths, name), then **draw the map on an interactive SVG canvas** —
   click two clearings to link a path (each node tracks paths-drawn vs. its rolled number), drag to
-  rearrange. The faction-control passes (Marquisate → Eyrie → Woodland Alliance → Denizens) read
-  each clearing's distance straight from the drawn map (shortest path), with a manual override, then
-  flesh-out (inhabitants/buildings/problems). The Review step draws the finished map colored by
-  faction control. A reroll at every step. Export/import the Woodland (map layout included) as JSON.
+  rearrange. Choose 2–7 factions (the 3 core plus the 4 Travelers & Outsiders factions) and run each
+  one's placement pass in setup order: Marquisate → Eyrie → Woodland Alliance → Lizard Cult →
+  Riverfolk → Grand Duchy → Corvid → Denizens. The core passes read each clearing's distance straight
+  from the drawn map; the T&O factions add **presence** (a foothold short of control) and their own
+  structures (gardens, trading posts, tunnels). Rivers/lakes are simplified to an "on water" toggle.
+  Then flesh-out (inhabitants/buildings/problems). The Review step draws the finished map colored by
+  faction control with structure glyphs. Export/import the Woodland (map layout included) as JSON.
 
 - **Play** (`play.html`) — load a character JSON and take the vagabond into the field: mark the three
   harm tracks (Injury / Exhaustion / Depletion), shift faction reputation (status + prestige /

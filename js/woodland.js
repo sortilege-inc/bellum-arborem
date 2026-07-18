@@ -57,6 +57,7 @@
       edges: [],                // [idLow, idHigh] pairs — the drawn paths
       draft: null,
       uprisingDone: false,
+      lizardOutcast: null,      // the outcast denizen community (Lizard Cult setup)
       notes: ''
     };
   }
@@ -73,6 +74,9 @@
       sympathy: false, contested: false,
       distMarq: '', distRoost: '',   // manual override for faction distance (blank = auto from map)
       allianceState: null,
+      presence: [],             // faction names with presence (Lizard / Riverfolk / Corvid)
+      structures: [],           // garden, trading post, tunnel, market, citadel, plot, …
+      onWater: false,           // sits on a river or lake (Riverfolk criterion)
       war: null, warFactions: '',
       inhabitants: [], buildings: [], problems: [],
       _roll: {}
@@ -126,9 +130,11 @@
     if (c.control === UNCONTROLLED) return '#cdbf9f';
     return '#b3a07a'; // denizen-held / unrolled
   }
+  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
   function controlMarks(c) {
     const m = [];
     if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲');
+    (c.structures || []).forEach(s => m.push(STRUCT_GLYPH[s] || '⚒'));
     return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
   }
   const SYMPATHY_COLOR = '#4e9a3e';
@@ -233,14 +239,20 @@
   function nonStronghold(c) { return !c.stronghold; }
 
   // ---------- Steps (dynamic on faction selection) ----------
+  const FSEL = W.factionSelect || { min: 2, max: 3 };
   function buildSteps() {
     const s = [
-      { id: 'factions', label: 'Factions', render: renderFactions, valid: () => state.factions.length >= 2 && state.factions.length <= 3 },
+      { id: 'factions', label: 'Factions', render: renderFactions, valid: () => state.factions.length >= FSEL.min && state.factions.length <= FSEL.max },
       { id: 'map', label: 'Map', render: renderMap, valid: () => state.clearings.length === W.mapSize }
     ];
+    // Setup order (T&O): Marquisate, Eyrie, Alliance, Lizard, Riverfolk, Grand Duchy, Corvid, Denizens
     if (selected('marquisate')) s.push({ id: 'marquisate', label: 'Marquisate', render: renderMarquisate, valid: () => controlledBy('The Marquisate').length > 0 });
     if (selected('eyrie')) s.push({ id: 'eyrie', label: 'Eyrie', render: renderEyrie, valid: () => controlledBy('The Eyrie Dynasties').length > 0 });
     if (selected('alliance')) s.push({ id: 'alliance', label: 'Alliance', render: renderAlliance, valid: () => true });
+    if (selected('lizard')) s.push({ id: 'lizard', label: 'Lizard Cult', render: renderLizard, valid: () => controlledBy('The Lizard Cult').length > 0 });
+    if (selected('riverfolk')) s.push({ id: 'riverfolk', label: 'Riverfolk', render: renderRiverfolk, valid: () => controlledBy('The Riverfolk Company').length > 0 });
+    if (selected('duchy')) s.push({ id: 'duchy', label: 'Grand Duchy', render: renderDuchy, valid: () => controlledBy('The Grand Duchy').length > 0 });
+    if (selected('corvid')) s.push({ id: 'corvid', label: 'Corvid', render: renderCorvid, valid: () => true });
     s.push({ id: 'denizens', label: 'Denizens', render: renderDenizens, valid: () => true });
     s.push({ id: 'flesh', label: 'Flesh out', render: renderFlesh, valid: () => true });
     s.push({ id: 'review', label: 'Review', render: renderReview, valid: () => true });
@@ -302,22 +314,24 @@
     h += '<div class="picklist" style="display:flex;flex-direction:column;gap:10px">';
     h += '<div class="pick on" style="cursor:default"><span class="mark"></span>' +
       '<div class="p-title">The Denizens</div><div class="p-sub">Always present — the general inhabitants of the Woodland.</div></div>';
+    let expansionShown = false;
     W.coreFactions.forEach(f => {
+      if (f.expansion && !expansionShown) { expansionShown = true; h += '<div class="divider" style="margin:14px auto 4px"><span>Travelers & Outsiders</span></div>'; }
       const on = state.factions.indexOf(f.name) >= 0;
       h += '<div class="pick' + (on ? ' on' : '') + '" data-fac="' + esc(f.name) + '"><span class="mark"></span>' +
         '<div class="p-title">' + esc(f.name) + '</div><div class="p-sub">' + esc(f.blurb) + '</div></div>';
     });
     h += '</div>';
-    const n = state.factions.length;
-    h += '<p class="small ' + (n >= 2 && n <= 3 ? 'muted' : '') + '" style="margin-top:12px' + (n < 2 || n > 3 ? ';color:var(--rust)' : '') + '">' +
-      n + ' of 2–3 factions selected.</p>';
+    const n = state.factions.length, ok = n >= FSEL.min && n <= FSEL.max;
+    h += '<p class="small ' + (ok ? 'muted' : '') + '" style="margin-top:12px' + (ok ? '' : ';color:var(--rust)') + '">' +
+      n + ' factions selected (' + FSEL.min + '–' + FSEL.max + ').</p>';
     bodyEl.innerHTML = h;
     bodyEl.querySelectorAll('[data-fac]').forEach(el => el.addEventListener('click', () => {
       const name = el.getAttribute('data-fac');
       const i = state.factions.indexOf(name);
       if (i >= 0) state.factions.splice(i, 1);
-      else if (state.factions.length < 3) state.factions.push(name);
-      else { toast('At most three non-denizen factions.'); return; }
+      else if (state.factions.length < FSEL.max) state.factions.push(name);
+      else { toast('At most ' + FSEL.max + ' non-denizen factions.'); return; }
       render();
     }));
   }
@@ -679,6 +693,130 @@
     }));
   }
 
+  // ---------- Expansion-faction placement (Lizard / Riverfolk / Grand Duchy / Corvid) ----------
+  function hasPresence(c, f) { return (c.presence || []).indexOf(f) >= 0; }
+  function addPresence(c, f) { if (!c.presence) c.presence = []; if (!hasPresence(c, f)) c.presence.push(f); }
+  function removePresence(c, f) { if (!c.presence) return; const i = c.presence.indexOf(f); if (i >= 0) c.presence.splice(i, 1); }
+  function hasStruct(c, s) { return (c.structures || []).indexOf(s) >= 0; }
+  function addStruct(c, s) { if (!c.structures) c.structures = []; if (!hasStruct(c, s)) c.structures.push(s); }
+  function removeStruct(c, s) { if (c.structures) c.structures = c.structures.filter(x => x !== s); }
+  function randomPick(arr, n) { const a = arr.slice(), out = []; while (out.length < n && a.length) out.push(a.splice(Math.floor(Math.random() * a.length), 1)[0]); return out; }
+  function presenceRow(faction) {
+    const pres = state.clearings.filter(c => hasPresence(c, faction));
+    return pres.length ? pres.map(c => esc(c.name)).join(', ') : '—';
+  }
+
+  // --- Fourth: The Lizard Cult ---
+  function placeLizardPresence() {
+    state.clearings.forEach(c => removePresence(c, 'The Lizard Cult'));
+    randomPick(state.clearings.filter(c => c.community === state.lizardOutcast), 2).forEach(c => addPresence(c, 'The Lizard Cult'));
+  }
+  function renderLizard() {
+    let h = heading('Fourth: the Lizard Cult', W.descriptions.lizard, W.descriptions.controlVsPresence);
+    h += '<div class="roll"><span class="rlabel">Outcast community</span><span class="rvalue">' +
+      (state.lizardOutcast ? esc(state.lizardOutcast) : '<span class="muted" style="font-style:italic">not rolled</span>') +
+      '</span><button class="dice" data-lizard-outcast>🎲 Roll 1d6</button></div>';
+    if (state.lizardOutcast) h += '<p class="small muted">Presence (2 random ' + esc(state.lizardOutcast) + ' clearings): <b>' + presenceRow('The Lizard Cult') +
+      '</b> <button class="dice" data-lizard-repres>↺ Reroll</button></p>';
+    h += cornerRoller('lizard', 'opposite the Marquisate / Eyrie if possible');
+    h += anchorSelect('lizardGarden', 'Garden clearing (Lizard control, in a corner)', c => c.control === 'The Lizard Cult' && hasStruct(c, 'Garden'));
+    bodyEl.innerHTML = h;
+    wireCorner();
+    document.querySelector('[data-lizard-outcast]').addEventListener('click', () => { state.lizardOutcast = rollRange(W.tables.outcast).result; placeLizardPresence(); render(); });
+    const rp = document.querySelector('[data-lizard-repres]'); if (rp) rp.addEventListener('click', () => { placeLizardPresence(); render(); });
+    document.getElementById('lizardGarden').addEventListener('change', function () {
+      state.clearings.forEach(c => { if (c.control === 'The Lizard Cult' && hasStruct(c, 'Garden')) { c.control = null; removeStruct(c, 'Garden'); } });
+      if (this.value !== '') { const c = state.clearings[+this.value]; c.control = 'The Lizard Cult'; addStruct(c, 'Garden'); }
+      render();
+    });
+  }
+
+  // --- Fifth: The Riverfolk Company (rivers/lakes simplified to an on-water toggle) ---
+  function riverfolkYeses(c) { let y = 0; if (c.onWater) y++; if (c.paths >= 3) y++; if (c.paths >= 4) y++; return y; }
+  function placeRiverfolk() {
+    state.clearings.forEach(c => { removePresence(c, 'The Riverfolk Company'); if (c.control === 'The Riverfolk Company') c.control = null; removeStruct(c, 'Trading post'); });
+    const ranked = state.clearings.slice().sort((a, b) => riverfolkYeses(b) - riverfolkYeses(a));
+    ranked.slice(0, 4).forEach(c => addPresence(c, 'The Riverfolk Company'));
+    // Control + trading post in the highest-ranked clearing that can be theirs (not already faction-held)
+    const top = ranked.find(c => !c.stronghold && !c.roost && (!c.control || c.control === DENIZEN || c.control === UNCONTROLLED));
+    if (top) { top.control = 'The Riverfolk Company'; addStruct(top, 'Trading post'); }
+    render();
+  }
+  function renderRiverfolk() {
+    let h = heading('Fifth: the Riverfolk Company', W.descriptions.riverfolk,
+      'This tool skips drawing rivers and lakes — mark which clearings sit on the water, then it ranks every clearing by water + paths and places the Riverfolk.');
+    h += '<p class="eyebrow" style="margin:6px 0 6px">On a river or lake</p><div class="clist">';
+    state.clearings.forEach((c, i) => {
+      h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span><span class="dcount">' + c.paths + ' paths · ' + riverfolkYeses(c) + ' yes</span>' +
+        '<label class="modtoggle" style="margin-left:auto;cursor:pointer"><input type="checkbox" data-water="' + i + '"' + (c.onWater ? ' checked' : '') + '> on water</label></div>';
+    });
+    h += '</div><div style="margin-top:12px"><button class="dice primary" data-river-place>🎲 Place the Riverfolk by criteria</button></div>';
+    h += '<p class="small muted" style="margin-top:10px">Presence: <b>' + presenceRow('The Riverfolk Company') + '</b> · Control + trading post: <b>' +
+      (controlledBy('The Riverfolk Company').map(c => esc(c.name)).join(', ') || '—') + '</b></p>';
+    bodyEl.innerHTML = h;
+    bodyEl.querySelectorAll('[data-water]').forEach(el => el.addEventListener('change', () => { state.clearings[+el.getAttribute('data-water')].onWater = el.checked; save(); render(); }));
+    document.querySelector('[data-river-place]').addEventListener('click', placeRiverfolk);
+  }
+
+  // --- Sixth: The Grand Duchy ---
+  function renderDuchy() {
+    let h = heading('Sixth: the Grand Duchy', W.descriptions.duchy);
+    h += '<details style="margin:0 0 12px"><summary class="eyebrow" style="cursor:pointer">Duchy Invasion — which corner</summary><div class="small" style="margin-top:8px">' +
+      W.tables.duchyInvasion.rows.map(r => '<div class="m-tier"><b>' + esc(r.when) + '</b> — ' + esc(r.corner) + '</div>').join('') + '</div></details>';
+    h += cornerRoller('duchy', '');
+    h += anchorSelect('duchyStart', 'Invasion clearing (tunnel + Duchy control, in a corner)', c => c._duchyStart);
+    const start = state.clearings.find(c => c._duchyStart);
+    if (start) {
+      const adj = neighborIds(start.id);
+      h += '<p class="rule-note">For each clearing directly connected to <b>' + esc(start.name) + '</b>, roll 2d6 — on a 10+ the Duchy takes control.</p><div class="clist">';
+      state.clearings.filter(c => adj.indexOf(c.id) >= 0).forEach(c => {
+        const i = state.clearings.indexOf(c), rr = c._roll.duchy;
+        h += '<div class="crow"><span class="cname">' + esc(c.name) + '</span>' +
+          (c.control ? '<span class="badge ' + (c.control === 'The Grand Duchy' ? 'yes' : 'no') + '">' + esc(c.control) + '</span>' : '') +
+          '<button class="dice" data-duchy-roll="' + i + '">🎲 Roll 2d6</button>' +
+          (rr ? '<span class="badge ' + (rr.ctrl ? 'yes' : 'no') + '">' + (rr.ctrl ? 'Duchy control' : 'no') + '</span>' : '') + '</div>';
+      });
+      h += '</div><div style="margin-top:10px"><button class="dice" data-duchy-tunnel>🎲 Add a tunnel to a random clearing</button></div>';
+    }
+    bodyEl.innerHTML = h;
+    wireCorner();
+    document.getElementById('duchyStart').addEventListener('change', function () {
+      state.clearings.forEach(c => { if (c._duchyStart) { c._duchyStart = false; if (c.control === 'The Grand Duchy') c.control = null; removeStruct(c, 'Tunnel'); } });
+      if (this.value !== '') { const c = state.clearings[+this.value]; c._duchyStart = true; c.control = 'The Grand Duchy'; addStruct(c, 'Tunnel'); }
+      render();
+    });
+    bodyEl.querySelectorAll('[data-duchy-roll]').forEach(el => el.addEventListener('click', () => {
+      const c = state.clearings[+el.getAttribute('data-duchy-roll')], roll = r2d6(), ctrl = roll >= 10;
+      if (ctrl) c.control = 'The Grand Duchy'; c._roll.duchy = { roll, ctrl }; render();
+    }));
+    const dt = document.querySelector('[data-duchy-tunnel]'); if (dt) dt.addEventListener('click', () => {
+      const c = randomPick(state.clearings.filter(x => x.control !== 'The Grand Duchy' && !hasStruct(x, 'Tunnel')), 1)[0];
+      if (c) { addStruct(c, 'Tunnel'); toast('Tunnel added to ' + c.name); } render();
+    });
+  }
+
+  // --- Seventh: The Corvid Conspiracy ---
+  function renderCorvid() {
+    let h = heading('Seventh: the Corvid Conspiracy', W.descriptions.corvid, W.descriptions.controlVsPresence);
+    const pres = state.clearings.filter(c => hasPresence(c, 'The Corvid Conspiracy'));
+    h += '<p class="small muted">Presence (4 random clearings, no control): <b>' + presenceRow('The Corvid Conspiracy') + '</b></p>';
+    h += '<div style="margin-top:8px"><button class="dice primary" data-corvid-place>🎲 ' + (pres.length ? 'Reroll' : 'Place') + ' Corvid presence</button></div>';
+    bodyEl.innerHTML = h;
+    document.querySelector('[data-corvid-place]').addEventListener('click', () => {
+      state.clearings.forEach(c => removePresence(c, 'The Corvid Conspiracy'));
+      randomPick(state.clearings, 4).forEach(c => addPresence(c, 'The Corvid Conspiracy'));
+      render();
+    });
+  }
+
+  // shared clearing <select> that runs a picker; matcher marks the current selection
+  function anchorSelect(id, label, isSel) {
+    return '<label class="field" style="max-width:380px"><span class="lbl">' + esc(label) + '</span>' +
+      '<select id="' + id + '"><option value="">— choose a clearing —</option>' +
+      state.clearings.map((c, i) => '<option value="' + i + '"' + (isSel(c) ? ' selected' : '') + '>' + esc(c.name) + ' (' + esc(c.community) + ')</option>').join('') +
+      '</select></label>';
+  }
+
   // ---------- Step: Denizens ----------
   function denizenEligible(c) {
     if (c.stronghold || c.roost || c.base) return false;
@@ -780,7 +918,8 @@
       '<th>#</th><th>Clearing</th><th>Community</th><th>Paths</th><th>Control</th><th>Marks</th><th>War</th><th>Details</th>' +
       '</tr></thead><tbody>';
     state.clearings.forEach((c, i) => {
-      const marks = [c.stronghold ? 'stronghold' : '', c.roost ? 'Roost' : '', c.base ? 'base' : '', c.sympathy ? 'sympathy' : '', c.contested ? 'contested' : ''].filter(Boolean).join(', ');
+      const marks = [c.stronghold ? 'stronghold' : '', c.roost ? 'Roost' : '', c.base ? 'base' : '', (c.structures || []).join(', '),
+        c.sympathy ? 'sympathy' : '', c.contested ? 'contested' : '', (c.presence || []).length ? 'presence: ' + c.presence.map(f => f.replace('The ', '')).join('/') : ''].filter(Boolean).join(', ');
       const details = [c.inhabitants.join(', '), c.buildings.join(', '), c.problems.join(', ')].filter(Boolean).join(' · ');
       h += '<tr><td>' + (i + 1) + '</td><td><b>' + esc(c.name) + '</b></td><td>' + esc(c.community) + '</td><td>' + c.paths + '</td>' +
         '<td>' + esc(c.control || DENIZEN) + '</td><td>' + esc(marks || '—') + '</td><td>' + esc(c.war || '—') + '</td><td>' + esc(details || '—') + '</td></tr>';
@@ -829,7 +968,7 @@
     if (!Array.isArray(state.edges)) state.edges = [];
     const ids = new Set(state.clearings.map(c => c.id));
     state.edges = state.edges.filter(e => Array.isArray(e) && ids.has(e[0]) && ids.has(e[1]));
-    state.clearings.forEach(c => { if (!c._roll) c._roll = {}; ['inhabitants', 'buildings', 'problems'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); });
+    state.clearings.forEach(c => { if (!c._roll) c._roll = {}; ['inhabitants', 'buildings', 'problems', 'presence', 'structures'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); if (typeof c.onWater !== 'boolean') c.onWater = false; });
     ensurePositions();
     stepIdx = STEPS.length; render(); stepIdx = STEPS.length - 1; goto(stepIdx);
     toast('Imported Woodland (' + state.clearings.length + ' clearings)');
