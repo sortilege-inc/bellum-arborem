@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const R = window.ROOT_RULES;
+  const R = window.ROOT_RULES || window.ROOT_RELICS;
   const app = document.getElementById('app');
   const searchEl = document.getElementById('search');
   const RELICS = (R && R.relics) || [];

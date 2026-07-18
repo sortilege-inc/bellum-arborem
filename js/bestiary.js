@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const R = window.ROOT_RULES;
+  const R = window.ROOT_RULES || window.ROOT_MONSTERS;
   const app = document.getElementById('app');
   const searchEl = document.getElementById('search');
   const STORE_KEY = 'bellum-arborem.bestiary.wip';

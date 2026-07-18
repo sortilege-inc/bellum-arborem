@@ -84,6 +84,9 @@ More sections to come.
 - `data/root-rules.js` / `data/woodland-rules.js` — generated wrappers exposing the same data as
   `window.ROOT_RULES` / `window.ROOT_WOODLAND` so pages load them via `<script>` and work from
   `file://` (no local server needed).
+- `data/root-relics.js` / `data/root-monsters.js` — generated **slices** of `root-rules.json`
+  (`window.ROOT_RELICS` / `window.ROOT_MONSTERS`) so the reference-only Relics and Bestiary pages
+  load ~13 KB / ~40 KB instead of the whole ~350 KB ruleset.
 
 Regenerate the wrapper after editing the JSON:
 
