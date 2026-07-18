@@ -82,14 +82,17 @@
     const total = base + (mod || 0);
     const tier = total >= 10 ? '10+' : (total >= 7 ? '7-9' : '6-');
     lastRoll = { move, a, b, base, mod, statName: move.stat, total, tier, at: (lastRoll ? lastRoll.at + 1 : 1) };
+    BA.announce(move.name + ': rolled ' + total + ' — ' + tierWord(tier) + '.');
     render();
   }
   function rollFree() {
     const a = d6(), b = d6(), base = a + b, mod = char.stats[freeStat] || 0, total = base + mod;
     const tier = total >= 10 ? '10+' : (total >= 7 ? '7-9' : '6-');
     lastRoll = { move: { name: 'Roll + ' + freeStat }, a, b, base, mod, statName: freeStat, total, tier, at: (lastRoll ? lastRoll.at + 1 : 1) };
+    BA.announce('Roll + ' + freeStat + ': rolled ' + total + ' — ' + tierWord(tier) + '.');
     render();
   }
+  function tierWord(t) { return t === '10+' ? 'strong hit' : (t === '7-9' ? 'weak hit' : 'miss'); }
   function outcomeLines(move, tier) {
     if (!move.outcomes) return [];
     const o = move.outcomes, lines = [];

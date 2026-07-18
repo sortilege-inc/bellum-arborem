@@ -127,6 +127,7 @@
     const a = d6(), b = d6(), total = a + b + mod, tier = tierOf(total);
     ms.result = { a, b, mod, total, tier, text: outcomeText(mv, tier) };
     log(mv.name + ': rolled ' + total + ' (' + a + '+' + b + (mod ? (mod > 0 ? '+' + mod : mod) : '') + ') — ' + tierName(tier) + '.');
+    BA.announce(mv.name + ': rolled ' + total + ' — ' + tierName(tier) + '.');
     if (mv.advancesLevel && tier !== 'miss') delveDeeperResolve(tier);
     render();
   }
@@ -138,6 +139,7 @@
     const a = d6(), b = d6(), total = a + b + mod, tier = tierOf(total);
     ms.result = { a, b, mod, total, tier, text: outcomeText(mv, tier), picks: tier === '10+' ? 2 : (tier === '7-9' ? 1 : 0) };
     log('Make Camp: rolled ' + total + ' (' + a + '+' + b + '+' + mod + ', from ' + dep + '-depletion) — ' + tierName(tier) + '.');
+    BA.announce('Make Camp: rolled ' + total + ' — ' + tierName(tier) + '.');
     render();
   }
   function rollScavenge(mv) {
@@ -148,6 +150,7 @@
     ms.scavenge = { dice, level: lv.n };
     lv.scavenged = true;
     log('Scavenged Level ' + lv.n + ': rolled ' + pool + ' dice [' + dice.join(', ') + '].');
+    BA.announce('Scavenged: rolled ' + pool + ' dice — ' + dice.join(', ') + '.');
     render();
   }
   function pressForward() {

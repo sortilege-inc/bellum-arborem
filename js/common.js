@@ -57,6 +57,22 @@
     decorate(node);
     if (node.querySelectorAll) node.querySelectorAll(A11Y_SEL).forEach(decorate);
   }
+  // Off-screen live region for announcing transient results (dice rolls) that render in
+  // panels rather than toasts — screen readers speak whatever is written here.
+  let liveEl = null;
+  function announce(msg) {
+    if (!liveEl) {
+      liveEl = document.createElement('div');
+      liveEl.id = 'ba-live';
+      liveEl.className = 'sr-only';
+      liveEl.setAttribute('aria-live', 'polite');
+      liveEl.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(liveEl);
+    }
+    liveEl.textContent = '';                       // reset so identical text re-announces
+    setTimeout(() => { liveEl.textContent = msg; }, 30);
+  }
+
   function initA11y() {
     scan(document.body);
     const mo = new MutationObserver(muts => {
@@ -78,7 +94,7 @@
   else initA11y();
 
   // ---------- exports ----------
-  window.BA = { esc, d6, r2d6, fmt, toast, downloadJSON, readJSONFile };
+  window.BA = { esc, d6, r2d6, fmt, toast, announce, downloadJSON, readJSONFile };
   // Convenience globals (per-page scripts may still define their own locals, which shadow these).
   window.esc = esc; window.d6 = d6; window.r2d6 = r2d6; window.fmt = fmt; window.toast = toast;
 })();

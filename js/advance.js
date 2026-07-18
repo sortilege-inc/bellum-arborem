@@ -482,6 +482,7 @@
     // Record whether a held resource gave this roll its +2, so it can be spent afterward.
     const usedResource = !!(wd.factionState[f] && wd.factionState[f].resource);
     Object.assign(round.cur, { rolled: true, a, b, base, mod, total, usedResource, tier: total >= 10 ? '10+' : (total >= 7 ? '7-9' : '6-') });
+    BA.announce(f + ' rolled ' + total + ' — ' + tierLabel(round.cur.tier) + '.');
     render();
   }
 
