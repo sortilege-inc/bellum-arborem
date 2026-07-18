@@ -14,7 +14,10 @@
   const CREATOR_KEY = 'bellum-arborem.character.wip';
   const STATS = (R && R.stats) || ['Charm', 'Cunning', 'Finesse', 'Luck', 'Might'];
   const HARM = ['Injury', 'Exhaustion', 'Depletion'];
-  const HARM_BOXES = 6; // advancement max; base isn't encoded in the corpus, so allow up to the max
+  const HARM_BASE = (R.harmTracks && R.harmTracks[0] && R.harmTracks[0].base) || 4;
+  const HARM_MAX = (R.harmTracks && R.harmTracks[0] && R.harmTracks[0].max) || 6;
+  // A track's size = base (4) plus any advancement / move box bonuses, capped at the max (6).
+  function trackSize(name) { return Math.min(HARM_MAX, HARM_BASE + ((char.harmBoxes && char.harmBoxes[name]) || 0)); }
   const HARM_NOTE = {
     Injury: 'Toughness. Mark as you are hurt; clear by resting or care.',
     Exhaustion: 'Energy. Clear your whole track by acting in line with your Nature.',
@@ -43,6 +46,8 @@
     }, data || {});
     STATS.forEach(s => { if (typeof c.stats[s] !== 'number') c.stats[s] = 0; });
     HARM.forEach(h => { if (typeof c.harm[h] !== 'number') c.harm[h] = 0; });
+    if (!c.harmBoxes || typeof c.harmBoxes !== 'object') c.harmBoxes = {};
+    HARM.forEach(h => { if (typeof c.harmBoxes[h] !== 'number') c.harmBoxes[h] = 0; });
     factions.forEach(f => { if (!c.reputation[f]) c.reputation[f] = { status: 0, prestige: 0, notoriety: 0 }; });
     ['drives', 'moves', 'weaponSkills', 'roguishFeats', 'equipment', 'connections', 'speciesMoves'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; });
     return c;
@@ -173,10 +178,11 @@
   function harmPanel() {
     let h = '<div class="panel"><p class="eyebrow" style="margin:0 0 12px">Harm tracks</p>';
     HARM.forEach(name => {
-      const v = char.harm[name] || 0;
+      const size = trackSize(name);
+      const v = Math.min(char.harm[name] || 0, size);
       let boxes = '';
-      for (let i = 0; i < HARM_BOXES; i++) boxes += '<div class="hbox ' + (i < v ? 'on' : '') + '" data-harm="' + name + '" data-i="' + i + '"></div>';
-      h += '<div class="harm"><div class="hlabel"><span class="hname">' + name + '</span><span class="hcount">' + v + '/' + HARM_BOXES + '</span></div>' +
+      for (let i = 0; i < size; i++) boxes += '<div class="hbox ' + (i < v ? 'on' : '') + '" data-harm="' + name + '" data-i="' + i + '"></div>';
+      h += '<div class="harm"><div class="hlabel"><span class="hname">' + name + '</span><span class="hcount">' + v + '/' + size + '</span></div>' +
         '<div class="hboxes">' + boxes + '</div><div class="hnote">' + esc(HARM_NOTE[name] || '') + '</div></div>';
     });
     h += '</div>';

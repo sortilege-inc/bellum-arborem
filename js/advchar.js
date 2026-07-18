@@ -15,6 +15,9 @@
   const PLAY_KEY = 'bellum-arborem.play.wip';
   const STATS = (R && R.stats) || ['Charm', 'Cunning', 'Finesse', 'Luck', 'Might'];
   const HARM = ['Injury', 'Exhaustion', 'Depletion'];
+  const HARM_BASE = (R.harmTracks && R.harmTracks[0] && R.harmTracks[0].base) || 4;
+  const HARM_MAX = (R.harmTracks && R.harmTracks[0] && R.harmTracks[0].max) || 6;
+  const HARM_ADD_MAX = HARM_MAX - HARM_BASE; // boxes addable per track via advancement
 
   let char = null;
   let sel = {}; // transient picker selections, keyed by option
@@ -93,10 +96,10 @@
       status: () => char.roguishFeats.length + '/6',
       legal: () => char.roguishFeats.length < 6 && featPool().length > 0,
       desc: 'Learn one or two new roguish feats.', multi: 2 },
-    { key: 'harm', name: 'Add a box to a harm track', limit: 'max 6 each',
-      status: () => HARM.map(h => h + ' +' + char.harmBoxes[h]).join(' · '),
-      legal: () => true,
-      desc: 'Give one harm track another box (Injury / Exhaustion / Depletion). Base track size isn’t in the ruleset — the book caps each at six boxes total.' },
+    { key: 'harm', name: 'Add a box to a harm track', limit: 'base ' + HARM_BASE + ', max ' + HARM_MAX + ' each',
+      status: () => HARM.map(h => h + ' ' + (HARM_BASE + char.harmBoxes[h]) + '/' + HARM_MAX).join(' · '),
+      legal: () => HARM.some(h => char.harmBoxes[h] < HARM_ADD_MAX),
+      desc: 'Give one harm track another box (Injury / Exhaustion / Depletion). Each starts at ' + HARM_BASE + ' boxes and can grow to ' + HARM_MAX + '.' },
     { key: 'connection', name: 'Up to two connections', limit: 'max 6 total',
       status: () => (char.connections.length + char.connectionsExtra.length) + ' connections',
       legal: () => true,
@@ -119,7 +122,7 @@
     if (k === 'othermove') return chooseOne(k, otherMovePool().map(m => ({ v: m.name + '||' + m.from, label: m.name + ' — ' + m.from.replace('The ', '') })));
     if (k === 'weapon') return chooseMany(k, weaponPool().map(w => ({ v: w, label: w })), opt.multi);
     if (k === 'feat') return chooseMany(k, featPool().map(f => ({ v: f, label: f })), opt.multi);
-    if (k === 'harm') return chooseOne(k, HARM.map(h => ({ v: h, label: h + ' (+' + char.harmBoxes[h] + ')' })));
+    if (k === 'harm') return chooseOne(k, HARM.filter(h => char.harmBoxes[h] < HARM_ADD_MAX).map(h => ({ v: h, label: h + ' (' + (HARM_BASE + char.harmBoxes[h]) + '/' + HARM_MAX + ')' })));
     if (k === 'connection') return '<input type="text" data-adv-text="' + k + '" placeholder="Connection type, e.g. Protector, Watcher">' + spendBtn(k);
     if (k === 'mastery') return chooseOne(k, masteryPool().map(m => ({ v: m.move, label: m.move })));
     if (k === 'speciesmove') return chooseOne(k, speciesMovePool().map(n => ({ v: n, label: n })));
@@ -148,7 +151,7 @@
     else if (k === 'othermove') { const v = sel.othermove; if (!v) return toast('Choose a move.'); const [name, from] = v.split('||'); char.otherMoves.push({ name, from }); logAdv('Move from ' + from.replace('The ', '') + ': ' + name, () => { char.otherMoves = char.otherMoves.filter(o => !(o.name === name && o.from === from)); }); ok = true; }
     else if (k === 'weapon') { const list = (sel.weapon || []).slice(); if (!list.length) return toast('Pick one or two weapon skills.'); if (char.weaponSkills.length + list.length > 7) return toast('That would exceed 7 weapon skills.'); char.weaponSkills.push(...list); logAdv('Weapon skill' + (list.length > 1 ? 's' : '') + ': ' + list.join(', '), () => { list.forEach(w => char.weaponSkills.splice(char.weaponSkills.indexOf(w), 1)); }); ok = true; }
     else if (k === 'feat') { const list = (sel.feat || []).slice(); if (!list.length) return toast('Pick one or two roguish feats.'); if (char.roguishFeats.length + list.length > 6) return toast('That would exceed 6 roguish feats.'); char.roguishFeats.push(...list); logAdv('Roguish feat' + (list.length > 1 ? 's' : '') + ': ' + list.join(', '), () => { list.forEach(f => char.roguishFeats.splice(char.roguishFeats.indexOf(f), 1)); }); ok = true; }
-    else if (k === 'harm') { const h = sel.harm; if (!h) return toast('Choose a harm track.'); char.harmBoxes[h] += 1; logAdv('+1 box to ' + h, () => { char.harmBoxes[h] -= 1; }); ok = true; }
+    else if (k === 'harm') { const h = sel.harm; if (!h) return toast('Choose a harm track.'); if (char.harmBoxes[h] >= HARM_ADD_MAX) return toast(h + ' is already at ' + HARM_MAX + ' boxes.'); char.harmBoxes[h] += 1; logAdv('+1 box to ' + h + ' (now ' + (HARM_BASE + char.harmBoxes[h]) + ')', () => { char.harmBoxes[h] -= 1; }); ok = true; }
     else if (k === 'connection') { const t = (sel.connectionText || '').trim(); if (!t) return toast('Name the connection type.'); char.connectionsExtra.push(t); logAdv('Connection: ' + t, () => { char.connectionsExtra.splice(char.connectionsExtra.indexOf(t), 1); }); ok = true; }
     else if (k === 'mastery') { const m = sel.mastery; if (!m) return toast('Choose a mastery.'); char.masteries.push(m); logAdv('Mastery: ' + m, () => { char.masteries.splice(char.masteries.indexOf(m), 1); }); ok = true; }
     else if (k === 'speciesmove') { const m = sel.speciesmove; if (!m) return toast('Choose a species move.'); char.speciesMoves.push(m); logAdv('Species move: ' + m, () => { char.speciesMoves.splice(char.speciesMoves.indexOf(m), 1); }); ok = true; }

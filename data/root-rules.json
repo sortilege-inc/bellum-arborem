@@ -37,18 +37,21 @@
   "harmTracks": [
     {
       "name": "Injury",
-      "boxes": null,
-      "notes": "One of the three vagabond harm tracks. Marked from 0 up; when it fills you must address it. A harm track can be raised to a maximum of 6 boxes via advancement. Base starting box count is not encoded in the corpus. Represents toughness. (The Arbiter move 'Hardy' grants +1 injury box.)"
+      "base": 4,
+      "max": 6,
+      "notes": "A vagabond harm track (toughness). Marked boxes fill from 0 up; when Marked reaches the track's size the track is full and must be addressed. Base size 4, max 6 — raised by the harm-box advancement or moves (Hardy: +1 injury box)."
     },
     {
       "name": "Exhaustion",
-      "boxes": null,
-      "notes": "One of the three vagabond harm tracks. Marked from 0 up; when it fills you must address it. Cleared by following your Nature. Max 6 boxes via advancement. Base starting box count is not encoded in the corpus. Represents reserves of energy. (The Harrier move 'Cross Country' grants +1 exhaustion box.)"
+      "base": 4,
+      "max": 6,
+      "notes": "A vagabond harm track (energy). Cleared entirely by acting in line with your Nature. Base size 4, max 6 — raised by the harm-box advancement or moves (Cross Country: +1 exhaustion box)."
     },
     {
       "name": "Depletion",
-      "boxes": null,
-      "notes": "One of the three vagabond harm tracks. Marked from 0 up; when it fills you must address it. Max 6 boxes via advancement. Base starting box count is not encoded in the corpus. Represents carried supplies / 'pockets'. (The Tinker move 'Big Pockets' grants +2 depletion boxes.)"
+      "base": 4,
+      "max": 6,
+      "notes": "A vagabond harm track (supplies / pockets). Base size 4, max 6 — raised by the harm-box advancement or moves (Big Pockets: +2 depletion boxes)."
     }
   ],
   "economy": {
