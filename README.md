@@ -39,6 +39,13 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   …) — including the "presence" mechanic. Boons and defeats apply to the map, a war log records every
   turn, and you export the advanced Woodland. Runs on the same `bellum-arborem.woodland` JSON.
 
+- **Advance Character** (`advance-character.html`) — load a character JSON, set how many advancements
+  the vagabond has earned, and spend them on legal options: +1 to a stat (max +2), a new move from
+  your playbook (max 5) or another playbook (max 2), up to two weapon skills (max 7) or roguish feats
+  (max 6), a harm-track box, connections, a Travelers & Outsiders mastery, or a species move. Each
+  option enforces its own limits, spends are logged (with undo), and you export the advanced
+  character. Runs on the same `bellum-arborem.character` JSON.
+
 More sections to come.
 
 ## Data
@@ -71,11 +78,13 @@ character-creator.html     Character creator app
 woodland-creator.html      Woodland creator app
 play.html                  Play mode (load a character and play)
 advance-woodland.html      Advance Woodland (the "time passes" war loop)
+advance-character.html     Advance Character (spend advancements)
 css/app.css                Shared Root-styled design system
 js/creator.js              Character creator logic
 js/woodland.js             Woodland creator logic
 js/play.js                 Play-mode logic
 js/advance.js              Advance-Woodland logic
+js/advchar.js              Advance-Character logic
 data/root-rules.json       Canonical character ruleset
 data/woodland-rules.json   Canonical Woodland-creation tables
 data/root-rules.js         Generated window.ROOT_RULES wrapper

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advance Character — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .topbar .actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+  .loadpane { text-align:center; padding:34px 20px; }
+  .loadpane .big { font-size:44px; margin-bottom:8px; }
+
+  .sheet { display:flex; flex-direction:column; gap:18px; }
+  .ptitle { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .ptitle h1 { margin:0; font-size:28px; }
+  .ptitle .pb { font-family:'Bitter',serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:12px; color:var(--accent-dk); }
+
+  .advbar { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:linear-gradient(180deg,#fbf0dd,#f2e3c1); border:1px solid var(--line); border-radius:var(--radius); padding:14px 18px; }
+  .advbar .lbl2 { font-family:'Bitter',serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); }
+  .advbar .remain { font-family:'Bree Serif',serif; font-size:30px; color:var(--rust); min-width:34px; text-align:center; }
+  .stepper2 button { width:32px; height:32px; border-radius:6px; border:1px solid var(--line); background:var(--cream-hi); font-size:19px; cursor:pointer; font-family:'Bree Serif',serif; }
+
+  .opt { border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--card); padding:14px 16px; margin-bottom:10px; }
+  .opt.disabled { opacity:.5; }
+  .opt .oh { display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .opt .oname { font-family:'Bree Serif',serif; font-size:16px; }
+  .opt .ocount { font-family:'Bitter',serif; font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .opt .odesc { font-size:13px; color:var(--ink-soft); margin:5px 0 0; }
+  .opt .picker { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .opt select, .opt input[type=text] { max-width:280px; }
+  .chip { font-family:'Bitter',serif; font-size:12.5px; color:var(--ink-soft); background:var(--cream-hi); border:1px solid var(--line); border-radius:20px; padding:5px 11px; cursor:pointer; }
+  .chip.on { background:var(--accent); color:var(--cream-hi); border-color:var(--accent-dk); }
+
+  .log { list-style:none; margin:0; padding:0; }
+  .log li { font-size:13.5px; padding:5px 0; border-bottom:1px solid var(--line-soft); display:flex; justify-content:space-between; gap:10px; }
+  .log .undo { color:var(--rust); cursor:pointer; border:none; background:none; font-size:13px; font-family:'Bitter',serif; }
+
+  .summ { display:flex; flex-wrap:wrap; gap:6px; }
+
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--cream-hi); padding:11px 20px; border-radius:8px; font-family:'Bitter',serif; font-size:14px; box-shadow:0 8px 20px -8px var(--shadow-deep); z-index:50; opacity:0; transition:opacity .2s; }
+  .toast.show { opacity:1; }
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <div class="actions">
+      <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      <button class="btn ghost small" id="importBtn">Load character…</button>
+      <button class="btn small" id="saveBtn" disabled>Save JSON</button>
+    </div>
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">Advance the Vagabond</p>
+    <p class="subtitle">Bellum Arborem · spend your advancements</p>
+  </header>
+
+  <div id="app"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/root-rules.js"></script>
+<script src="js/advchar.js"></script>
+</body>
+</html>
