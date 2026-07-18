@@ -5909,5 +5909,242 @@
   "notes": {
     "connectionTypes": "Connection prompts on each playbook use types such as Partner, Friend, Protector, Professional, Watcher, Family (full list on p.51 per advancement text).",
     "weaponSkillsVsMoves": "A vagabond's weapon skill tags (from weapons/playbook) unlock the corresponding Weapon-category moves. Starting weapon skills are listed per playbook; max 7 total via advancement (not counting playbook-granted skills)."
-  }
+  },
+  "speciesAbilities": [
+    {
+      "name": "Nine Lives",
+      "species": [
+        "Cat",
+        "Corvids"
+      ],
+      "description": "Once per session, when you mark your last box of injury, mark exhaustion to ignore the blow entirely and stay on your feet long enough for one last act of heroism. Once the deed is done, you collapse, unconscious."
+    },
+    {
+      "name": "Underground Tunnels",
+      "species": [
+        "Rabbit",
+        "Mouse",
+        "Mole"
+      ],
+      "description": "Take the Hide roguish feat (it does not count against your limit). When you attempt to hide by burrowing underground, roll with Might instead of Finesse."
+    }
+  ],
+  "speciesMoves": [
+    {
+      "name": "Built-In Weapons",
+      "species": [
+        "Cat",
+        "Fox",
+        "Bird of Prey",
+        "Lizard"
+      ],
+      "stat": null,
+      "trigger": "Your claws, fangs, or talons are natural weaponry, with intimate range, using up no Load and inflicting injury instead of exhaustion. Choose one weapon tag from the list (and one weapon flaw):",
+      "outcomes": null,
+      "options": [
+        "Barbed",
+        "Fast",
+        "Intimidating",
+        "Precise",
+        "Quick",
+        "Sharp",
+        "Signature",
+        "Identifiable",
+        "Slow",
+        "Ugly",
+        "Unwieldy"
+      ],
+      "notes": "Choose one weapon tag and one weapon flaw from the list."
+    },
+    {
+      "name": "Cached Resources",
+      "species": [
+        "Fox",
+        "Squirrel",
+        "Mole"
+      ],
+      "stat": "Cunning",
+      "trigger": "When you search for one of your caches, roll with Cunning.",
+      "outcomes": {
+        "hit": "you find a stash of resources; clear 2-depletion.",
+        "7-9": "the search takes forever; mark exhaustion.",
+        "miss": "your wandering puts you in danger before you realize it."
+      },
+      "options": [],
+      "notes": "You've hidden resources all over the forest, sometimes even in locations that you've since forgotten."
+    },
+    {
+      "name": "Garner Sympathy",
+      "species": [
+        "Rabbit",
+        "Mouse",
+        "Corvid"
+      ],
+      "stat": null,
+      "trigger": "When you plead with a PC by guilting them into going along with you, mark exhaustion to allow them to clear 2-exhaustion instead of one when they agree to what you have proposed.",
+      "outcomes": null,
+      "options": [],
+      "notes": ""
+    },
+    {
+      "name": "Scenting the Clearing",
+      "species": [
+        "Cat",
+        "Dog",
+        "Wolf"
+      ],
+      "stat": "Cunning",
+      "trigger": "When you sniff out the details of a new clearing, roll with Cunning.",
+      "outcomes": {
+        "10+": "ask two questions from the list below.",
+        "7-9": "ask one.",
+        "miss": "ask one, but your sniffing around leaves you distracted from another threat; it gets the drop on you."
+      },
+      "options": [
+        "What's the most surprising scent I pick up in the clearing's most public area?",
+        "What interesting scent trail catches my attention, and where does it lead?",
+        "What scent has somebody taken efforts to hide, and where do I smell it?",
+        "What smells like the most dangerous place in the clearing?",
+        "What smells like the safest place in the clearing?"
+      ],
+      "notes": ""
+    },
+    {
+      "name": "Searching the Cracks",
+      "species": [
+        "Fox",
+        "Mouse",
+        "Otter"
+      ],
+      "stat": "Luck",
+      "trigger": "When you carefully search someone's private space for secrets, roll with Luck.",
+      "outcomes": {
+        "hit": "the GM will either tell you there are none here, or that you found something surprising, incriminating, or telling.",
+        "7-9": "you leave no evidence behind or you can take something with you, your choice.",
+        "10+": "both, or you can plant something.",
+        "miss": "something you find is strange and distracts you... just long enough to be caught!"
+      },
+      "options": [],
+      "notes": ""
+    },
+    {
+      "name": "Stroke of Luck",
+      "species": [
+        "Rabbit"
+      ],
+      "stat": null,
+      "trigger": "Take +1 Luck (max +3).",
+      "outcomes": null,
+      "options": [],
+      "notes": ""
+    },
+    {
+      "name": "Tight Squeeze",
+      "species": [
+        "Mouse",
+        "Cat",
+        "Lizard"
+      ],
+      "stat": "Finesse",
+      "trigger": "When you squeeze through a tight space, roll with Finesse.",
+      "outcomes": {
+        "hit": "you make it through to the other side.",
+        "7-9": "mark injury or mark 3-wear on your gear, your choice.",
+        "miss": "you're stuck and something on the other side isn't looking too friendly."
+      },
+      "options": [],
+      "notes": ""
+    },
+    {
+      "name": "Convenient Hideout",
+      "species": [
+        "Fox",
+        "Rabbit"
+      ],
+      "stat": "Cunning",
+      "trigger": "When you attempt to lay low in the forest, roll with Cunning.",
+      "outcomes": {
+        "hit": "you find a convenient hideout nearby.",
+        "10+": "pick 2.",
+        "7-9": "pick 1:",
+        "miss": "you reach the hideout — choose 1 — but you aren't alone when you arrive."
+      },
+      "options": [
+        "Food and water are easily accessible from the hideout",
+        "The area is untouched and undisturbed by other denizens or threats",
+        "The route to the hideout is safe and easy"
+      ],
+      "notes": "Your eyes are adept at finding good, safe places to hunker down."
+    }
+  ],
+  "masteries": [
+    {
+      "move": "Attempt a Roguish Feat",
+      "description": "On a 12+, in addition to the 10+, choose one: immediately accomplish a second appropriate roguish feat as if you had rolled a 10+ (whether or not you have that feat); or clear 2-exhaustion."
+    },
+    {
+      "move": "Figure Someone Out",
+      "description": "On a 12+, in addition to the 10+, mark down their name; from now on you can always tell if they're lying to you. Against a name you've already marked, instead take +1 ongoing to act on the answers."
+    },
+    {
+      "move": "Persuade an NPC",
+      "description": "On a 12+, in addition to the 10+, mark exhaustion to treat this as a 12+ on the sway an NPC Reputation move, even without high enough Reputation."
+    },
+    {
+      "move": "Read a Tense Situation",
+      "description": "On a 12+, in addition to the 10+, ask “How could I ____?” for any action you hope to accomplish. Follow the answer to take a 12+ on your first move toward it, instead of rolling."
+    },
+    {
+      "move": "Trick an NPC",
+      "description": "On a 12+, they buy your deception utterly; only incontrovertible evidence shakes it. You can return and play the same trick again at a 10+ instead of rolling."
+    },
+    {
+      "move": "Trust Fate",
+      "description": "On a 12+, fate smiles: you accomplish your aim without cost and receive an immediate fortunate benefit; the GM says what."
+    },
+    {
+      "move": "Wreck Something",
+      "description": "On a 12+, in addition to the 10+, choose one: inflict 2-injury on foes in the area; destroy something far larger than normal; or clear 2-depletion from useful shards."
+    },
+    {
+      "move": "Cleave",
+      "description": "On a 12+, you inflict 6-wear instead. Excess wear becomes injury or exhaustion (your choice) to your foes."
+    },
+    {
+      "move": "Confuse Senses",
+      "description": "On a 12+, choose one: confuse a whole group (apply the 10+ to any foes in range); or knock a single foe so off-kilter you take them out as you choose, without triggering any move."
+    },
+    {
+      "move": "Disarm",
+      "description": "On a 12+, your opponent both marks 3-exhaustion and loses their weapon."
+    },
+    {
+      "move": "Harry a Group",
+      "description": "On a 12+, in addition to the 10+, inflict an additional 2-injury or 2-morale, your choice."
+    },
+    {
+      "move": "Improvise a Weapon",
+      "description": "On a 12+, choose your weapon's range and two beneficial tags it bears (as long as they make sense)."
+    },
+    {
+      "move": "Parry",
+      "description": "On a 12+, in addition to the 10+, immediately riposte: 2-injury (unabsorbable by armor), 2-morale, or 2-exhaustion."
+    },
+    {
+      "move": "Quick Shot",
+      "description": "On a 12+, take all four options and inflict 2-injury instead of 1."
+    },
+    {
+      "move": "Storm a Group",
+      "description": "On a 12+, take all four options and choose one for double effect."
+    },
+    {
+      "move": "Trick Shot",
+      "description": "On a 12+, take all four options, and your shot strikes a third available target."
+    },
+    {
+      "move": "Vicious Strike",
+      "description": "On a 12+, in addition to the 10+, incapacitate them — choose one: they can't move, can't wield a weapon, or can't communicate until they receive medical aid."
+    }
+  ]
 }

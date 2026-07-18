@@ -32,6 +32,7 @@
       name: '', pronouns: '', species: '', demeanor: '', look: '', background: '',
       details: {},           // look prompts (Physical feature, Item, …) keyed by prompt
       backgroundAnswers: {}, // background-question answers keyed by question
+      speciesMoves: [],      // chosen T&O species moves (gated by species)
       stats: {},
       statBoost: null,   // the stat given the creation +1 (baked into stats)
       nature: null,
@@ -63,6 +64,14 @@
   function grantedFeats() { const p = pb(); return (p && p.startingRoguishFeats) || []; }
   function featChoose() { const p = pb(); return (p && p.roguishFeatsChoose) || 0; }
   function featExtras() { const g = grantedFeats(); return state.roguishFeats.filter(f => g.indexOf(f) < 0).length; }
+  // ---- Species (T&O): match a chosen species string to ability/move species tags (fuzzy) ----
+  function speciesMatch(chosen, tag) {
+    const a = (chosen || '').trim().toLowerCase(), b = (tag || '').toLowerCase();
+    if (!a) return false;
+    return a === b || b.indexOf(a) === 0 || a.indexOf(b) === 0;
+  }
+  function speciesAbilityFor(sp) { return (R.speciesAbilities || []).find(x => (x.species || []).some(t => speciesMatch(sp, t))) || null; }
+  function speciesMovesFor(sp) { return sp ? (R.speciesMoves || []).filter(m => (m.species || []).some(t => speciesMatch(sp, t))) : []; }
   const STAT_BOOST_MAX = 2; // creation +1 may not raise a stat above +2
   function canBoost(s) { return state.statBoost !== s && state.stats[s] < STAT_BOOST_MAX; }
   function setBoost(s) {
@@ -92,7 +101,7 @@
     state.stats = {};
     stats.forEach(s => { state.stats[s] = (p.stats && p.stats[s] != null) ? p.stats[s] : 0; });
     state.statBoost = null;
-    state.species = ''; state.details = {}; state.backgroundAnswers = {};
+    state.species = ''; state.details = {}; state.backgroundAnswers = {}; state.speciesMoves = [];
     state.nature = null;
     state.drives = [];
     state.moves = [];
@@ -228,6 +237,7 @@
       'tap a suggestion to use it, or write your own. Only a name is required.');
     h += idField('Name', 'data-idk="name"', state.name, [], 'e.g. Bramble, Quill, Old Ferro');
     h += idField('Species', 'data-idk="species"', state.species, p.suggestedSpecies || [], 'What animal are you?');
+    h += '<div id="speciesAbilityBox">' + speciesAbilityBoxHTML() + '</div>';
     // Look prompts from the playbook (Pronouns, Physical feature, Item, …)
     (p.details || []).forEach(d => {
       if (/pronoun/i.test(d.prompt)) h += idField(d.prompt, 'data-idk="pronouns"', state.pronouns, d.options || [], '');
@@ -263,6 +273,15 @@
       const input = el.closest('.field').querySelector('input');
       input.value = el.textContent; input.dispatchEvent(new Event('input', { bubbles: true }));
     }));
+    // Live-update the species ability as the species field changes (without a full re-render)
+    const sp = bodyEl.querySelector('[data-idk="species"]');
+    if (sp) sp.addEventListener('input', () => { const box = document.getElementById('speciesAbilityBox'); if (box) box.innerHTML = speciesAbilityBoxHTML(); });
+  }
+  function speciesAbilityBoxHTML() {
+    const ab = speciesAbilityFor(state.species);
+    if (!ab) return '';
+    return '<div class="move" style="margin-bottom:14px"><div class="m-name">Species ability — ' + esc(ab.name) + '</div>' +
+      '<div class="m-notes">' + esc(ab.description) + '</div></div>';
   }
   // Compose the free-text look / background from the structured identity fields (for export + review).
   function composeLook() { return Object.keys(state.details).map(k => state.details[k]).filter(Boolean).join(', '); }
@@ -379,6 +398,24 @@
         basics.map(m => '<div class="move">' + '<div class="m-name">' + esc(m.name) + '</div>' +
           moveInner(m) + '</div>').join('') + '</div></details>';
     }
+    // Species moves (T&O) — gated by the species chosen on the Identity page
+    const sm = speciesMovesFor(state.species);
+    h += '<p class="eyebrow" style="margin:22px 0 8px">Species moves' + (state.species ? ' — ' + esc(state.species) : '') + '</p>';
+    if (!state.species) h += '<p class="muted small">Set your species on the Identity page to see the moves your animal can take.</p>';
+    else if (!sm.length) h += '<p class="muted small">No species moves for “' + esc(state.species) + '”.</p>';
+    else {
+      h += '<p class="small muted" style="margin:0 0 8px">Take one to start (more come with advancement). <span class="counter ' + (state.speciesMoves.length ? 'met' : '') + '">' + state.speciesMoves.length + ' chosen</span></p><div class="picklist">';
+      sm.forEach(m => {
+        const on = state.speciesMoves.indexOf(m.name) >= 0;
+        h += '<div class="pick' + (on ? ' on' : '') + '" data-spmv="' + esc(m.name) + '"><span class="mark"></span>' +
+          '<div class="p-title">' + esc(m.name) + '</div>' + moveInner(m) + '</div>';
+      });
+      h += '</div>';
+    }
+    // Masteries reference (advancement — 12+ enhancements)
+    h += '<details style="margin-top:18px"><summary class="eyebrow" style="cursor:pointer">Masteries — 12+ move enhancements, taken via advancement (' + (R.masteries || []).length + ')</summary>' +
+      '<div class="picklist" style="margin-top:12px">' + (R.masteries || []).map(m =>
+        '<div class="move"><div class="m-name">' + esc(m.move) + '</div><div class="m-notes">' + esc(m.description) + '</div></div>').join('') + '</div></details>';
     bodyEl.innerHTML = h;
     bodyEl.querySelectorAll('[data-mv]').forEach(el => el.addEventListener('click', (ev) => {
       if (ev.target.tagName === 'SUMMARY') return;
@@ -387,6 +424,13 @@
       const i = state.moves.indexOf(name);
       if (i >= 0) state.moves.splice(i, 1);
       else if (state.moves.length < need) state.moves.push(name);
+      render();
+    }));
+    bodyEl.querySelectorAll('[data-spmv]').forEach(el => el.addEventListener('click', (ev) => {
+      if (ev.target.tagName === 'SUMMARY') return;
+      const name = el.getAttribute('data-spmv');
+      const i = state.speciesMoves.indexOf(name);
+      if (i >= 0) state.speciesMoves.splice(i, 1); else state.speciesMoves.push(name);
       render();
     }));
   }
@@ -610,10 +654,12 @@
     h += row('Playbook', p.name);
     h += row('Stats', stats.map(s => s + ' ' + fmtStat(state.stats[s]) + (state.statBoost === s ? ' (+1)' : '')).join('  ·  '));
     if (state.species) h += row('Species', state.species);
+    const spAb = speciesAbilityFor(state.species); if (spAb) h += row('Species ability', spAb.name);
     if (state.demeanor) h += row('Demeanor', state.demeanor);
     const look = composeLook(); if (look) h += row('Look', look);
     const bg = composeBackground(); if (bg) h += row('Background', bg);
     h += row('Nature', state.nature || '—');
+    if (state.speciesMoves.length) h += row('Species moves', state.speciesMoves.join(', '));
     h += row('Drives', state.drives.join(', ') || '—');
     h += row('Playbook moves', state.moves.join(', ') || '—');
     h += row('Weapon skill', state.weaponSkills.join(', ') || '—');
@@ -649,6 +695,8 @@
     const c = JSON.parse(JSON.stringify(state));
     c.look = composeLook();          // derived free-text for play-mode / portability
     c.background = composeBackground();
+    const ab = speciesAbilityFor(state.species);
+    c.speciesAbility = ab ? { name: ab.name, description: ab.description } : null;
     return c;
   }
   function fileName() {
@@ -694,6 +742,7 @@
     if (!Array.isArray(state.drives)) state.drives = [];
     if (!Array.isArray(state.moves)) state.moves = [];
     if (!Array.isArray(state.connections)) state.connections = [];
+    if (!Array.isArray(state.speciesMoves)) state.speciesMoves = [];
     if (!state.details || typeof state.details !== 'object') state.details = {};
     if (!state.backgroundAnswers || typeof state.backgroundAnswers !== 'object') state.backgroundAnswers = {};
     if (!state.reputation) state.reputation = {};

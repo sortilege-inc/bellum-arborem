@@ -44,13 +44,19 @@
     STATS.forEach(s => { if (typeof c.stats[s] !== 'number') c.stats[s] = 0; });
     HARM.forEach(h => { if (typeof c.harm[h] !== 'number') c.harm[h] = 0; });
     factions.forEach(f => { if (!c.reputation[f]) c.reputation[f] = { status: 0, prestige: 0, notoriety: 0 }; });
-    ['drives', 'moves', 'weaponSkills', 'roguishFeats', 'equipment', 'connections'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; });
+    ['drives', 'moves', 'weaponSkills', 'roguishFeats', 'equipment', 'connections', 'speciesMoves'].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; });
     return c;
+  }
+  function speciesAbility() {
+    if (char && char.speciesAbility) return char.speciesAbility; // from export
+    const sp = (char && char.species || '').trim().toLowerCase();
+    if (!sp) return null;
+    return (R.speciesAbilities || []).find(x => (x.species || []).some(t => { const b = t.toLowerCase(); return sp === b || b.indexOf(sp) === 0 || sp.indexOf(b) === 0; })) || null;
   }
 
   // ---------- move resolution ----------
   function resolveMoves() {
-    const out = { playbook: [], groups: {} };
+    const out = { playbook: [], species: [], groups: {} };
     const p = pb();
     if (p && Array.isArray(p.playbookMoves)) {
       (char.moves || []).forEach(name => {
@@ -59,6 +65,10 @@
         else out.playbook.push({ name, category: 'Playbook' });
       });
     }
+    (char.speciesMoves || []).forEach(name => {
+      const m = (R.speciesMoves || []).find(x => x.name === name);
+      out.species.push(m ? Object.assign({ category: 'Species' }, m) : { name, category: 'Species' });
+    });
     (R.basicMoves || []).forEach(m => {
       const cat = m.category || 'Basic';
       (out.groups[cat] = out.groups[cat] || []).push(m);
@@ -197,6 +207,10 @@
       h += '<p class="rep-mini" style="margin:4px 0">Playbook moves</p>';
       rm.playbook.forEach((m, i) => { h += moveCard(m, 'pb', i); });
     }
+    if (rm.species.length) {
+      h += '<p class="rep-mini" style="margin:10px 0 4px">Species moves</p>';
+      rm.species.forEach((m, i) => { h += moveCard(m, 'sp', i); });
+    }
     const order = ['Basic', 'Weapon', 'Travel', 'Session', 'Reputation'];
     order.forEach(cat => {
       const list = rm.groups[cat]; if (!list || !list.length) return;
@@ -238,6 +252,11 @@
     let h = '<div class="panel"><p class="eyebrow" style="margin:0 0 8px">Nature &amp; drives</p>';
     h += '<p style="margin:0 0 6px"><b>' + esc(char.nature || '—') + '</b>' + (nat ? ' <span class="muted small">' + esc(nat.condition) + '</span>' : '') + '</p>';
     h += '<p class="rep-mini" style="margin:8px 0 4px">Drives</p><div>' + (char.drives.length ? char.drives.map(d => '<span class="tag" style="margin:0 6px 6px 0">' + esc(d) + '</span>').join('') : '<span class="muted small">—</span>') + '</div>';
+    const ab = speciesAbility();
+    if (char.species || ab) {
+      h += '<p class="rep-mini" style="margin:12px 0 4px">Species' + (char.species ? ' — ' + esc(char.species) : '') + '</p>';
+      if (ab) h += '<p style="margin:0"><b>' + esc(ab.name) + '</b> <span class="muted small">' + esc(ab.description) + '</span></p>';
+    }
     h += '</div>';
     return h;
   }
@@ -267,7 +286,7 @@
     app.querySelectorAll('[data-free]').forEach(el => el.addEventListener('click', () => { freeStat = el.getAttribute('data-free'); render(); }));
     app.querySelectorAll('[data-roll]').forEach(el => el.addEventListener('click', () => {
       const [grp, i] = el.getAttribute('data-roll').split(':');
-      const move = grp === 'pb' ? rm.playbook[+i] : rm.groups[grp][+i];
+      const move = grp === 'pb' ? rm.playbook[+i] : grp === 'sp' ? rm.species[+i] : rm.groups[grp][+i];
       if (move) rollMove(move);
     }));
     app.querySelectorAll('[data-harm]').forEach(el => el.addEventListener('click', () => {
