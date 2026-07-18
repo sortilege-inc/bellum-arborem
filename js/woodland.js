@@ -326,9 +326,7 @@
     h += '<div class="picklist" style="display:flex;flex-direction:column;gap:10px">';
     h += '<div class="pick on" style="cursor:default"><span class="mark"></span>' +
       '<div class="p-title">The Denizens</div><div class="p-sub">Always present — the general inhabitants of the Woodland.</div></div>';
-    let expansionShown = false;
     W.coreFactions.forEach(f => {
-      if (f.expansion && !expansionShown) { expansionShown = true; h += '<div class="divider" style="margin:14px auto 4px"><span>Travelers & Outsiders</span></div>'; }
       const on = state.factions.indexOf(f.name) >= 0;
       h += '<div class="pick' + (on ? ' on' : '') + '" data-fac="' + esc(f.name) + '"><span class="mark"></span>' +
         '<div class="p-title">' + esc(f.name) + '</div><div class="p-sub">' + esc(f.blurb) + '</div></div>';
