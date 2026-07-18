@@ -46,6 +46,8 @@
     w.clearings.forEach((c, i) => {
       if (typeof c.fortified !== 'boolean') c.fortified = false;
       if (!Array.isArray(c.structures)) c.structures = [];
+      if (!Array.isArray(c.presence)) c.presence = [];
+      if (typeof c.onWater !== 'boolean') c.onWater = false;
       if (c.x == null || c.y == null) { c.x = 120 + (i % 4) * 240; c.y = 90 + Math.floor(i / 4) * 150; }
     });
     w.factionState = w.factionState || {};
@@ -64,11 +66,21 @@
   function mostControlledCount() { return Math.max(0, ...factionsPresent().map(f => controlledBy(f).length)); }
   function factionOrder() { return factionsPresent().slice().sort((a, b) => controlledBy(b).length - controlledBy(a).length); }
   function neighborIds(id) { return wd.edges.filter(e => e[0] === id || e[1] === id).map(e => e[0] === id ? e[1] : e[0]); }
+  function hasPresence(c, f) { return (c.presence || []).indexOf(f) >= 0; }
+  function addPresence(c, f) { if (!c.presence) c.presence = []; if (!hasPresence(c, f)) c.presence.push(f); }
+  function hasStruct(c, s) { return (c.structures || []).indexOf(s) >= 0; }
+  function addStruct(c, s) { if (!c.structures) c.structures = []; if (!hasStruct(c, s)) c.structures.push(s); }
+  function presenceOf(f) { return wd.clearings.filter(c => hasPresence(c, f)); }
+  function withStruct(s) { return wd.clearings.filter(c => hasStruct(c, s)); }
 
   function conditionMet(f) {
     if (f === 'The Marquisate') return controlledBy(f).length >= 5 || hasStructures(f);
     if (f === 'The Eyrie Dynasties') return roostCount(f) >= 2 || controlledBy(f).length >= 4;
     if (f === 'The Woodland Alliance') return sympathyCount() >= 3 || wd.clearings.some(c => c.control === f && c.base);
+    if (f === 'The Lizard Cult') return withStruct('Garden').length >= 2;
+    if (f === 'The Riverfolk Company') return withStruct('Trading post').length >= 3;
+    if (f === 'The Grand Duchy') return controlledBy(f).length >= 2 && withStruct('Market').length >= 1 && withStruct('Citadel').length >= 1;
+    if (f === 'The Corvid Conspiracy') return withStruct('Plot').length >= 3;
     return false;
   }
 
@@ -88,18 +100,26 @@
   function modTotal(parts) { return parts.reduce((s, p) => s + p.v, 0); }
 
   // ---------- boon eligibility & targets ----------
-  function boonsFor(f) { return FR.minorBoons.filter(b => b.factions.indexOf('*') >= 0 || b.factions.indexOf(f) >= 0); }
-  function majorBoonsFor(f) { return FR.majorBoons.filter(b => b.factions.indexOf('*') >= 0 || b.factions.indexOf(f) >= 0); }
+  function boonEligible(b, f) { if (b.except && b.except.indexOf(f) >= 0) return false; return b.factions.indexOf('*') >= 0 || b.factions.indexOf(f) >= 0; }
+  function boonsFor(f) { return FR.minorBoons.filter(b => boonEligible(b, f)); }
+  function majorBoonsFor(f) { return FR.majorBoons.filter(b => boonEligible(b, f)); }
   function targetsFor(need, f) {
     switch (need) {
       case 'adjacentTarget': {
         const owned = new Set(controlledBy(f).map(c => c.id));
         return wd.clearings.filter(c => c.control !== f && [...owned].some(id => neighborIds(id).indexOf(c.id) >= 0));
       }
-      case 'controlledTarget': case 'twoControlled': return controlledBy(f);
-      case 'twoTargets': return wd.clearings.slice();
+      case 'controlledTarget': case 'twoControlled': case 'controlledStruct': return controlledBy(f);
+      case 'twoTargets': case 'anyTarget': return wd.clearings.slice();
       case 'sympatheticTarget': return wd.clearings.filter(c => c.sympathy);
       case 'eyrieNoRoostTarget': return wd.clearings.filter(c => c.control === f && !c.roost);
+      case 'presenceTarget': return presenceOf(f);
+      case 'tradingPostTarget': return withStruct('Trading post');
+      case 'plotTarget': return withStruct('Plot');
+      case 'adjacentToPresence': {
+        const pres = new Set(presenceOf(f).map(c => c.id));
+        return wd.clearings.filter(c => !hasPresence(c, f) && [...pres].some(id => neighborIds(id).indexOf(c.id) >= 0));
+      }
       default: return [];
     }
   }
@@ -111,8 +131,10 @@
     switch (key) {
       case 'attack': {
         if (!c) return 'Choose a clearing to attack.';
+        const RAZABLE = ['Sawmill', 'Workshop', 'Recruiting post', 'Market', 'Citadel'];
+        const razable = (c.structures || []).filter(s => RAZABLE.indexOf(s) >= 0);
         if (c.fortified) { c.fortified = false; logEvent(f, 'attacked ' + c.name + ' — destroyed its fortifications'); }
-        else if (c.roost || c.base || c.structures.length) { c.roost = false; c.base = false; c.structures = []; logEvent(f, 'attacked ' + c.name + ' — razed its structures'); }
+        else if (c.roost || c.base || razable.length) { c.roost = false; c.base = false; c.structures = c.structures.filter(s => RAZABLE.indexOf(s) < 0); logEvent(f, 'attacked ' + c.name + ' — razed its ' + (c.roost ? 'Roost' : c.base ? 'base' : 'structures')); }
         else { const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; logEvent(f, 'attacked and took control of ' + c.name + (isFactionControl(prev) ? ' (from ' + prev + ')' : '')); }
         break;
       }
@@ -120,10 +142,22 @@
       case 'obtain': wd.factionState[f].resource = true; logEvent(f, 'obtained a valuable resource (+2 next roll while held)'); break;
       case 'establish': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c || !c2 || c === c2) return 'Choose two different clearings.'; c.sympathy = true; c2.sympathy = true; logEvent(f, 'established cells — sympathy in ' + c.name + ' and ' + c2.name); break; }
       case 'stamp': { const cl = controlledBy(f).filter(x => x.sympathy); cl.forEach(x => x.sympathy = false); logEvent(f, 'stamped out cells — removed sympathy from ' + (cl.length ? cl.map(x => x.name).join(', ') : 'its clearings')); break; }
-      case 'industry': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c || !c2 || c === c2) return 'Choose two different controlled clearings.'; const ty = sel.type || W.factionRoll.industryTypes[0]; c.structures.push(ty); c2.structures.push(sel.type2 || ty); logEvent(f, 'built industry — ' + ty + ' in ' + c.name + ', ' + (sel.type2 || ty) + ' in ' + c2.name); break; }
+      case 'industry': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c || !c2 || c === c2) return 'Choose two different controlled clearings.'; const ty = sel.type || W.factionRoll.industryTypes[0]; addStruct(c, ty); addStruct(c2, sel.type2 || ty); logEvent(f, 'built industry — ' + ty + ' in ' + c.name + ', ' + (sel.type2 || ty) + ' in ' + c2.name); break; }
+      case 'gardenBuild': if (!c) return 'Choose a clearing with presence.'; addStruct(c, 'Garden'); logEvent(f, 'built a garden in ' + c.name); break;
+      case 'proselytize': if (!c) return 'Choose a clearing.'; addPresence(c, f); logEvent(f, 'proselytized — added presence to ' + c.name); break;
+      case 'commerce': if (!c) return 'Choose a clearing.'; addPresence(c, f); logEvent(f, 'conducted commerce — added presence to ' + c.name); break;
+      case 'tradingPost': if (!c) return 'Choose a clearing with presence.'; addStruct(c, 'Trading post'); logEvent(f, 'built a trading post in ' + c.name); break;
+      case 'tunnel': if (!c) return 'Choose a clearing.'; addStruct(c, 'Tunnel'); logEvent(f, 'connected a tunnel to ' + c.name); break;
+      case 'marketCitadel': { if (!c) return 'Choose a controlled clearing.'; const ty = sel.type || 'Market'; addStruct(c, ty); logEvent(f, 'built a ' + ty.toLowerCase() + ' in ' + c.name); break; }
+      case 'expand': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c) return 'Choose a clearing adjacent to presence.'; addPresence(c, f); if (c2 && c2 !== c) addPresence(c2, f); logEvent(f, 'expanded its network — presence to ' + c.name + (c2 && c2 !== c ? ' and ' + c2.name : '')); break; }
+      case 'enactPlot': if (!c) return 'Choose a clearing with presence.'; addStruct(c, 'Plot'); logEvent(f, 'enacted a plot in ' + c.name); break;
+      case 'stampPlot': { const cl = controlledBy(f).filter(x => hasStruct(x, 'Plot')); cl.forEach(x => x.structures = x.structures.filter(s => s !== 'Plot')); logEvent(f, 'stamped out plots' + (cl.length ? ' in ' + cl.map(x => x.name).join(', ') : ' in its clearings')); break; }
       case 'revolt': if (!c) return 'Choose a sympathetic clearing.'; c.base = true; c.control = 'The Woodland Alliance'; c.roost = false; c.structures = []; c.fortified = false; c.contested = true; logEvent(f, 'led a revolt in ' + c.name + ' — a base rises, all other structures fall'); break;
       case 'buildRoost': if (!c) return 'Choose an Eyrie clearing without a Roost.'; c.roost = true; logEvent(f, 'built a Roost in ' + c.name); break;
       case 'capture': { const tf = sel.faction; if (!tf) return 'Choose an enemy faction to capture from.'; wd.factionState[tf] = wd.factionState[tf] || { resource: false, captured: false }; wd.factionState[tf].captured = true; logEvent(f, 'captured a leader of ' + tf + ' (−1 on their rolls while held)'); break; }
+      case 'rapidGarden': if (!c) return 'Choose a clearing with presence.'; addStruct(c, 'Garden'); { const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; } logEvent(f, 'rapidly built a garden and took control of ' + c.name); break;
+      case 'tradeWar': { const c2 = sel.t2 != null ? byId(sel.t2) : null; if (!c) return 'Choose a clearing with a trading post.'; const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; if (c2 && c2 !== c) addStruct(c2, 'Trading post'); logEvent(f, 'launched a trade war — took ' + c.name + (c2 && c2 !== c ? ' and built a trading post in ' + c2.name : '')); break; }
+      case 'culminatePlot': { if (!c) return 'Choose a clearing with a plot.'; const prev = c.control; c.control = f; if (isFactionControl(prev) && prev !== f) c.contested = true; logEvent(f, 'culminated a plot — took control of ' + c.name); break; }
       default: return 'Unknown boon.';
     }
     return null;
@@ -138,14 +172,29 @@
   }
 
   // ---------- read-only map ----------
-  const CONTROL_COLOR = { 'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054' };
+  const CONTROL_COLOR = {
+    'The Marquisate': '#e08a4a', 'The Eyrie Dynasties': '#4a8ec2', 'The Woodland Alliance': '#68a054',
+    'The Lizard Cult': '#c46a8f', 'The Riverfolk Company': '#3fb0a4', 'The Grand Duchy': '#9a7bd0', 'The Corvid Conspiracy': '#555b63'
+  };
   const COMMUNITY_COLOR = { Rabbit: '#d3e2ba', Mouse: '#e4d9bf', Fox: '#eecaa4' };
   const COMMUNITY_ICON = { Rabbit: '🐰', Mouse: '🐭', Fox: '🦊' };
   const SYMPATHY_COLOR = '#4e9a3e';
+  const STRUCT_GLYPH = { 'Garden': '❀', 'Trading post': '⚑', 'Tunnel': '◎', 'Market': '$', 'Citadel': '▣', 'Plot': '✦', 'Sawmill': '⚒', 'Workshop': '⚒', 'Recruiting post': '⚒' };
   function controlColor(c) { return isFactionControl(c.control) ? (CONTROL_COLOR[c.control] || '#b3a07a') : null; }
   // Thick faction-colored border = control; thin neutral border = denizen-held / uncontrolled.
   function controlBorder(c) { const col = controlColor(c); return col ? { col, w: 6 } : { col: '#5a4a30', w: 2.5 }; }
-  function marks(c) { const m = []; if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲'); if (c.fortified) m.push('▮'); if (c.structures.length) m.push('⚒'); return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : ''; }
+  function marks(c) {
+    const m = [];
+    if (c.stronghold) m.push('★'); if (c.roost) m.push('⌂'); if (c.base) m.push('▲'); if (c.fortified) m.push('▮');
+    (c.structures || []).forEach(s => m.push(STRUCT_GLYPH[s] || '⚒'));
+    return m.length ? '<text class="mark" x="' + c.x + '" y="' + (c.y - NODE_R - 7) + '" text-anchor="middle">' + m.join(' ') + '</text>' : '';
+  }
+  // Presence shown as small faction-colored dots along the bottom of the node.
+  function presenceDots(c) {
+    const p = c.presence || []; if (!p.length) return '';
+    const w = 12, start = c.x - (p.length - 1) * w / 2, y = c.y + NODE_R - 2;
+    return p.map((f, i) => '<circle cx="' + Math.round(start + i * w) + '" cy="' + y + '" r="5" fill="' + (CONTROL_COLOR[f] || '#888') + '" stroke="#3b2c1a" stroke-width="1.5"/>').join('');
+  }
   function sympathyDot(c) {
     if (!c.sympathy) return '';
     const dx = Math.round(NODE_R * 0.866), dy = Math.round(NODE_R * 0.5); // 2 o'clock on the rim
@@ -156,7 +205,7 @@
     const edges = wd.edges.map(e => { const a = byid[e[0]], b = byid[e[1]]; return (a && b) ? '<line class="edge" x1="' + a.x + '" y1="' + a.y + '" x2="' + b.x + '" y2="' + b.y + '"/>' : ''; }).join('');
     const nodes = wd.clearings.map(c => { const bd = controlBorder(c); return '<g><circle cx="' + c.x + '" cy="' + c.y + '" r="' + NODE_R + '" fill="' + (COMMUNITY_COLOR[c.community] || '#e4d9bf') + '" stroke="' + bd.col + '" stroke-width="' + bd.w + '"/>' +
       '<text class="ico" x="' + c.x + '" y="' + (c.y + 1) + '" text-anchor="middle" dominant-baseline="central">' + (COMMUNITY_ICON[c.community] || '') + '</text>' +
-      '<text class="nm" x="' + c.x + '" y="' + (c.y + NODE_R + 18) + '" text-anchor="middle">' + esc(c.name) + '</text>' + marks(c) + sympathyDot(c) + '</g>'; }).join('');
+      '<text class="nm" x="' + c.x + '" y="' + (c.y + NODE_R + 18) + '" text-anchor="middle">' + esc(c.name) + '</text>' + marks(c) + sympathyDot(c) + presenceDots(c) + '</g>'; }).join('');
     return '<svg class="woodmap" viewBox="0 0 ' + VB_W + ' ' + VB_H + '" xmlns="http://www.w3.org/2000/svg">' + edges + nodes + '</svg>';
   }
 
@@ -177,20 +226,29 @@
   }
 
   function legend() {
-    const ctrl = [['The Marquisate', CONTROL_COLOR['The Marquisate']], ['The Eyrie Dynasties', CONTROL_COLOR['The Eyrie Dynasties']], ['The Woodland Alliance', CONTROL_COLOR['The Woodland Alliance']]];
+    // only show swatches for factions actually in play
+    const ctrl = factionsPresent().map(f => [f, CONTROL_COLOR[f] || '#b3a07a']);
     return '<div class="map-legend"><span style="font-weight:700">Border = control:</span>' +
       ctrl.map(l => '<span><span class="lgdot" style="background:transparent;border:3px solid ' + l[1] + '"></span>' + esc(l[0]) + '</span>').join('') +
       '<span><span class="lgdot" style="background:transparent;border:2px solid #5a4a30"></span>Denizen-held</span>' +
       '<span><span class="lgdot" style="background:' + SYMPATHY_COLOR + ';border-color:#2c5320"></span>Sympathy</span>' +
-      '<span>★ stronghold</span><span>⌂ Roost</span><span>▲ base</span><span>▮ fort</span><span>⚒ industry</span></div>';
+      '<span><span class="lgdot" style="background:#c46a8f"></span>presence (filled dot)</span>' +
+      '<span>★⌂▲ base · ▮ fort · ❀ garden · ⚑ post · ◎ tunnel · $ market · ▣ citadel · ✦ plot</span></div>';
   }
 
   function summaryPanel() {
     let h = '<div class="panel"><p class="eyebrow" style="margin:0 0 10px">The factions</p><div class="summary-grid">';
     factionsPresent().forEach(f => {
       const st = wd.factionState[f] || {};
+      const bits = [controlledBy(f).length + ' clearings'];
+      if (roostCount(f)) bits.push(roostCount(f) + ' Roosts');
+      if (wd.clearings.filter(c => c.control === f && c.base).length) bits.push('a base');
+      if (presenceOf(f).length) bits.push(presenceOf(f).length + ' presence');
+      const myStructs = {}; wd.clearings.forEach(c => (c.structures || []).forEach(s => { if (c.control === f || (f === 'The Lizard Cult' && s === 'Garden') || (f === 'The Riverfolk Company' && s === 'Trading post') || (f === 'The Corvid Conspiracy' && s === 'Plot')) myStructs[s] = (myStructs[s] || 0) + 1; }));
+      const structTxt = Object.keys(myStructs).map(s => myStructs[s] + '× ' + s).join(', ');
       h += '<div class="fsum"><h4>' + esc(f) + '</h4>' +
-        '<div class="fstat">' + controlledBy(f).length + ' clearings · ' + roostCount(f) + ' Roosts · ' + wd.clearings.filter(c => c.control === f && c.base).length + ' bases</div>' +
+        '<div class="fstat">' + bits.join(' · ') + '</div>' +
+        (structTxt ? '<div class="fstat">' + esc(structTxt) + '</div>' : '') +
         (conditionMet(f) ? '<div class="fstat" style="color:var(--alliance-dk)">strength condition met</div>' : '') +
         (st.resource ? '<div class="fstat">holds a resource (+2)</div>' : '') +
         (st.captured ? '<div class="fstat" style="color:var(--rust)">leader held captive (−1)</div>' : '') +
@@ -306,18 +364,35 @@
       let h = targetSelect('bt' + n + '_1', list, 'First clearing');
       h += targetSelect('bt' + n + '_2', list, 'Second clearing');
       if (need === 'twoControlled') {
-        h += '<label class="mini">Structures</label><select data-industry="' + n + '_1">' + W.factionRoll.industryTypes.map(t => '<option>' + t + '</option>').join('') + '</select>' +
-          ' <select data-industry="' + n + '_2">' + W.factionRoll.industryTypes.map(t => '<option>' + t + '</option>').join('') + '</select>';
+        h += '<label class="mini">Structures</label>' + indSelect(n + '_1', W.factionRoll.industryTypes) + ' ' + indSelect(n + '_2', W.factionRoll.industryTypes);
       }
       return h;
     }
-    return targetSelect('bt' + n + '_1', targetsFor(need, f), 'Target clearing');
+    if (need === 'adjacentToPresence') { // Corvid Expand network — up to two
+      const list = targetsFor(need, f);
+      return targetSelect('bt' + n + '_1', list, 'Clearing (adjacent to presence)') + targetSelect('bt' + n + '_2', list, 'Second clearing (optional)');
+    }
+    if (need === 'controlledStruct') { // Duchy market/citadel
+      return targetSelect('bt' + n + '_1', targetsFor(need, f), 'Controlled clearing') +
+        '<label class="mini">Build</label>' + indSelect(n + '_1', ['Market', 'Citadel']);
+    }
+    if (boon.key === 'tradeWar') { // Riverfolk — take a trading-post clearing + add a post adjacent
+      return targetSelect('bt' + n + '_1', targetsFor('tradingPostTarget', f), 'Clearing with a trading post') +
+        targetSelect('bt' + n + '_2', wd.clearings.slice(), 'Adjacent clearing for a new trading post');
+    }
+    const labels = { presenceTarget: 'Clearing with presence', anyTarget: 'Any clearing', controlledTarget: 'Controlled clearing', sympatheticTarget: 'Sympathetic clearing', eyrieNoRoostTarget: 'Eyrie clearing without a Roost', adjacentTarget: 'Adjacent clearing to attack', tradingPostTarget: 'Clearing with a trading post', plotTarget: 'Clearing with a plot' };
+    return targetSelect('bt' + n + '_1', targetsFor(need, f), labels[need] || 'Target clearing');
   }
 
+  function indSelect(dataId, opts) {
+    const cur = (round && round.cur && round.cur.targets) ? (round.cur.targets['ind_' + dataId] || '') : '';
+    return '<select data-industry="' + dataId + '">' + opts.map(t => '<option' + (t === cur ? ' selected' : '') + '>' + t + '</option>').join('') + '</select>';
+  }
   function targetSelect(id, list, label) { return targetSelectRaw(id, list.map(c => ({ id: c.id, name: c.name + ' (' + (isFactionControl(c.control) ? c.control : (c.control === UNCONTROLLED ? 'uncontrolled' : 'denizens')) + ')' })), label); }
   function targetSelectRaw(id, opts, label) {
+    const cur = (round && round.cur && round.cur.targets) ? (round.cur.targets[id] || '') : '';
     return '<label class="mini">' + esc(label) + '</label><select data-target="' + id + '"><option value="">— choose —</option>' +
-      opts.map(o => '<option value="' + esc(o.id) + '">' + esc(o.name) + '</option>').join('') + '</select>';
+      opts.map(o => '<option value="' + esc(o.id) + '"' + (String(o.id) === String(cur) ? ' selected' : '') + '>' + esc(o.name) + '</option>').join('') + '</select>';
   }
 
   function tierCls(t) { return t === '10+' ? 'tier-10' : (t === '7-9' ? 'tier-79' : 'tier-6'); }
@@ -342,6 +417,9 @@
     app.querySelectorAll('[data-toggle]').forEach(el => el.addEventListener('change', () => { round.cur.toggles[el.getAttribute('data-toggle')] = el.checked; render(); }));
     const rf = document.getElementById('rollFaction'); if (rf) rf.addEventListener('click', rollFaction);
     app.querySelectorAll('[data-slot]').forEach(el => el.addEventListener('change', () => { round.cur['slot' + el.getAttribute('data-slot')] = el.value; render(); }));
+    // Persist target / structure selections so a re-render (e.g. picking the 2nd boon) doesn't wipe them.
+    app.querySelectorAll('[data-target]').forEach(el => el.addEventListener('change', () => { round.cur.targets[el.getAttribute('data-target')] = el.value; }));
+    app.querySelectorAll('[data-industry]').forEach(el => el.addEventListener('change', () => { round.cur.targets['ind_' + el.getAttribute('data-industry')] = el.value; }));
     const dt = document.getElementById('defeatType'); if (dt) dt.addEventListener('change', () => { round.cur.defeatType = dt.value; render(); });
     const af = document.getElementById('applyFaction'); if (af) af.addEventListener('click', applyFaction);
   }
@@ -352,7 +430,7 @@
     if (!round.queue.length) { toast('No non-denizen factions to roll for.'); round = null; wd.round -= 1; return; }
     render();
   }
-  function freshCur() { return { toggles: {}, rolled: false, slot1: '', slot2: '', defeatType: '' }; }
+  function freshCur() { return { toggles: {}, rolled: false, slot1: '', slot2: '', defeatType: '', targets: {} }; }
   function rollFaction() {
     const f = round.queue[round.idx];
     const parts = modBreakdown(f, round.cur.toggles);
@@ -362,7 +440,18 @@
     render();
   }
 
-  function readTarget(id) { const el = app.querySelector('[data-target="' + id + '"]'); if (!el || el.value === '') return null; const v = el.value; return isNaN(+v) ? v : +v; }
+  function readTarget(id) {
+    const stored = (round && round.cur && round.cur.targets) ? round.cur.targets[id] : undefined;
+    const el = app.querySelector('[data-target="' + id + '"]');
+    const v = (stored != null && stored !== '') ? stored : (el && el.value !== '' ? el.value : null);
+    if (v == null || v === '') return null;
+    return isNaN(+v) ? v : +v;
+  }
+  function readIndustry(dataId) {
+    const stored = (round && round.cur && round.cur.targets) ? round.cur.targets['ind_' + dataId] : undefined;
+    const el = app.querySelector('[data-industry="' + dataId + '"]');
+    return (stored != null && stored !== '') ? stored : (el ? el.value : null);
+  }
   function applyFaction() {
     const f = round.queue[round.idx], cur = round.cur;
     let err = null, summaries = [];
@@ -379,8 +468,8 @@
         const sel = cur['slot' + n]; if (!sel) { toast('Choose boon ' + n + '.'); return; }
         const [tierK, key] = sel.split(':');
         const s = { t1: readTarget('bt' + n + '_1'), t2: readTarget('bt' + n + '_2'), faction: readTarget('bt' + n + '_1') };
-        const ind1 = app.querySelector('[data-industry="' + n + '_1"]'); const ind2 = app.querySelector('[data-industry="' + n + '_2"]');
-        if (ind1) s.type = ind1.value; if (ind2) s.type2 = ind2.value;
+        const i1 = readIndustry(n + '_1'), i2 = readIndustry(n + '_2');
+        if (i1) s.type = i1; if (i2) s.type2 = i2;
         if (key === 'capture') s.faction = readTarget('bt' + n + '_1');
         err = applyBoon(f, key, s);
         if (err) { toast(err); return; }

@@ -593,12 +593,16 @@
     "conditions": {
       "The Marquisate": "5+ clearings, or any workshop, sawmill, or recruiter",
       "The Eyrie Dynasties": "2+ Roosts, or 4+ clearings",
-      "The Woodland Alliance": "3+ sympathy, or at least one base"
+      "The Woodland Alliance": "3+ sympathy, or at least one base",
+      "The Lizard Cult": "2+ gardens",
+      "The Riverfolk Company": "3+ trading posts",
+      "The Grand Duchy": "2+ clearings and at least one market and one citadel",
+      "The Corvid Conspiracy": "plots in 3+ clearings"
     },
     "results": {
       "hit": "Victory — choose one minor boon.",
       "10+": "Great victory — choose one minor boon, then another minor boon, or a major boon instead.",
-      "miss": "Defeat — the faction loses one: control of a clearing (back to its denizens); a fortification or structure (a Roost, base, or Marquisate building); or a valuable resource."
+      "miss": "Defeat — the faction loses one: control of a clearing (back to its denizens); a fortification or structure (Roost, base, Marquisate building, garden, citadel, market, trading post, or other); or a valuable resource."
     },
     "minorBoons": [
       {
@@ -608,7 +612,7 @@
           "*"
         ],
         "needs": "adjacentTarget",
-        "description": "Take control of a clearing adjacent to one already controlled. If that clearing has fortifications, destroy those instead. If it has no fortifications but has a Roost, a Woodland Alliance base, or any Marquisate structures, destroy all of those instead."
+        "description": "Take control of a clearing adjacent to one already controlled. If it has fortifications, destroy those instead. If it has no fortifications but has a Roost, a Woodland Alliance base, any Marquisate structures, or a Grand Duchy citadel or market, destroy all of those instead."
       },
       {
         "key": "fortify",
@@ -641,8 +645,10 @@
         "key": "stamp",
         "name": "Stamp cells",
         "factions": [
-          "The Marquisate",
-          "The Eyrie Dynasties"
+          "*"
+        ],
+        "except": [
+          "The Woodland Alliance"
         ],
         "needs": null,
         "description": "Remove sympathy from all clearings the faction controls."
@@ -655,6 +661,90 @@
         ],
         "needs": "twoControlled",
         "description": "Construct one sawmill, workshop, or recruiting post in each of two different controlled clearings."
+      },
+      {
+        "key": "gardenBuild",
+        "name": "Begin/finish building garden",
+        "factions": [
+          "The Lizard Cult"
+        ],
+        "needs": "presenceTarget",
+        "description": "Begin a garden in a clearing with Lizard Cult presence, or finish one begun on a prior roll."
+      },
+      {
+        "key": "proselytize",
+        "name": "Proselytize",
+        "factions": [
+          "The Lizard Cult"
+        ],
+        "needs": "anyTarget",
+        "description": "Add Lizard Cult presence to any clearing."
+      },
+      {
+        "key": "commerce",
+        "name": "Conduct commerce",
+        "factions": [
+          "The Riverfolk Company"
+        ],
+        "needs": "anyTarget",
+        "description": "Add Riverfolk Company presence to any clearing."
+      },
+      {
+        "key": "tradingPost",
+        "name": "Build trading post",
+        "factions": [
+          "The Riverfolk Company"
+        ],
+        "needs": "presenceTarget",
+        "description": "Construct a trading post in a clearing with Riverfolk Company presence."
+      },
+      {
+        "key": "tunnel",
+        "name": "Connect tunnel",
+        "factions": [
+          "The Grand Duchy"
+        ],
+        "needs": "anyTarget",
+        "description": "Build a tunnel to any clearing, making it “adjacent” to the Burrow for the Duchy."
+      },
+      {
+        "key": "marketCitadel",
+        "name": "Build market or citadel",
+        "factions": [
+          "The Grand Duchy"
+        ],
+        "needs": "controlledStruct",
+        "description": "Build a market or a citadel in a controlled clearing."
+      },
+      {
+        "key": "expand",
+        "name": "Expand network",
+        "factions": [
+          "The Corvid Conspiracy"
+        ],
+        "needs": "adjacentToPresence",
+        "description": "Add Corvid Conspiracy presence to up to two clearings adjacent to its presence."
+      },
+      {
+        "key": "enactPlot",
+        "name": "Enact plot",
+        "factions": [
+          "The Corvid Conspiracy"
+        ],
+        "needs": "presenceTarget",
+        "description": "Launch a plot in a clearing with Corvid Conspiracy presence."
+      },
+      {
+        "key": "stampPlot",
+        "name": "Stamp plot",
+        "factions": [
+          "*"
+        ],
+        "except": [
+          "The Corvid Conspiracy"
+        ],
+        "needs": null,
+        "description": "Remove all plots from all clearings the faction controls."
       }
     ],
     "majorBoons": [
@@ -684,13 +774,46 @@
         ],
         "needs": "enemyFaction",
         "description": "Seize an important figure in an enemy faction; that faction takes -1 on all faction rolls while that figure is held captive."
+      },
+      {
+        "key": "rapidGarden",
+        "name": "Rapidly build garden",
+        "factions": [
+          "The Lizard Cult"
+        ],
+        "needs": "presenceTarget",
+        "description": "Begin and finish a garden in a clearing with Lizard Cult presence, and take control of that clearing."
+      },
+      {
+        "key": "tradeWar",
+        "name": "Trade war",
+        "factions": [
+          "The Riverfolk Company"
+        ],
+        "needs": "tradingPostTarget",
+        "description": "Take control of a clearing with a trading post, and add a trading post to an adjacent clearing."
+      },
+      {
+        "key": "culminatePlot",
+        "name": "Culminate plot",
+        "factions": [
+          "The Corvid Conspiracy"
+        ],
+        "needs": "plotTarget",
+        "description": "Bring a plot to fruition, giving the Conspiracy control of the clearing (the plot remains active)."
       }
     ],
     "industryTypes": [
       "Sawmill",
       "Workshop",
       "Recruiting post"
-    ]
+    ],
+    "structureTypes": {
+      "marketCitadel": [
+        "Market",
+        "Citadel"
+      ]
+    }
   },
   "factionSelect": {
     "min": 2,
