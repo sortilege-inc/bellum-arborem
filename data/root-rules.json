@@ -8856,5 +8856,103 @@
         "Swallow a creature whole into the plant’s pitcher"
       ]
     }
+  ],
+  "relics": [
+    {
+      "name": "The Resonance Chime",
+      "wear": 5,
+      "load": 0,
+      "description": "Wooden chimes are used across the Woodland by skilled woodcrafters to create a pleasant natural music. Metal chimes are an extravagance known only to the truly wealthy. But the Resonance Chime is something else entirely. A blueish metal shot through with purple veins, the Resonance Chime somehow channels sound along its length. One end of the Chime is tapered inward, and the other expands outward slightly, giving the vaguest sense of a musical horn. When sound enters into the tapered end—the Listening end—it expands and grows louder when it leaves the other, expanded, Speaking end. The Resonance Chime seems capable of doing anything from expanding the voice of a speaker to reach a full crowd, to funneling a distant sound into a user's waiting ear. Usually, anyone carrying the Resonance Chime has to keep both ends plugged when not in use, to make sure it doesn't capture undesired sounds and spit them out more loudly at inopportune moments…but when the Speaking end alone is unplugged, and sound is poured into the Listening end, it can produce some dangerous effects.\n\nThe Resonance Chime is not an object of fable—most theories suggest that it was a fairly common tool used in ages past, to communicate across long distances. Perhaps in a vast array of such chimes, it could send messages even farther…",
+      "abilities": [
+        {
+          "name": "Listen",
+          "description": "When the Listening end of the Resonance Chime is aimed at any sound no closer than about 10 feet away and no farther than about 100 feet away, the Chime amplifies the sound out of its Speaking end. Someone who puts their ear to the Speaking end can hear conversations and suspicious noises easily this way. (If the Listening end is aimed at a conversation closer than 10 feet, it tends to produce too much noise for it to be effective as a listening device.)"
+        },
+        {
+          "name": "Speak",
+          "description": "When a user speaks into the Listening end of the Resonance Chime, their voice is amplified to reach up to 100 feet away as it exits the Speaking end of the Chime. They can easily speak to crowds or to distant individuals in this way. If speaking to a whole crowd at once, the Resonance Chime adds +1 ongoing to any moves to sway or affect the crowd when used in this way."
+        },
+        {
+          "name": "Boom",
+          "description": "When the Speaking end of the Resonance Chime is plugged and sound is poured into the Listening end from close up, the sound becomes trapped inside the Chime, building up until it is released all at once. One shout into the Listening end is enough to start the resonance, marking one charge. Prolonged, extended, or particularly loud sounds can mark more charges all at once, at the GM's discretion.\n\nAs long as the Chime has charges marked, the sound continues to build; after a few minutes have passed, the GM marks another charge, and rolls 1d6; if the GM rolls under the number of charges marked on the Chime, then they mark as many boxes of wear as their roll. (For example, if the Chime has 3 charges, and the GM rolls a 2, they mark 2 wear.) If the Chime ever builds charge but has no more boxes to mark, the GM instead marks 2 boxes of wear on the Chime. The Chime can break in this way, exploding and releasing the sound all at once.\n\nIf the Chime explodes, then the thunderous force sweeps out from it. An explosion affects everything up to and including Close range if it has 1-3 charges, and everything up to and including Far range if it has 4 or more charges.\n\nIf the Chime's Speaking end is unplugged before the Chime explodes, it instead releases all of its charges in the direction of the Speaking end, reaching up to Close range (1-3 charges) or even up to Far range (4-6 charges). In both cases, the Chime inflicts exhaustion equal to its charges marked. If the target doesn't have enough exhaustion boxes to absorb all that harm, they take the excess as injury, possibly killing them. After discharging by unplugging the Speaking end, the Chime loses all charges."
+        }
+      ]
+    },
+    {
+      "name": "The Sunsap Prism",
+      "wear": 4,
+      "load": 0,
+      "description": "It looks like a treasure on its face, a flawless prismatic crystal filled with golden sap. It gleams and glitters, but its true value only shows when it is left in the sun for a day. The sap somehow seems to absorb the warmth and light of the sun; after a day spent lying out under direct sunlight, the golden sap moves more fluidly and less viscously inside the prism, and it almost sparkles. When the prism is shaken forcefully, the sap begins to glow, exuding sunlight and warmth until it either runs out of its charge, or until someone gently rings the sides of the crystal in the correct sequence.\n\nThe Sunsap Prism is an oddity of the past, something that stories suggest was replicated countless times, with entire great halls filled with such gleaming sunlight prisms. But no one has ever found any evidence of others existing… save for this one relic.",
+      "abilities": [
+        {
+          "name": "Sunlight Contained",
+          "description": "The Sunsap Prism is usually depleted when found; no charges are marked. When the Sunsap Prism is left in sunlight for a day, it fully charges. Mark every charge box. Shake the Sunsap Prism forcefully to activate it, clearing a charge box and causing the Prism to exude a pleasant, bright light and warmth the equivalent of direct sunlight on a pleasant day. After being activated, the Prism will continue to emit light until it is entirely depleted or turned off. Clear another charge every time a few hours of activation pass. To turn it off, a user must know the special sequence of taps upon the prism's panels."
+        },
+        {
+          "name": "Sunlight Uncontained",
+          "description": "The Sunsap Prism is durable, but not impossible to break with enough force—the equivalent of 4-wear marked on it in a single blow. If shattered, it releases all of its sunlight all at once; every unmarked charge box on the Prism inflicts 2-Injury on any creature within about 15 feet, and every creature who can see the exploding Prism is temporarily blinded."
+        }
+      ]
+    },
+    {
+      "name": "The Calling Spear",
+      "wear": 6,
+      "load": 1,
+      "description": "Experienced metallurgeons might be familiar with the most basic principles of magnetism, especially through the use of lodestones. But the way that the Calling Spear works would baffle even them—some kind of directed, focused magnetism that only ever connects the spear and its gauntlet.\n\nThe gauntlet—a mix of copper and chrome and oddly oversized for any creature's paw—comes with the spear; when discovered, the gauntlet is most likely gripping the spear, and its digits are nigh-impossible to pry free of the spear's shaft. The spear itself is thin, the same mix of copper and a silvery metal, with a widened leaf-like razor sharp tip and channels spiraling down from the point.\n\nInside the gauntlet, there are small levers at the tip of each digit; when toggled down, they activate the calling mechanism and draw the spear back to the gauntlet, through the air, through water, even from the other side of a wall. The draw has about as much force as a strong wielder's throw. When the switches are toggled up, the mechanism turns off and the gauntlet and the spear are disconnected; the spear can be thrown without difficulty. In fact, the spear is rather perfectly designed to be thrown, those channels carved down its length helping it spin aerodynamically toward its target.",
+      "abilities": [
+        {
+          "name": "Throw",
+          "description": "The spear can be thrown easily, precisely, and at high speeds. It has an effective range of Far when thrown. When used to target someone, it inflicts 2-injury. On a 10+, instead of a second shot, it may simply deal another +2 injury. It can be used for any appropriate weapon skill moves at far range; treat it as if it has all appropriate weapon skill tags (GM's discretion)."
+        },
+        {
+          "name": "Call",
+          "description": "The spear can be called back by toggling the switches in the gauntlet on. The spear will fling itself back toward the gauntlet as best it can; as long as the user is unrestrained, they can catch the spear without much difficulty. The spear can be caught or otherwise captured as it flies through the air, but it will continue to pull toward the gauntlet, with about the same force as a hearty denizen pulling on it."
+        },
+        {
+          "name": "Spear",
+          "description": "When used to engage in melee, the spear has close range and deals a total of 2-injury. If the gauntlet is toggled on, then the user cannot drop the spear for any reason in melee. The spear is not designed specifically for melee use, and is not treated as if it has any melee-oriented weapon skill tags."
+        }
+      ]
+    },
+    {
+      "name": "The Stonewood Armor",
+      "wear": 0,
+      "load": 2,
+      "description": "Stories of Ancient Woodland monarchs often include the Stonewood Armor as a sign of their invincible prowess, their indomitable might. Made out of layered plates of petrified wood, the Stonewood Armor is immediately identifiable—even those who have simply heard stories about it would recognize the patterns of wooden veins forming diamond shapes up and down its arms and legs, just as described in the tales. The only color on the armor besides the gray-brown of petrified wood is the plume of green leaves atop the helmet…at least, when the Armor is well-fed. When the Armor is hungry, those leaves turn brownish and hang limply.\n\nThe Stonewood Armor almost seems to be a living plant unto itself; denizens familiar with the trees and plants of the Woodland can recognize signs of it being somehow alive, the plates held together by strands of hardened root. But that belies its darkest truth. The stories all say the Stonewood Armor draws strength from the Woodland, and that it does, quite directly. It bonds with the foliage and vegetation of the Woodland, drawing life itself from them to keep itself strong. Each time it feasts, it leaves a dead spot in the Woodland, killing all the plants in its reach to feed itself.",
+      "abilities": [
+        {
+          "name": "Invulnerable",
+          "description": "The Stonewood Armor cannot be destroyed or meaningfully damaged while assembled. When disassembled, it is possible that devoted antagonists might find a way to break individual pieces, but it would require extraordinary mechanisms and effort."
+        },
+        {
+          "name": "Strength of the Wood",
+          "description": "When you leave the Stonewood Armor amid vegetation for at least a day, it will branch out and parasitically draw strength from that vegetation. Each day that it is left amid lush vegetation, it destroys that vegetation in a 40 foot radius—leaving it decayed and ruined—and marks every charge. If it is left for only half a day, it gains half as many charges; if it is left for less than half a day, it gains no charges. If it is left amid sparser vegetation, then it doesn't have enough material to draw from and marks no charges.\n\nWhen you take a blow while wearing the Stonewood Armor, expend a marked charge to simply cancel out the blow."
+        },
+        {
+          "name": "Bulky, Cumbersome, Weighty",
+          "description": "The Stonewood Armor is treated as if it has all three of these negative tags. (The additional load of Weighty is factored in above.)"
+        }
+      ]
+    },
+    {
+      "name": "The Cornucopian Cauldron",
+      "wear": 0,
+      "load": 0,
+      "description": "Stories of the Cornucopian Cauldron say that any food placed in it is increased tenfold, that a simple meal could feed a whole army and give them enough strength to fight back rivers and climb mountains. In truth, it appears to be just a cauldron, albeit a well-made one. Well-seasoned, well-maintained, well-used, but certainly not capable of creating food from nothing. Pretty in its way, patterned with sprawling vines and berries, with shoots of wheat and corn. But just a very good cauldron, of more value to a cook than to a king.\n\nIts true value sits in its composition. It's another alloy of the Ancients, black metal shot speckled with green and strands of blue. It is durable but also light and easy to carry. Metallurgeons of the Eyrie or the Marquisate would become rich beyond their wildest dreams, were they capable of recreating the Cornucopian Cauldron's materials.\n\nRegardless, the Cornucopian Cauldron is hearty enough to be used as a makeshift shield or piece of armor…if the wielder is willing to deal with an object clearly not designed for such a purpose, and look more than a bit silly while doing it.",
+      "abilities": [
+        {
+          "name": "Indestructible Alloy",
+          "description": "The Cornucopian Cauldron is more or less impossible to destroy. Even if used to block the strikes of a strong, angry foe, it won't bend or break."
+        },
+        {
+          "name": "Armor?",
+          "description": "One could wear the Cauldron as a makeshift helmet, or try to wield it as a shield, or even as a weapon…but that was never its intended purpose. When used as armor or a shield, it gives -1 ongoing to all physical moves made, but all incoming injury or exhaustion is reduced by 1. Notably, anyone wielding the Cauldron in this way also looks quite foolish and will likely be taunted or disregarded as a serious threat."
+        },
+        {
+          "name": "Cooking",
+          "description": "The Cornucopian Cauldron is an excellent cooking tool. If used to cook meals and assist with exhaustion recovery, every 1-depletion spent on cooking creates a meal for about 5 denizens that clears 2-exhaustion; every additional depletion spent on the meal would improve the exhaustion cleared by another 2-exhaustion. Any vagabond who uses the Cornucopain Cauldron in any cooking moves automatically takes +1 ongoing on those moves."
+        }
+      ]
+    }
   ]
 }

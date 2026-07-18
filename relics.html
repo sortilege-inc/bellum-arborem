@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relics — Bellum Arborem</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+  .topbar .home { font-family:'Bitter',serif; font-weight:600; text-decoration:none; color:var(--ink-soft); font-size:14px; }
+  .search { width:100%; max-width:340px; }
+
+  .rcard { border:1px solid var(--line); border-radius:var(--radius); background:linear-gradient(180deg,var(--card),var(--card-lo)); padding:16px 18px; margin-bottom:14px; }
+  .rcard h3 { margin:0 0 4px; font-family:'Bree Serif',serif; font-size:20px; color:var(--eyrie-dk); }
+  .rmeta { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 10px; }
+  .rmeta .tag { background:rgba(47,110,160,.14); color:var(--eyrie-dk); border-color:rgba(47,110,160,.4); }
+  .abil { border:1px solid var(--line-soft); border-radius:var(--radius-sm); background:var(--cream-hi); padding:10px 13px; margin:7px 0; }
+  .abil .an { font-family:'Bree Serif',serif; font-size:15px; color:var(--rust); }
+  .abil .ad { font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin-top:3px; white-space:pre-wrap; }
+  .lbl3 { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--accent-dk); margin:10px 0 4px; }
+  .rdesc { font-size:13.5px; line-height:1.5; color:var(--ink-soft); white-space:pre-wrap; }
+  details.rdet > summary { cursor:pointer; font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); margin:10px 0 6px; }
+
+  .loaderr { border:1px solid var(--rust); background:#f7e4dd; color:var(--rust); border-radius:var(--radius-sm); padding:14px 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← Woodland</a>
+    <input type="text" id="search" class="search" placeholder="Search the relics…">
+  </div>
+
+  <header style="margin-bottom:6px">
+    <p class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">Relics of the Ancients</p>
+    <p class="subtitle">Bellum Arborem · artifacts pulled from the ruins</p>
+  </header>
+
+  <div id="app"></div>
+
+</div>
+
+<script src="data/root-rules.js"></script>
+<script src="js/relics.js"></script>
+</body>
+</html>
