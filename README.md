@@ -46,6 +46,11 @@ Static, no-build-required HTML/CSS/JS. Open the files directly in a browser or s
   option enforces its own limits, spends are logged (with undo), and you export the advanced
   character. Runs on the same `bellum-arborem.character` JSON.
 
+- **Bestiary** (`bestiary.html`) — a reference for the ten Ruins & Expeditions monsters: each shows its
+  statblock (harm-track sizes, and swarm variants), instinct, traits, and GM moves, with collapsible
+  lore. A combat tracker lets you bring a monster (and variant) into a fight and mark its harm tracks
+  box by box.
+
 More sections to come.
 
 ## Data
@@ -79,12 +84,14 @@ woodland-creator.html      Woodland creator app
 play.html                  Play mode (load a character and play)
 advance-woodland.html      Advance Woodland (the "time passes" war loop)
 advance-character.html     Advance Character (spend advancements)
+bestiary.html              Bestiary (monster reference + combat tracker)
 css/app.css                Shared Root-styled design system
 js/creator.js              Character creator logic
 js/woodland.js             Woodland creator logic
 js/play.js                 Play-mode logic
 js/advance.js              Advance-Woodland logic
 js/advchar.js              Advance-Character logic
+js/bestiary.js             Bestiary logic
 data/root-rules.json       Canonical character ruleset
 data/woodland-rules.json   Canonical Woodland-creation tables
 data/root-rules.js         Generated window.ROOT_RULES wrapper
