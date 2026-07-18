@@ -183,6 +183,15 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--a
 .stat.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
 .stat.disabled { opacity: .5; cursor: not-allowed; }
 
+/* Suggestion chips (Identity) */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 7px; }
+.chip {
+  font-family: 'Bitter', serif; font-size: 12.5px; color: var(--ink-soft);
+  background: var(--cream-hi); border: 1px solid var(--line); border-radius: 20px;
+  padding: 4px 11px; cursor: pointer; transition: background .1s ease, border-color .1s ease, color .1s ease;
+}
+.chip:hover { background: #fbf0dd; border-color: var(--accent); color: var(--accent-dk); }
+
 /* Connection blocks */
 .conn { border: 1px solid var(--line-soft); border-radius: var(--radius-sm); background: var(--cream-hi); padding: 12px 14px; }
 .conn-name { font-family: 'Bree Serif', serif; font-size: 15px; color: var(--accent-dk); }

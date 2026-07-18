@@ -2072,7 +2072,89 @@
         ]
       },
       "startingValue": 9,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "owl",
+        "other"
+      ],
+      "demeanorOptions": [
+        "charming",
+        "diplomatic",
+        "agreeable",
+        "stern"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "formal",
+            "colorful",
+            "multicultural",
+            "simple"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "medal of service",
+            "beaded jewelry",
+            "carved flute",
+            "pouches with pretty stones"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I want to help the Woodland",
+            "I want to explore the Woodland",
+            "I believe the current factions should be overturned",
+            "I must keep a promise to a loved one",
+            "I want freedom from society's constraints"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my mentor",
+            "my family",
+            "my loved one",
+            "my student",
+            "my greatest ally"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Arbiter",
@@ -2206,7 +2288,89 @@
         ]
       },
       "startingValue": 10,
-      "roguishFeatsChoose": 1
+      "roguishFeatsChoose": 1,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "badger",
+        "other"
+      ],
+      "demeanorOptions": [
+        "intimidating",
+        "honest",
+        "brusque",
+        "open"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "large",
+            "scarred",
+            "well-groomed",
+            "old"
+          ]
+        },
+        {
+          "prompt": "Item/detail",
+          "options": [
+            "faded military insignia",
+            "eyepatch",
+            "repaired clothes",
+            "tarnished locket"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I’m being hunted by a powerful official",
+            "I wish to make up for a past transgression",
+            "I want to fight injustice",
+            "I must clear my tarnished name",
+            "I have been exiled from most clearings"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my peer and friend",
+            "my family",
+            "my loved one",
+            "my ward",
+            "my commander"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Harrier",
@@ -2323,7 +2487,89 @@
         ]
       },
       "startingValue": 9,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "squirrel",
+        "other"
+      ],
+      "demeanorOptions": [
+        "excited",
+        "energetic",
+        "passionate",
+        "flighty"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "roguish",
+            "kitted out",
+            "vibrant",
+            "scarred"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "half-started maps",
+            "sewn bandana",
+            "ball and cup",
+            "widebrimmed hat"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I want to fight for Woodland freedom",
+            "I am chasing a loved one",
+            "I am on the run for my crimes",
+            "I feel a deep wanderlust",
+            "I am on the run from a commitment at home"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my teacher",
+            "my family",
+            "my loved one",
+            "my idol",
+            "my best friend"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Ranger",
@@ -2444,7 +2690,89 @@
         ]
       },
       "startingValue": 9,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "wolf",
+        "other"
+      ],
+      "demeanorOptions": [
+        "terse",
+        "mistrusting",
+        "polite",
+        "kind"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "unkempt",
+            "scarred",
+            "natural",
+            "practical"
+          ]
+        },
+        {
+          "prompt": "Item/detail",
+          "options": [
+            "forest charm",
+            "leafy cloak",
+            "smoking pipe",
+            "stolen ring"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my commander",
+            "my family",
+            "my best friend",
+            "my student",
+            "no one—I lost those who mattered to me (mark one notoriety with the faction responsible)"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I dislike the hypocrisy of society",
+            "I am mistrusted by other denizens",
+            "I want to wander the Woodland",
+            "I need to find and save a loved one",
+            "I seek escape from the wars"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Ronin",
@@ -2574,7 +2902,89 @@
         ]
       },
       "startingValue": 11,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "racoon dog",
+        "other"
+      ],
+      "demeanorOptions": [
+        "gruff",
+        "polite",
+        "direct",
+        "dangerous"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Feature",
+          "options": [
+            "militaristic",
+            "outlandish",
+            "simple",
+            "colorful"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "lord's token",
+            "mark of esteem",
+            "stringed instrument",
+            "board game"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I want to build a masterless life",
+            "I seek a cause to redeem myself",
+            "I aim to bring a hunted foe to justice",
+            "I am hunted by old foes",
+            "I need freedom to fulfill my master's last wish"
+          ]
+        },
+        {
+          "question": "What happened to your last master?",
+          "options": [
+            "assassination",
+            "unjust imprisonment",
+            "disappearance",
+            "justified overthrow",
+            "betrayal"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Scoundrel",
@@ -2694,7 +3104,89 @@
         ]
       },
       "startingValue": 8,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "cat",
+        "other"
+      ],
+      "demeanorOptions": [
+        "shifty",
+        "slimy",
+        "straightforward",
+        "naive"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "suspicious",
+            "impoverished",
+            "fleabitten",
+            "scarred"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "full face mask",
+            "mousesteel spark lighter",
+            "overly large coat",
+            "sulphurous pouches"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I am on the run for a destructive crime",
+            "I seek vengeance for my suffering",
+            "I wish to defeat a faction",
+            "I am mistrusted by other denizens",
+            "I want to be free from society's bonds"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my teacher",
+            "my family",
+            "my loved one",
+            "my only defender",
+            "my best friend"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Thief",
@@ -2807,7 +3299,89 @@
         ]
       },
       "startingValue": 6,
-      "roguishFeatsChoose": 4
+      "roguishFeatsChoose": 4,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "racoon",
+        "other"
+      ],
+      "demeanorOptions": [
+        "fast-talking",
+        "quiet",
+        "angry",
+        "friendly"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "worn",
+            "fidgety",
+            "inconspicuous",
+            "flamboyant"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "black cape",
+            "large bag",
+            "old broken weapon",
+            "stolen scarf"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I have no better way to get food, water, shelter, and money",
+            "I am on the run from \"associates\"",
+            "I am mistrusted by other denizens",
+            "I am pursuing a treasure",
+            "I am being hunted by a powerful official"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my partner-in-crime",
+            "my family",
+            "my loved one",
+            "my protector",
+            "my benefacor"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Tinker",
@@ -2940,7 +3514,89 @@
         ]
       },
       "startingValue": 8,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "beaver",
+        "other"
+      ],
+      "demeanorOptions": [
+        "hopeful",
+        "cheerful",
+        "inquisitive",
+        "cynical"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "scattered",
+            "organized",
+            "grubby",
+            "singed"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "eccentric tool belt",
+            "beautiful whetstone",
+            "former patron's insignia",
+            "massive packs"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I refuse to keep my ideas to myself",
+            "I need to rebuild my workshop anew in a safe place",
+            "I crave adventure",
+            "I need to find and save my family",
+            "I need to keep my most dangerous design safe"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my mentor",
+            "my family",
+            "my best friend",
+            "my loved one",
+            "my leader"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Vagrant",
@@ -3063,7 +3719,81 @@
         ]
       },
       "startingValue": 9,
-      "roguishFeatsChoose": 0
+      "roguishFeatsChoose": 0,
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "opossum",
+        "other"
+      ],
+      "demeanorOptions": [
+        "excited",
+        "low key",
+        "inconspicuous",
+        "thoughtful",
+        "angry"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he, she, they, shifting"
+          ]
+        },
+        {
+          "prompt": "Physical feature",
+          "options": [
+            "mangy, wild, patchwork"
+          ]
+        },
+        {
+          "prompt": "Item/detail",
+          "options": [
+            "stolen military insignia, tattered cloak, luck charm, gambling paraphernalia"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I am being hunted by a powerful vagabond",
+            "I can't settle down with the denizen I truly love",
+            "I seek to depose corrupt and dangerous leaders",
+            "I feel deep wanderlust",
+            "I am on the run for my lies"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my partner in crime",
+            "my family",
+            "my loved one",
+            "my boss",
+            "my best friend"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
+      ]
     },
     {
       "name": "The Champion",
@@ -3181,6 +3911,88 @@
       "connections": [
         "Protector: ____________ is a true hero, someone whom even I look up to for their moral clarity. What did they do that convinced me of their righteousness?",
         "Family: ____________ and I are more-or-less siblings after years spent in each other's company. Why have we struggled to get along in the past?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "dog",
+        "other"
+      ],
+      "demeanorOptions": [
+        "gruff",
+        "thoughtful",
+        "dramatic",
+        "kind"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "stout",
+            "focused",
+            "disheveled",
+            "vain"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "ornate belt",
+            "heirloom ring",
+            "poetry book",
+            "token of chivalry"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I seek justice for all the Woodland",
+            "I wish to become a legend across many clearings",
+            "My enemies will burn any home I try to make",
+            "I have sworn to redeem a lost or failed cause",
+            "I am running from a terrible secret"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my spouse",
+            "my mentor",
+            "my best friend",
+            "my ward",
+            "my commander"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -3309,6 +4121,88 @@
       "connections": [
         "Partner: _________ and I exposed a dark secret of a faction, leading to a meaningful political change. What was it? And which member of that faction hates us for it?",
         "Peer: I think _________ sees the truth of the world, and I value their perspective deeply. What kinds of information do they see that I often overlook?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "otter",
+        "other"
+      ],
+      "demeanorOptions": [
+        "clumsy",
+        "endearing",
+        "sly",
+        "thoughtful"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "fastidious",
+            "rumpled",
+            "proper",
+            "colorful"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "old scrolls",
+            "letter of introduction",
+            "small glasses",
+            "vest with secret pockets"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I seek the Woodland's secrets",
+            "I swore an oath to record true, unbiased history",
+            "I want to spread knowledge throughout the Woodland",
+            "I aim to change the Woodland by sharing its history",
+            "I crave adventure"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my parents",
+            "an older sibling",
+            "an old mentor",
+            "a lover or friend",
+            "a formal school"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -3422,7 +4316,15 @@
           "notes": null
         }
       ],
-      "weaponSkills": null,
+      "weaponSkills": {
+        "choose": 1,
+        "options": [
+          "Confuse Senses",
+          "Improvise",
+          "Parry",
+          "Quick Shot"
+        ]
+      },
       "startingRoguishFeats": [
         "Blindside",
         "Counterfeit"
@@ -3432,6 +4334,88 @@
       "connections": [
         "Watcher: ____________ reminds me of a powerful political figure of the Woodland. Whom do they resemble? Why is the resemblance so striking to me?",
         "Peer: ____________ and I negotiated a truce between two warring parties within a clearing. Why were they so important to closing the deal?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "bat",
+        "other"
+      ],
+      "demeanorOptions": [
+        "commanding",
+        "kind",
+        "professional",
+        "sleazy"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "bucolic",
+            "decadent",
+            "elegant",
+            "traveled"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "fancy boots",
+            "token of esteem",
+            "rugged scarf",
+            "pipe and leaf"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I am called to serve a noble cause",
+            "I want to make a name for myself with every faction",
+            "I hold no loyalty save to the highest bidder",
+            "I have many conflicting loyalties",
+            "I seek the truth behind an ally's disappearance"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my commander",
+            "my family",
+            "my loved one",
+            "my master",
+            "my mentor"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -3550,6 +4534,95 @@
       "connections": [
         "Protector: I see greatness in _________ that I wish to nurture...and perhaps turn to my own purposes. What is it about them that inspires me so?",
         "Family: _________ sheltered me in the earliest days of my exile when I was at my most vulnerable. Why did they offer me such kindness in my moment of need?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "lizard",
+        "other"
+      ],
+      "demeanorOptions": [
+        "bitter",
+        "cautious",
+        "clever",
+        "vain"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "physical",
+          "options": [
+            "shabby",
+            "flashy",
+            "formal",
+            "inconspicuous"
+          ]
+        },
+        {
+          "prompt": "item",
+          "options": [
+            "precious heirloom",
+            "mark of privilege",
+            "ragged cloak",
+            "old book"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "What caused your fall?",
+          "options": [
+            "I led a failed coup or rebellion",
+            "I committed a terrible crime",
+            "I was betrayed by my closest allies",
+            "I fell prey to my rival's schemes"
+          ]
+        },
+        {
+          "question": "Why were you exiled (not killed)?",
+          "options": [
+            "a complex legal system protected my life",
+            "the last of my allies saved my life",
+            "my enemies granted me mercy",
+            "I fled before facing judgment"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I seek a new home in the Woodland",
+            "I want to reclaim my prestige",
+            "I wish to make amends for my sins",
+            "I seek revenge against my enemies"
+          ]
+        },
+        {
+          "question": "Which faction exiled you? (set your reputation with them to -2)",
+          "options": []
+        },
+        {
+          "question": "Which faction now seeks your loyalty or allegiance? (set your reputation with them to +1)",
+          "options": []
+        }
       ]
     },
     {
@@ -3684,6 +4757,95 @@
       "connections": [
         "Protector: ____________ has come to share my beliefs; I must stand with them, no matter the cost. What happened to us that convinced them of the wisdom of my cause?",
         "Watcher: ____________ was once hurt greatly by someone who shared my cause. Why do I think I might still win them over? What have I already tried to do to earn their trust?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "other"
+      ],
+      "demeanorOptions": [
+        "passionate",
+        "naive",
+        "eccentric",
+        "proud"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "unkempt",
+            "young",
+            "clear-eyed",
+            "lithe"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "colorful robes",
+            "facial tattoo",
+            "token of belief",
+            "unique jewelry"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "__________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "What are the fundamental tenets of your cause? (Pick 2):",
+          "options": [
+            "To overturn a tradition",
+            "To exalt the worthy",
+            "To unseat the corrupt",
+            "To uplift the downtrodden",
+            "To destroy a falsehood"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I must make amends for my past",
+            "I want to bring my truth to all",
+            "I seek still greater understanding",
+            "I'm being hunted by the powerful"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my devotee",
+            "my family",
+            "my guru",
+            "my secret love"
+          ]
+        },
+        {
+          "question": "Which faction is known to hate those who share your cause? (set your Reputation with them to -1)",
+          "options": []
+        },
+        {
+          "question": "Which faction is known to harbor those who share your cause? (set your Reputation with them to +1)",
+          "options": []
+        }
       ]
     },
     {
@@ -3813,6 +4975,88 @@
       "connections": [
         "Partner: __________ and I seized valuable cargo from a faction together. Who did we rob? Why?",
         "Family: __________ had a good relationship with my former captain. How have they supported me in taking on the role as my own?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "rat",
+        "other"
+      ],
+      "demeanorOptions": [
+        "honest",
+        "flamboyant",
+        "stoic",
+        "strange"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "physical",
+          "options": [
+            "branded",
+            "fancy",
+            "grizzled",
+            "attractive"
+          ]
+        },
+        {
+          "prompt": "item",
+          "options": [
+            "flashy hat",
+            "lucky trinket",
+            "flask of rum",
+            "lodestone and compass"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I believe I'm haunted by a powerful curse",
+            "I hear the call of gold and silver",
+            "I am despised by other denizens",
+            "I am fleeing the legal consequences of my piracy",
+            "I wish to build a network of fellow pirates and freebooters"
+          ]
+        },
+        {
+          "question": "What happened to your captain?",
+          "options": [
+            "disappearance",
+            "died in a blaze of glory",
+            "mutiny",
+            "imprisonment",
+            "retirement"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -3946,6 +5190,79 @@
       "connections": [
         "Peer: __________ used to work with one of my parents and invited me to join the band when I came of age. How did I impress them with my talents?",
         "Family: __________ was mentored by one of my parents. What vagabond skills did they learn from my parents that I've always struggled to master?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "other"
+      ],
+      "demeanorOptions": [
+        "arrogant",
+        "curious",
+        "foolhardy",
+        "brave"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "physical",
+          "options": [
+            "bright-eyed",
+            "practical",
+            "short",
+            "simple"
+          ]
+        },
+        {
+          "prompt": "item",
+          "options": [
+            "trusty backpack",
+            "comfortable jacket",
+            "family compass",
+            "walking stick"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Why did your parents raise you as a vagabond?",
+          "options": [
+            "they rejected the ordinary life of a clearing of the Woodland",
+            "they feared their enemies would find them if they settled down",
+            "they wanted me to make my own choices free of society's influence",
+            "they never fit in with the denizens",
+            "they didn't know how else to live"
+          ]
+        },
+        {
+          "question": "Which faction did your parents serve the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "What happened to your parents?",
+          "options": [
+            "captured by a powerful faction",
+            "felled by a rival vagabond",
+            "retired to a Woodland clearing",
+            "missing in the forest, now presumed dead",
+            "killed in battle by agents of a powerful faction"
+          ]
+        },
+        {
+          "question": "With faction did your parents most often oppose? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -4084,6 +5401,88 @@
       "connections": [
         "Friend: __________ and I still talk about the time we were run out of a clearing, even though we thought our adventures would lead the powers that be to treat us as heroes. What did we do? How did it go wrong?",
         "Family: ___________ and I have been through battles, ruin-delves, heists, and more together. Which particular incident made us close? How did I make it famous?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "weasel",
+        "other"
+      ],
+      "demeanorOptions": [
+        "ingenuous",
+        "passionate",
+        "verbose",
+        "smooth"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "shabby",
+            "flashy",
+            "haphazard",
+            "effete"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "gold tooth",
+            "swirling cloak",
+            "homespun memento",
+            "tuning fork"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I want to see all of the Woodland",
+            "I want to find a worthy hero to write about",
+            "I want to witness a legendary moment firsthand",
+            "I want to find the kind of true love found in epic poetry",
+            "I have been run out of too many clearings to stay still"
+          ]
+        },
+        {
+          "question": "Whom have you wronged and how?",
+          "options": [
+            "a lover, with my words",
+            "a friend, with my actions",
+            "an innocent, with my silence",
+            "an ally, with my inaction",
+            "a sibling, many times"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -4211,6 +5610,87 @@
       "connections": [
         "Protector: The first time I saw ____________ they piqued my curiosity; I went out of my way to protect them from the ire of my own band. What about them sparked my loyalty?",
         "Watcher: ____________ bested me in combat when I got out of hand. How? Why did I thank them for it?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "other"
+      ],
+      "demeanorOptions": [
+        "intimidating",
+        "jovial",
+        "curt",
+        "curious"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he",
+            "she",
+            "they",
+            "shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "well-groomed",
+            "huge",
+            "scarred",
+            "lean"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "sigil pendant",
+            "dark cloak",
+            "face paint",
+            "sentimental talisman"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I am feared by most denizens",
+            "I wish to see all the Woodlands have to offer",
+            "I refuse to serve someone unworthy",
+            "I seek to overthrow all oppressors",
+            "I am running from powerful enemies"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my mentor",
+            "my ward",
+            "my loved one",
+            "my sibling",
+            "my best friend"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     },
     {
@@ -4350,6 +5830,79 @@
       "connections": [
         "Partner: ____________ and I have seen the wonders of the Woodland together. What makes them a stalwart companion on my travels?",
         "Peer: ____________ is famous for a discovery of their own. I greatly respect them! What did they discover? How?"
+      ],
+      "suggestedSpecies": [
+        "fox",
+        "mouse",
+        "rabbit",
+        "bird",
+        "mole",
+        "other"
+      ],
+      "demeanorOptions": [
+        "absentminded",
+        "driven",
+        "jovial",
+        "quiet"
+      ],
+      "startingStatBoost": "Add +1 to a stat of your choice, to a max of +2.",
+      "details": [
+        {
+          "prompt": "Pronouns",
+          "options": [
+            "he, she, they, shifting"
+          ]
+        },
+        {
+          "prompt": "Physical",
+          "options": [
+            "honest, traveled, whimsical, young"
+          ]
+        },
+        {
+          "prompt": "Item",
+          "options": [
+            "trusty satchel, large and grandiose hat, book of stamps, sturdy boots"
+          ]
+        }
+      ],
+      "backgroundQuestions": [
+        {
+          "question": "Where do you call home?",
+          "options": [
+            "____________ clearing",
+            "the forest",
+            "a place far from here"
+          ]
+        },
+        {
+          "question": "Why are you a vagabond?",
+          "options": [
+            "I want to wander the Woodland.",
+            "I'm seeking answers to a mystery",
+            "I need to find and reconnect with a loved one",
+            "I am pursuing a treasure",
+            "I stole and sold something precious from someone dangerous"
+          ]
+        },
+        {
+          "question": "Whom have you left behind?",
+          "options": [
+            "my family",
+            "my spouse or loved one",
+            "my best friend",
+            "my fellow explorer",
+            "my idol"
+          ]
+        },
+        {
+          "question": "Which faction have you served the most? (mark two prestige for appropriate group)",
+          "options": []
+        },
+        {
+          "question": "With which faction have you earned a special enmity? (mark one notoriety for appropriate group)",
+          "options": []
+        }
       ]
     }
   ],

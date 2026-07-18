@@ -29,7 +29,9 @@
     return {
       _format: 'bellum-arborem.character', _version: 1, _app: 'Bellum Arborem',
       playbook: null,
-      name: '', pronouns: '', demeanor: '', look: '', background: '',
+      name: '', pronouns: '', species: '', demeanor: '', look: '', background: '',
+      details: {},           // look prompts (Physical feature, Item, …) keyed by prompt
+      backgroundAnswers: {}, // background-question answers keyed by question
       stats: {},
       statBoost: null,   // the stat given the creation +1 (baked into stats)
       nature: null,
@@ -90,6 +92,7 @@
     state.stats = {};
     stats.forEach(s => { state.stats[s] = (p.stats && p.stats[s] != null) ? p.stats[s] : 0; });
     state.statBoost = null;
+    state.species = ''; state.details = {}; state.backgroundAnswers = {};
     state.nature = null;
     state.drives = [];
     state.moves = [];
@@ -219,26 +222,52 @@
   }
 
   function renderIdentity() {
-    bodyEl.innerHTML = heading('Who are they?',
-      'Name your vagabond and sketch their look and demeanor. Only a name is required.') +
-      field('Name', 'name', 'text', state.name, 'e.g. Bramble, Quill, Old Ferro') +
-      field('Pronouns', 'pronouns', 'text', state.pronouns, 'e.g. she/her, they/them') +
-      field('Demeanor', 'demeanor', 'text', state.demeanor, 'How do they carry themselves?') +
-      field('Look', 'look', 'area', state.look, 'Species, dress, scars, the details others notice.') +
-      field('Background', 'background', 'area', state.background, 'Where do they come from? Optional.');
-    bindFields();
+    const p = pb();
+    let h = heading('Who are they?',
+      'Name your vagabond, then flesh them out. The prompts and suggestions come from your playbook — ' +
+      'tap a suggestion to use it, or write your own. Only a name is required.');
+    h += idField('Name', 'data-idk="name"', state.name, [], 'e.g. Bramble, Quill, Old Ferro');
+    h += idField('Species', 'data-idk="species"', state.species, p.suggestedSpecies || [], 'What animal are you?');
+    // Look prompts from the playbook (Pronouns, Physical feature, Item, …)
+    (p.details || []).forEach(d => {
+      if (/pronoun/i.test(d.prompt)) h += idField(d.prompt, 'data-idk="pronouns"', state.pronouns, d.options || [], '');
+      else h += idField(d.prompt, 'data-detail="' + esc(d.prompt) + '"', state.details[d.prompt] || '', d.options || [], '');
+    });
+    // Fallback pronouns field if the playbook lists no Pronouns prompt
+    if (!(p.details || []).some(d => /pronoun/i.test(d.prompt)))
+      h += idField('Pronouns', 'data-idk="pronouns"', state.pronouns, [], 'e.g. she/her, they/them');
+    h += idField('Demeanor', 'data-idk="demeanor"', state.demeanor, p.demeanorOptions || [], 'How do they carry themselves?');
+    // Background questions from the playbook
+    const bq = p.backgroundQuestions || [];
+    if (bq.length) {
+      h += '<p class="eyebrow" style="margin:20px 0 8px">Background — optional, but great table fodder</p>';
+      bq.forEach(q => { h += idField(q.question, 'data-bgq="' + esc(q.question) + '"', state.backgroundAnswers[q.question] || '', q.options || [], 'Your answer'); });
+    }
+    bodyEl.innerHTML = h;
+    wireIdentity();
   }
 
-  function field(label, key, type, val, ph) {
-    const input = type === 'area'
-      ? '<textarea data-k="' + key + '" placeholder="' + esc(ph) + '">' + esc(val) + '</textarea>'
-      : '<input type="text" data-k="' + key + '" value="' + esc(val) + '" placeholder="' + esc(ph) + '">';
-    return '<label class="field"><span class="lbl">' + esc(label) + '</span>' + input + '</label>';
+  function idField(label, storeAttr, value, options, ph) {
+    const chips = (options && options.length)
+      ? '<div class="chips">' + options.map(o => '<button type="button" class="chip" data-fill>' + esc(o) + '</button>').join('') + '</div>'
+      : '';
+    return '<label class="field"><span class="lbl" style="text-transform:none;letter-spacing:0;font-weight:600;font-size:13.5px">' +
+      esc(label) + '</span>' + chips +
+      '<input type="text" ' + storeAttr + ' value="' + esc(value) + '" placeholder="' + esc(ph || '') + '"></label>';
   }
-  function bindFields() {
-    bodyEl.querySelectorAll('[data-k]').forEach(el => el.addEventListener('input', () => {
-      state[el.getAttribute('data-k')] = el.value; save();
+  function wireIdentity() {
+    bodyEl.querySelectorAll('[data-idk]').forEach(el => el.addEventListener('input', () => { state[el.getAttribute('data-idk')] = el.value; save(); }));
+    bodyEl.querySelectorAll('[data-detail]').forEach(el => el.addEventListener('input', () => { state.details[el.getAttribute('data-detail')] = el.value; save(); }));
+    bodyEl.querySelectorAll('[data-bgq]').forEach(el => el.addEventListener('input', () => { state.backgroundAnswers[el.getAttribute('data-bgq')] = el.value; save(); }));
+    bodyEl.querySelectorAll('.chip[data-fill]').forEach(el => el.addEventListener('click', () => {
+      const input = el.closest('.field').querySelector('input');
+      input.value = el.textContent; input.dispatchEvent(new Event('input', { bubbles: true }));
     }));
+  }
+  // Compose the free-text look / background from the structured identity fields (for export + review).
+  function composeLook() { return Object.keys(state.details).map(k => state.details[k]).filter(Boolean).join(', '); }
+  function composeBackground() {
+    return Object.keys(state.backgroundAnswers).map(q => { const a = state.backgroundAnswers[q]; return a ? q + ' ' + a : null; }).filter(Boolean).join('\n');
   }
 
   function renderStats() {
@@ -580,9 +609,10 @@
     h += row('Name', state.name + (state.pronouns ? ' (' + state.pronouns + ')' : ''));
     h += row('Playbook', p.name);
     h += row('Stats', stats.map(s => s + ' ' + fmtStat(state.stats[s]) + (state.statBoost === s ? ' (+1)' : '')).join('  ·  '));
+    if (state.species) h += row('Species', state.species);
     if (state.demeanor) h += row('Demeanor', state.demeanor);
-    if (state.look) h += row('Look', state.look);
-    if (state.background) h += row('Background', state.background);
+    const look = composeLook(); if (look) h += row('Look', look);
+    const bg = composeBackground(); if (bg) h += row('Background', bg);
     h += row('Nature', state.nature || '—');
     h += row('Drives', state.drives.join(', ') || '—');
     h += row('Playbook moves', state.moves.join(', ') || '—');
@@ -617,6 +647,8 @@
   // ---------- Export / Import ----------
   function cleanChar() {
     const c = JSON.parse(JSON.stringify(state));
+    c.look = composeLook();          // derived free-text for play-mode / portability
+    c.background = composeBackground();
     return c;
   }
   function fileName() {
@@ -662,6 +694,8 @@
     if (!Array.isArray(state.drives)) state.drives = [];
     if (!Array.isArray(state.moves)) state.moves = [];
     if (!Array.isArray(state.connections)) state.connections = [];
+    if (!state.details || typeof state.details !== 'object') state.details = {};
+    if (!state.backgroundAnswers || typeof state.backgroundAnswers !== 'object') state.backgroundAnswers = {};
     if (!state.reputation) state.reputation = {};
     factions.forEach(f => { if (!state.reputation[f]) state.reputation[f] = { status: 0, prestige: 0, notoriety: 0 }; });
     if (state.playbook && !pb()) toast('Note: playbook "' + state.playbook + '" is not in the loaded ruleset.');
