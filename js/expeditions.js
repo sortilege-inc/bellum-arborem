@@ -198,7 +198,7 @@
     }
     const r = state.ruin;
     const row = (key, q, v) => '<div class="rrow"><div class="rvv"><p class="rq">' + esc(q) + '</p><div class="rv">' + esc(v) + '</div></div>' +
-      '<button class="reroll" data-reroll="' + key + '" title="Re-roll">↻</button></div>';
+      '<button class="reroll" data-reroll="' + key + '" title="Re-roll" aria-label="Re-roll this detail">↻</button></div>';
     let h = '<div class="ruincard"><h2>The Ruin</h2><div class="rgrid">';
     h += row('purpose', 'Originally a…', r.purpose);
     h += row('whyRuin', 'Ruined by…', r.whyRuin);

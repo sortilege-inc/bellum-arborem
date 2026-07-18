@@ -47,7 +47,7 @@
         h += '<select data-ivar="' + inst.id + '">' + m.statblocks.map(s => '<option value="' + esc(s.variant || '') + '"' + ((s.variant || null) === (inst.variant || null) ? ' selected' : '') + '>' + esc(s.variant || 'Default') + '</option>').join('') + '</select>';
       }
       h += '<span class="muted small" style="margin-left:auto">' + esc((sb && sb.harmInflicted) || m.harmInflicted || '') + '</span>' +
-        '<button class="rm" data-irm="' + inst.id + '" title="Remove">✕</button></div>';
+        '<button class="rm" data-irm="' + inst.id + '" title="Remove" aria-label="Remove from the tracker">✕</button></div>';
       // tracks — standard ones first (in TRACK_ORDER), then any others (e.g. "Swarm Track")
       const tracks = ((sb && sb.tracks) || []).slice().sort((a, b) => {
         const ai = TRACK_ORDER.indexOf(a.track), bi = TRACK_ORDER.indexOf(b.track);

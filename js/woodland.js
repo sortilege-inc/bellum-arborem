@@ -410,7 +410,7 @@
         '<input type="number" class="pths" data-edit="paths" data-i="' + i + '" min="1" max="6" value="' + c.paths + '">' +
         '<span class="dcount">paths</span>' +
         '<button class="dice" data-reroll="' + i + '">↺</button>' +
-        '<button class="rm" data-del="' + i + '" title="Remove">✕</button></div>';
+        '<button class="rm" data-del="' + i + '" title="Remove" aria-label="Remove this clearing">✕</button></div>';
     });
     h += '</div>';
 

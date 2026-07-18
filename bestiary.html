@@ -23,7 +23,7 @@
   .trk .tn { font-family:'Bitter',serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-soft); }
   .trk .tc { font-family:'Bitter',serif; font-weight:700; font-size:12px; color:var(--ink-soft); }
   .boxes { display:flex; flex-wrap:wrap; gap:5px; margin:5px 0 2px; }
-  .box { width:22px; height:22px; border:2px solid var(--line); border-radius:5px; cursor:pointer; background:var(--cream-hi); }
+  .box { width:28px; height:28px; border:2px solid var(--line); border-radius:5px; cursor:pointer; background:var(--cream-hi); }
   .box.on-exhaustion { background:#caa63f; border-color:#a8842a; }
   .box.on-injury { background:var(--rust); border-color:#8a2c1a; }
   .box.on-wear { background:#6b6357; border-color:#4a443a; }
@@ -58,7 +58,7 @@
   </div>
 
   <header style="margin-bottom:6px">
-    <p class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">The Bestiary</p>
+    <h1 class="crest" style="font-size:clamp(28px,5vw,44px);margin-bottom:2px">The Bestiary</h1>
     <p class="subtitle">Bellum Arborem · great beasts of the Woodland</p>
   </header>
 
@@ -66,7 +66,7 @@
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="data/root-rules.js"></script>
 <script src="js/bestiary.js"></script>

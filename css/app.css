@@ -12,7 +12,7 @@
   --card-lo:      #f0e3c0;
   --ink:          #34281a;
   --ink-soft:     #5b4a34;
-  --ink-faint:    #8a7657;
+  --ink-faint:    #77643f;  /* darkened for AA contrast on cream (~5:1) */
   --line:         #b39a68;
   --line-soft:    #d8c398;
 
@@ -134,7 +134,7 @@ h1, h2, h3, .display { font-family: 'Bree Serif', Georgia, serif; font-weight: 4
 /* ---------- Buttons ---------- */
 .btn {
   font-family: 'Bitter', serif; font-weight: 600; font-size: 15px;
-  color: var(--cream-hi); background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dk) 100%);
+  color: #fff; background: linear-gradient(180deg, #b85d20 0%, #9e4a14 100%);
   border: 1px solid var(--accent-dk); border-radius: var(--radius-sm);
   padding: 10px 20px; cursor: pointer;
   box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 6px 14px -8px var(--shadow-deep);
@@ -157,6 +157,10 @@ input[type=text], textarea, select {
 }
 textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(217,114,46,.25); }
+
+/* Keyboard focus ring for every interactive element (buttons, custom div/span controls, SVG nodes). */
+:focus-visible { outline: 3px solid var(--eyrie-dk); outline-offset: 2px; border-radius: 3px; }
+a:focus-visible, .btn:focus-visible { outline-offset: 3px; }
 
 /* Chips / tags */
 .tag {
@@ -225,3 +229,17 @@ footer a { color: var(--teal); }
 .small { font-size: 13.5px; }
 .center { text-align: center; }
 .hidden { display: none !important; }
+
+/* ---------- Print: lay the sheet out flat, hide app chrome ---------- */
+@media print {
+  body { background: #fff !important; color: #000; }
+  body::before { display: none !important; }              /* speckle grain */
+  .topbar, .toast, .navbtns, footer, .steps, .step-pip, .stepper,
+  .btn, button, input[type=file], .home, .divider { display: none !important; }
+  .wrap { max-width: none; margin: 0; padding: 0; }
+  .panel, .card, .ruincard, .mcard, .rcard, .review, .inst {
+    box-shadow: none !important; border-color: #bbb !important; break-inside: avoid;
+  }
+  a { color: #000; text-decoration: none; }
+  h1, h2, h3, h4 { break-after: avoid; }
+}
