@@ -13,7 +13,6 @@
   const exportBtn = document.getElementById('exportBtn');
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
-  const toastEl = document.getElementById('toast');
   const STORE_KEY = 'bellum-arborem.woodland.wip';
 
   if (!W || !W.tables || !W.tables.dominantCommunity) {
@@ -27,8 +26,6 @@
   const UNCONTROLLED = 'Uncontrolled';
 
   // ---------- Dice ----------
-  function d6() { return Math.floor(Math.random() * 6) + 1; }
-  function r2d6() { return d6() + d6(); }
   function fromRanges(ranges, v) {
     for (const r of ranges) if (v >= r.min && v <= r.max) return r;
     return null;
@@ -235,13 +232,8 @@
     svg.addEventListener('pointercancel', () => { down = null; });
   }
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(strip())); } catch (e) {} }
   function strip() { const c = JSON.parse(JSON.stringify(state)); c.draft = null; return c; }
-  function toast(m) { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove('show'), 2400); }
   function selected(key) { const f = W.coreFactions.find(x => x.key === key); return f && state.factions.indexOf(f.name) >= 0; }
   function controlledBy(faction) { return state.clearings.filter(c => c.control === faction); }
   function nonStronghold(c) { return !c.stronghold; }

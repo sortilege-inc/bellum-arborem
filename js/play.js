@@ -6,7 +6,6 @@
 
   const R = window.ROOT_RULES;
   const app = document.getElementById('app');
-  const toastEl = document.getElementById('toast');
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
   const saveBtn = document.getElementById('saveBtn');
@@ -29,10 +28,6 @@
   let freeStat = STATS[0];
 
   // ---------- utils ----------
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-  function fmt(n) { return (n >= 0 ? '+' : '') + n; }
-  function d6() { return Math.floor(Math.random() * 6) + 1; }
-  function toast(m) { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove('show'), 2200); }
   function save() { if (char) try { localStorage.setItem(STORE_KEY, JSON.stringify(char)); } catch (e) {} }
   function pb() { return R.playbooks.find(p => p.name === (char && char.playbook)) || null; }
   const factions = (R.factions || []).map(f => f.name);

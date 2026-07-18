@@ -11,7 +11,7 @@
   }
   function d6() { return Math.floor(Math.random() * 6) + 1; }
   function r2d6() { return d6() + d6(); }
-  function fmt(n) { return (n > 0 ? '+' : '') + n; }
+  function fmt(n) { return (n >= 0 ? '+' : '') + n; }
 
   // ---------- toast (single implementation; needs a #toast element on the page) ----------
   let toastTimer = null;

@@ -9,7 +9,6 @@
   const RELICS = (R && R.relics) || [];
   let filter = '';
 
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
   if (!RELICS.length) {
     app.innerHTML = '<div class="loaderr"><b>No relics in the ruleset.</b> Make sure the R&amp;E relics have been merged into <code>data/root-rules.json</code> and rebuilt (<code>node data/build-rules.mjs</code>).</div>';

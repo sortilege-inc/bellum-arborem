@@ -6,7 +6,6 @@
 
   const R = window.ROOT_RULES;
   const app = document.getElementById('app');
-  const toastEl = document.getElementById('toast');
   const searchEl = document.getElementById('search');
   const STORE_KEY = 'bellum-arborem.bestiary.wip';
   const MONSTERS = (R && R.monsters) || [];
@@ -16,8 +15,6 @@
   let filter = '';
   let nextId = 1;
 
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-  function toast(m) { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove('show'), 2200); }
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify({ instances, nextId })); } catch (e) {} }
   function monster(name) { return MONSTERS.find(m => m.name === name); }
   function statblockOf(inst) { const m = monster(inst.monster); if (!m) return null; return (m.statblocks || []).find(s => (s.variant || null) === (inst.variant || null)) || m.statblocks[0]; }

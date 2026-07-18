@@ -11,7 +11,6 @@
   const exportBtn = document.getElementById('exportBtn');
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
-  const toastEl = document.getElementById('toast');
   const STORE_KEY = 'bellum-arborem.character.wip';
 
   // ---- Guard: rules must load ----
@@ -81,17 +80,9 @@
     state.stats[s] += 1; state.statBoost = s;
   }
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
   function fmtStat(n) { return (n >= 0 ? '+' : '') + n; }
 
   function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
-  function toast(msg) {
-    toastEl.textContent = msg; toastEl.classList.add('show');
-    clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove('show'), 2200);
-  }
 
   // Apply a playbook: seed stats, starting gear, connections, reputation. Resets dependent picks.
   function applyPlaybook(name) {

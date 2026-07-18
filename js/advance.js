@@ -7,7 +7,6 @@
 
   const W = window.ROOT_WOODLAND;
   const app = document.getElementById('app');
-  const toastEl = document.getElementById('toast');
   const importBtn = document.getElementById('importBtn');
   const importFile = document.getElementById('importFile');
   const exportBtn = document.getElementById('exportBtn');
@@ -29,11 +28,6 @@
   let lastRoll = null;
 
   // ---------- utils ----------
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-  function fmt(n) { return (n >= 0 ? '+' : '') + n; }
-  function d6() { return Math.floor(Math.random() * 6) + 1; }
-  function r2d6() { return d6() + d6(); }
-  function toast(m) { toastEl.textContent = m; toastEl.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove('show'), 2400); }
   function save() { if (wd) try { localStorage.setItem(STORE_KEY, JSON.stringify(wd)); } catch (e) {} }
   function byId(id) { return wd.clearings.find(c => c.id === id); }
   function isFactionControl(v) { return v && v !== DENIZEN && v !== UNCONTROLLED; }

@@ -15,8 +15,6 @@
   }
 
   // ---------- utility ----------
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-  function d6() { return Math.floor(Math.random() * 6) + 1; }
   function band3(n) { return n <= 2 ? 0 : (n <= 4 ? 1 : 2); }        // 1-2 / 3-4 / 5-6 → 0/1/2
   function tierOf(total) { return total >= 10 ? '10+' : (total >= 7 ? '7-9' : 'miss'); }
   function tierCls(t) { return t === '10+' ? 'tier-10' : (t === '7-9' ? 'tier-79' : 'tier-6'); }
@@ -374,7 +372,6 @@
   }
 
   // ---------- top bar: import / export / reset ----------
-  function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
   document.getElementById('exportBtn').addEventListener('click', () => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob), a = document.createElement('a');
